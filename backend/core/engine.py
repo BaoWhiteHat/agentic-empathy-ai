@@ -29,8 +29,19 @@ class AgenticEmpathySystem:
         self.turn_counter = 0 
         
         try:
-            self.memory = GraphMemory("bolt://localhost:7687", ("neo4j", "123456789"))
+            # URI và User thường là mặc định của Neo4j (local) nên có thể để lộ không sao
+            neo4j_uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
+            neo4j_user = os.getenv("NEO4J_USER", "neo4j")
+            
+            # QUAN TRỌNG: Ép buộc lấy từ .env, KHÔNG ghi mật khẩu thật ở đây!
+            neo4j_pass = os.getenv("NEO4J_PASSWORD") 
+            
+            if not neo4j_pass:
+                raise ValueError("🚨 Báo động: Chưa cấu hình NEO4J_PASSWORD trong file .env!")
+
+            self.memory = GraphMemory(neo4j_uri, (neo4j_user, neo4j_pass))
             if self.memory.driver: print("✅ Graph Memory Connected")
+            
         except Exception as e:
             self.memory = None
             print(f"⚠️ Memory Disconnected: {e}")
