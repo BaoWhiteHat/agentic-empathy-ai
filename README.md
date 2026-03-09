@@ -1,59 +1,140 @@
-# SoulMate - Agentic AI Companion 🤖
+# SoulMate – Agentic AI Companion 🤖💙
 
-SoulMate là một hệ thống Trợ lý AI (Agentic AI Companion) được thiết kế chuyên biệt để cung cấp sự hỗ trợ về mặt cảm xúc và đồng hành cùng người dùng. Khác với các chatbot phản xạ thông thường, SoulMate được xây dựng dựa trên kiến trúc Multi-Agent hiện đại, có khả năng nhận thức, suy luận logic, duy trì trí nhớ dài hạn (Long-term Memory) qua đồ thị và tương tác đa phương thức (văn bản & giọng nói).
+> Một người bạn đồng hành AI thấu cảm, được xây dựng trên kiến trúc Multi-Agent với trí nhớ đồ thị và giao tiếp đa phương thức.
 
-Dự án được phát triển bởi **Lê Quốc Bảo** - Sinh viên Trường Đại học Công nghệ Thông tin (UIT).
+Phát triển bởi **Lê Quốc Bảo** — Sinh viên Trường Đại học Công nghệ Thông tin (UIT).
 
-## 🚀 Các Tính Năng Cốt Lõi
+---
 
-* **Kiến trúc Multi-Agent:** Hệ thống được chia thành nhiều Agent chuyên biệt phối hợp nhịp nhàng với nhau:
-  * `Perception Agent`: Nhận diện bối cảnh và cảm xúc đầu vào.
-  * `Inference Agent`: Suy luận đặc điểm tính cách và cập nhật hồ sơ người dùng.
-  * `Knowledge Agent`: Truy xuất dữ liệu (RAG) và ví dụ hội thoại.
-  * `Dialogue Agent`: Tổng hợp thông tin và sinh phản hồi tự nhiên, thấu cảm.
-  * `Empty Chair Agent`: Đóng vai một đối tượng giả định để người dùng thực hành liệu pháp tâm lý "Chiếc ghế trống" (Empty Chair Therapy).
-* **Graph Memory (Neo4j):** Lưu trữ và theo dõi sự thay đổi về hồ sơ tâm lý (chuẩn OCEAN) cũng như lịch sử cốt truyện của người dùng theo thời gian thực.
-* **Giao tiếp Real-time:** Hỗ trợ luồng chat liên tục, độ trễ thấp thông qua WebSockets.
-* **Voice I/O:** Tích hợp module xử lý giọng nói (Speech-to-Text & Text-to-Speech) cho trải nghiệm giao tiếp rảnh tay.
+## ✨ Tính Năng Nổi Bật
 
-## 🛠️ Công Nghệ & Kiến Trúc
+| Tính năng                       | Mô tả                                                                |
+| ------------------------------- | -------------------------------------------------------------------- |
+| 🧠 **Multi-Agent Architecture** | Nhiều agent chuyên biệt phối hợp để nhận thức, suy luận và phản hồi  |
+| 🗂️ **Graph Memory**             | Neo4j lưu hồ sơ tâm lý OCEAN & lịch sử hội thoại theo thời gian thực |
+| ⚡ **Real-time WebSocket**      | Chat liên tục, độ trễ thấp                                           |
+| 🎙️ **Voice I/O**                | Giao tiếp bằng giọng nói (STT & TTS)                                 |
+| 🛋️ **Empty Chair Therapy**      | Agent mô phỏng liệu pháp "Chiếc ghế trống"                           |
 
-* **Ngôn ngữ:** Python 3.12+
-* **Backend Framework:** FastAPI (REST API & WebSockets)
-* **Quản lý Môi trường & Package:** `uv` (Nhanh và đồng bộ)
-* **Cơ sở dữ liệu:** * Neo4j (Graph Database cho Memory & Profile)
-  * ChromaDB (Vector Database cho Knowledge & RAG)
+---
 
-## ⚙️ Hướng Dẫn Cài Đặt & Khởi Chạy (Backend)
+## 🏗️ Kiến Trúc Hệ Thống
 
-Dự án sử dụng công cụ `uv` để quản lý môi trường ảo và dependencies một cách tối ưu nhất.
+```
+┌─────────────────────────────────────────────┐
+│                  User Input                  │
+│              (Text / Voice)                  │
+└──────────────────┬──────────────────────────┘
+                   │
+         ┌─────────▼─────────┐
+         │  Perception Agent  │  ← Nhận diện cảm xúc & bối cảnh
+         └─────────┬─────────┘
+                   │
+         ┌─────────▼─────────┐
+         │  Inference Agent   │  ← Cập nhật hồ sơ tính cách (OCEAN)
+         └─────────┬─────────┘
+                   │
+    ┌──────────────┼──────────────┐
+    │              │              │
+┌───▼───┐    ┌────▼────┐   ┌─────▼──────┐
+│ Know- │    │Dialogue │   │Empty Chair │
+│ledge  │    │ Agent   │   │   Agent    │
+│Agent  │    │         │   │            │
+└───────┘    └────┬────┘   └────────────┘
+(RAG/ChromaDB)    │
+                  ▼
+           Final Response
+```
 
-### 1. Yêu cầu hệ thống
-* Đã cài đặt [Python 3.12+](https://www.python.org/downloads/)
-* Đã cài đặt [uv](https://docs.astral.sh/uv/)
-* Có sẵn server Neo4j đang chạy (Local hoặc AuraDB)
+### Các Agent
 
-### 2. Cài đặt thư viện
-Tại thư mục gốc của dự án, chạy lệnh sau để `uv` tự động đồng bộ toàn bộ thư viện cần thiết từ file `uv.lock`:
+- **Perception Agent** — Phân tích cảm xúc và bối cảnh đầu vào
+- **Inference Agent** — Suy luận đặc điểm tính cách, cập nhật hồ sơ OCEAN
+- **Knowledge Agent** — Truy xuất tri thức qua RAG (ChromaDB)
+- **Dialogue Agent** — Tổng hợp & sinh phản hồi thấu cảm
+- **Empty Chair Agent** — Đóng vai đối tượng trong liệu pháp tâm lý
+
+---
+
+## 🛠️ Tech Stack
+
+| Thành phần      | Công nghệ                       |
+| --------------- | ------------------------------- |
+| Language        | Python 3.12+                    |
+| Backend         | FastAPI (REST + WebSocket)      |
+| Package Manager | `uv`                            |
+| Graph DB        | Neo4j (Memory & User Profile)   |
+| Vector DB       | ChromaDB (RAG & Knowledge)      |
+| Voice           | Speech-to-Text / Text-to-Speech |
+
+---
+
+## ⚙️ Cài Đặt & Khởi Chạy
+
+### Yêu cầu
+
+- [Python 3.12+](https://www.python.org/downloads/)
+- [uv](https://docs.astral.sh/uv/)
+- Neo4j server (Local hoặc [AuraDB](https://neo4j.com/cloud/platform/aura-graph-database/))
+
+### 1. Clone & cài đặt dependencies
+
 ```bash
+git clone https://github.com/BaoWhiteHat/agentic-empathy-ai.git
+cd agentic-empathy-ai
 uv sync
-3. Cấu hình biến môi trường
-Tạo một file .env tại thư mục gốc và cung cấp các thông tin xác thực sau:
+```
 
-Đoạn mã
+### 2. Cấu hình môi trường
+
+Tạo file `.env` tại thư mục gốc:
+
+```env
 OPENAI_API_KEY=your_openai_api_key_here
 NEO4J_URI=bolt://localhost:7687
 NEO4J_USER=neo4j
 NEO4J_PASSWORD=your_neo4j_password
-4. Khởi động Máy chủ Uvicorn
-Di chuyển vào thư mục backend và chạy lệnh sau để kích hoạt API:
+```
 
-Bash
+> ⚠️ **Không commit file `.env`** — đã được thêm vào `.gitignore`.
+
+### 3. Khởi động server
+
+```bash
 cd backend
 uv run uvicorn main:app --reload --host 0.0.0.0 --port 8000
-Server sẽ được khởi động tại: http://localhost:8000
+```
 
-5. API Endpoints Chính
-Tài liệu REST API (Swagger UI): http://localhost:8000/docs
+Server chạy tại: **http://localhost:8000**
 
-Cổng kết nối WebSocket Chat: ws://localhost:8000/ws/chat/{user_id}
+---
+
+## 📡 API Reference
+
+| Endpoint                | Mô tả                              |
+| ----------------------- | ---------------------------------- |
+| `GET /docs`             | Swagger UI – tài liệu REST API     |
+| `WS /ws/chat/{user_id}` | WebSocket – kết nối chat real-time |
+
+---
+
+## 📁 Cấu Trúc Thư Mục
+
+```
+agentic-empathy-ai/
+├── backend/
+│   ├── agent/          # Các agent chuyên biệt
+│   ├── api/            # REST API endpoints
+│   ├── core/           # Engine & dependencies
+│   ├── data/           # Dữ liệu & benchmarks
+│   ├── evaluate/       # Evaluation scripts
+│   └── main.py         # Entry point
+├── pyproject.toml
+└── uv.lock
+```
+
+---
+
+## 📄 License
+
+MIT © 2025 Lê Quốc Bảo – UIT
