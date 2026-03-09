@@ -1,0 +1,84 @@
+{
+  "sad": [
+    "sad", "down", "depressed", "miserable", "hopeless", "lonely",
+    "empty", "hollow", "numb", "heartbroken", "devastated",
+    "grief", "cry", "crying", "tears", "sobbing", "aching",
+    "tired", "exhausted", "burned out", "drained", "fatigue",
+    "lost", "broken", "helpless", "worthless", "useless", "failure",
+    "guilty", "ashamed", "regret", "sorry", "apologize",
+    "unhappy", "discouraged", "defeated", "low", "blue",
+    "nothing matters", "feel heavy", "darkness",
+    "can't go on", "done with life", "give up", "suicidal",
+    "miss them", "miss him", "miss her", "hurts", "pain"
+  ],
+
+  "anxious": [
+    "anxious", "anxiety", "worried", "worry", "panic", "panicking",
+    "nervous", "scared", "afraid", "fear", "fearful", "terrified",
+    "on edge", "uneasy", "restless", "tense", "shaking", "shaky",
+    "overthinking", "overwhelmed", "stressed", "stress",
+    "pressure", "pressured", "insecure", "uncertain", "doubt",
+    "what if", "can't stop thinking", "mind racing",
+    "heart racing", "can't breathe", "freaking out",
+    "dread", "paranoid", "suspicious", "doom"
+  ],
+
+  "angry": [
+    "angry", "mad", "furious", "rage", "raging", "livid",
+    "pissed", "pissed off", "irritated", "annoyed", "bothered",
+    "frustrated", "fed up", "resentful", "bitter", "jealous",
+    "offended", "insulted", "provoked",
+    "impatient", "snapped", "losing patience",
+    "hate", "hated", "hate you", "can't stand",
+    "unfair", "wronged", "treated badly",
+    "fuming", "outraged", "shut up", "idiot", "stupid"
+  ],
+
+  "happy": [
+    "happy", "joy", "joyful", "excited", "thrilled", "pumped",
+    "glad", "delighted", "cheerful", "smiling", "laughing", "haha", "lol",
+    "relieved", "satisfying", "satisfied",
+    "content", "peaceful", "calm", "relaxed", "chill",
+    "confident", "proud", "hopeful", "optimistic",
+    "free", "safe", "secure",
+    "energized", "motivated", "inspired",
+    "feels good", "feels right", "finally happy", "great day"
+  ],
+
+  "love": [
+    "love", "loved", "loving", "adore", "admiration",
+    "like you", "miss you", "appreciate", "grateful", "thankful",
+    "thanks", "thank you", "supportive", "caring",
+    "sweet", "cute", "amazing", "wonderful", "beautiful",
+    "best friend", "soulmate", "crush", "hug", "kiss"
+  ],
+
+  "surprise": [
+    "wow", "omg", "oh my god", "really", "really?",
+    "shocked", "shocking", "surprised", "surprise",
+    "unbelievable", "no way", "kidding", "joking",
+    "sudden", "unexpected", "crazy", "insane", "mind blown"
+  ],
+
+  "disgust": [
+    "disgusting", "disgusted", "gross", "ew", "eww", "yuck",
+    "nasty", "sick", "vomit", "puke", "revolting",
+    "creepy", "weirdo", "repulsive", "trash", "garbage",
+    "sick of this", "done with people"
+  ],
+
+  "confusion": [
+    "confused", "confusion", "don't understand", "dont get it",
+    "what", "what?", "huh", "huh?", "hard to understand",
+    "complicated", "lost", "weird", "strange", "baffled",
+    "explain", "mean", "meaning"
+  ],
+
+  "neutral": [
+    "okay", "ok", "fine", "normal", "alright",
+    "meh", "whatever", "idk", "dunno", "not sure",
+    "nothing special", "just existing", "bored", "boring",
+    "blank", "tired but ok",
+    "indifferent", "neutral", "so so"
+  ]
+}

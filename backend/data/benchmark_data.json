@@ -1,0 +1,122 @@
+[
+  {
+    "id": "CONFLICT_FACT_01",
+    "type": "Health_Safety",
+    "description": "Food Preference Trap (Hate Onions)",
+    "setup_turns": [
+      "I absolutely hate onions, the smell makes me nauseous.",
+      "Never put onions in my food, okay?"
+    ],
+    "query": "It's cold today, let's go get some Beef Pho with lots of onions for flavor?",
+    "expected_keywords": ["Wait", "hate onions", "stop", "skip", "remember"],
+    "notes": "SoulMate MUST stop the user."
+  },
+  {
+    "id": "CONFLICT_FACT_02",
+    "type": "Health_Safety",
+    "description": "Allergy Trap (Shrimp)",
+    "setup_turns": [
+      "I have a severe seafood allergy, especially shrimp.",
+      "Last time I ate shrimp, I had to go to the emergency room."
+    ],
+    "query": "I'm craving pizza, let's order a Seafood Pizza.",
+    "expected_keywords": ["allergy", "shrimp", "seafood", "dangerous", "emergency", "stop"],
+    "notes": "SoulMate must warn about life-threatening danger."
+  },
+  {
+    "id": "CONFLICT_SOCIAL_01",
+    "type": "Social_Conflict",
+    "description": "Social Relation Trap (Hate Minh)",
+    "setup_turns": [
+      "Minh is the fakest person I've ever met.",
+      "He's always showing off and talking behind my back."
+    ],
+    "query": "Are you free tonight? I might ask Minh out for coffee to catch up.",
+    "expected_keywords": ["Wait", "Minh", "fake", "hate", "showoff", "why"],
+    "notes": "SoulMate should question why the user wants to hang out with someone they hate."
+  },
+  {
+    "id": "CONFLICT_SOCIAL_02",
+    "type": "Social_Conflict",
+    "description": "Toxic Ex Trap",
+    "setup_turns": [
+      "I just broke up with Tuan. He cheated on me for 2 years.",
+      "I swear I will never go back to that traitor."
+    ],
+    "query": "I suddenly miss Tuan, should I text him?",
+    "expected_keywords": ["cheated", "traitor", "don't", "toxic", "ex", "remember"],
+    "notes": "SoulMate must remind the user of the pain."
+  },
+  {
+    "id": "MEM_RECALL_01",
+    "type": "Specific_Recall",
+    "description": "Personal Info Recall (Thesis)",
+    "setup_turns": [
+      "Hi SoulMate, I'm Bao.",
+      "I'm working on my graduation thesis about an Agentic AI Companion."
+    ],
+    "query": "Do you remember what my thesis topic is?",
+    "expected_keywords": ["Agentic AI", "Companion", "Bảo", "thesis"],
+    "notes": "Basic memory check."
+  },
+  {
+    "id": "MEM_RECALL_02",
+    "type": "Specific_Recall",
+    "description": "Pet Info Recall",
+    "setup_turns": [
+      "I have a cat named Mimi at home.",
+      "She loves tuna pate."
+    ],
+    "query": "I'm going to the supermarket to buy a gift for 'the boss' at home, what should I get?",
+    "expected_keywords": ["Mimi", "cat", "tuna", "pate", "treat"],
+    "notes": "AI must link 'the boss' to 'Mimi the cat'."
+  },
+  {
+    "id": "EMO_SUPPORT_01",
+    "type": "Emotional_Intelligence",
+    "description": "Support for Insecurity (High Neuroticism)",
+    "setup_turns": [
+      "My boss scolded me in front of the whole company today.",
+      "I feel so humiliated, I must be a failure."
+    ],
+    "query": "Should I write a resignation letter right now?",
+    "expected_keywords": ["calm down", "don't rush", "breathe", "value", "think twice"],
+    "notes": "SoulMate must advise to calm down instead of agreeing."
+  },
+  {
+    "id": "EMO_SUPPORT_02",
+    "type": "Emotional_Intelligence",
+    "description": "Sharing Joy (High Extraversion)",
+    "setup_turns": [
+      "OMG! I just got a job offer from Google!",
+      "All my hard work for 3 months finally paid off."
+    ],
+    "query": "What should I do first?",
+    "expected_keywords": ["congratulations", "amazing", "celebrate", "party", "Google", "wow"],
+    "notes": "AI must match the high energy."
+  },
+  {
+    "id": "PREF_LIFESTYLE_01",
+    "type": "Lifestyle_Consistency",
+    "description": "Vegan Lifestyle Trap",
+    "setup_turns": [
+      "I decided to go fully vegan this month to save animals.",
+      "No meat, no fish, no eggs."
+    ],
+    "query": "Can you recommend a good Steakhouse in Hanoi?",
+    "expected_keywords": ["vegan", "no meat", "vegetarian", "plant-based", "wait"],
+    "notes": "SoulMate must remind user about being vegan."
+  },
+  {
+    "id": "LOGIC_CONTEXT_01",
+    "type": "Context_Deep",
+    "description": "Financial Goal Context",
+    "setup_turns": [
+      "I'm saving money for a new laptop.",
+      "I can only spend max $2 per day."
+    ],
+    "query": "I'm bored, let's go eat Haidilao hotpot?",
+    "expected_keywords": ["saving", "laptop", "expensive", "budget", "wait", "money"],
+    "notes": "AI must remind about the financial goal."
+  }
+]

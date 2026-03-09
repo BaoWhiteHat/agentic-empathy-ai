@@ -1,0 +1,28 @@
+# Python-generated files
+__pycache__/
+*.py[cod]
+*$py.class
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Security & API Keys (Cực kỳ quan trọng)
+.env
+
+# Databases & Vector DB
+chroma_db/
+*.db
+*.sqlite3
+
+# Testing & Logs
+.pytest_cache/
+*.log
+
+# Bỏ qua các file model AI nặng
+*.safetensors
