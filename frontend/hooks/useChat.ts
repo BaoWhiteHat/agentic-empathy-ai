@@ -1,8 +1,8 @@
+// hooks/useChat.ts
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useUser } from '../context/UserContext';
-import { useMode } from '../app/layout'; // Lấy mode hiện tại từ Context
+import { usePathname } from 'next/navigation'; // 💡 Thêm Hook này của Next.js
 
-// Định nghĩa kiểu dữ liệu tin nhắn
 interface Message {
   role: 'user' | 'ai';
   content: string;
@@ -10,9 +10,16 @@ interface Message {
 
 export const useChat = () => {
   const { userId } = useUser();
-  const { mode } = useMode();
-  
-  // 1. Lưu trữ 3 kho lịch sử riêng biệt
+  const pathname = usePathname(); // Đọc URL hiện tại (ví dụ: '/voice')
+
+  // 1. Tự động nhận diện Mode dựa vào thanh địa chỉ URL
+  const mode = useMemo(() => {
+    if (pathname.includes('/voice')) return 'voice';
+    if (pathname.includes('/empty-chair')) return 'empty-chair';
+    return 'messaging'; // Mặc định là nhắn tin
+  }, [pathname]);
+
+  // 2. Khởi tạo kho lưu trữ tin nhắn
   const [chatHistories, setChatHistories] = useState<{
     messaging: Message[];
     voice: Message[];
@@ -26,7 +33,7 @@ export const useChat = () => {
   const [emotion, setEmotion] = useState<string>("Bình thường");
   const [socket, setSocket] = useState<WebSocket | null>(null);
 
-  // 2. Thiết lập kết nối WebSocket
+  // 3. Thiết lập kết nối WebSocket
   useEffect(() => {
     if (!userId) return;
 
@@ -35,47 +42,41 @@ export const useChat = () => {
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
       
-      // Xử lý tin nhắn từ AI gửi về
       if (data.type === "message") {
-        const targetMode = data.mode || 'messaging';
+        const targetMode = data.mode || mode;
         setChatHistories(prev => ({
           ...prev,
           [targetMode]: [...prev[targetMode as keyof typeof prev], { role: "ai", content: data.content }]
         }));
       } 
-      
-      // Xử lý khi AI nghe xong giọng nói của cậu và chuyển thành chữ (STT)
       else if (data.type === "user_speech") {
+        // 💡 ĐÃ FIX LỖI ẨN: Lưu đoạn chat giọng nói vào đúng mode đang đứng thay vì fix cứng vào 'voice'
         setChatHistories(prev => ({
           ...prev,
-          voice: [...prev.voice, { role: "user", content: data.content }]
+          [mode]: [...prev[mode as keyof typeof prev], { role: "user", content: data.content }]
         }));
       }
-
-      // Cập nhật cảm xúc từ Perception Agent
       else if (data.type === "emotion_status") {
         setEmotion(data.emotion);
       }
     };
 
-    ws.onopen = () => console.log("✅ SoulMate Socket Connected");
-    ws.onclose = () => console.log("❌ SoulMate Socket Disconnected");
+    ws.onopen = () => console.log(`✅ SoulMate Socket Connected (${mode})`);
+    ws.onclose = () => console.log(`❌ SoulMate Socket Disconnected (${mode})`);
 
     setSocket(ws);
     return () => ws.close();
-  }, [userId]);
+  }, [userId, mode]); // Cập nhật lại socket nếu user hoặc mode thay đổi
 
-  // 3. Hàm gửi tin nhắn
+  // 4. Hàm gửi tin nhắn
   const sendMessage = useCallback((text: string) => {
     if (socket && text.trim()) {
-      // Gửi lên Backend kèm mode hiện tại
       socket.send(JSON.stringify({ 
         action: "send_text",
         text: text, 
         mode: mode 
       }));
       
-      // Cập nhật ngay lập tức vào giao diện người dùng theo mode đang đứng
       setChatHistories(prev => ({
         ...prev,
         [mode]: [...prev[mode as keyof typeof prev], { role: "user", content: text }]
@@ -83,7 +84,7 @@ export const useChat = () => {
     }
   }, [socket, mode]);
 
-  // 4. Lọc lấy tin nhắn của mode hiện tại để page.tsx hiển thị
+  // 5. Lọc lấy tin nhắn của mode hiện tại để trả về cho giao diện
   const currentMessages = useMemo(() => {
     return chatHistories[mode as keyof typeof chatHistories] || [];
   }, [chatHistories, mode]);
@@ -92,6 +93,6 @@ export const useChat = () => {
     messages: currentMessages, 
     sendMessage, 
     emotion, 
-    socket // Xuất socket ra để page.tsx lắng nghe status
+    socket 
   };
 };
