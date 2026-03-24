@@ -41,7 +41,7 @@ cd backend && uv run python audit_pipeline.py   # Validates env vars, agent conn
 
 ### Required Services
 - **Neo4j** — Graph database for memory & user profiles (default: `bolt://localhost:7687`)
-- **Backend `.env`** must contain: `OPENAI_API_KEY`, `NEO4J_URI`, `NEO4J_USER`, `NEO4J_PASSWORD`, `ELEVEN_API_KEY`
+- **`backend/.env`** must contain: `OPENAI_API_KEY`, `NEO4J_URI`, `NEO4J_USER`, `NEO4J_PASSWORD`, `ELEVEN_API_KEY`
 
 ## Building the RAG Knowledge Base
 
@@ -68,6 +68,8 @@ Processing flow per user message:
 
 System prompts for all agents are centralized in `backend/agent/prompts.py`.
 
+**New-user onboarding**: When OCEAN scores are all 0.5 (default), the engine runs a 3-question warm-start flow before main chat begins, then infers initial OCEAN scores from the combined answers.
+
 ### Special Agents
 - **EmptyChairAgent** (`emptychair_agent.py`) — Simulates empty chair psychotherapy; role-plays as a target person given relationship context
 - **VoiceInterface** (`voice_io.py`) — STT via OpenAI Whisper, TTS via ElevenLabs
@@ -77,6 +79,24 @@ System prompts for all agents are centralized in `backend/agent/prompts.py`.
 - `backend/api/profile.py` — REST endpoints for OCEAN profile data (`GET /profile/ocean/{user_id}`)
 - `backend/core/dependencies.py` — FastAPI dependency injection (singleton `AgenticEmpathySystem`)
 - Entry point: `backend/main.py`
+
+### WebSocket Message Protocol
+
+**Client → Server:**
+```json
+{"action": "send_text", "mode": "messaging|voice|empty-chair", "text": "...", "use_voice": false}
+{"action": "start_recording", "mode": "voice"}
+```
+Empty-chair sessions initialize with a special text format:
+```
+[SYSTEM_INIT] TARGET: {name} | RELATIONSHIP: {relation} | UNSPOKEN_NEED: {need} | MESSAGE: {message}
+```
+
+**Server → Client message types:**
+- `{"type": "message", "content": "...", "mode": "..."}` — AI response
+- `{"type": "emotion_status", "emotion": "...", "confidence": 0.0-1.0}` — Emotion detection result
+- `{"type": "status", "content": "listening|speaking|idle"}` — Voice mode state
+- `{"type": "user_speech", "content": "..."}` — Transcribed speech (voice mode)
 
 ### Frontend (Next.js App Router)
 
@@ -96,4 +116,6 @@ System prompts for all agents are centralized in `backend/agent/prompts.py`.
 
 - Windows development environment — backend uses `asyncio.WindowsSelectorEventLoopPolicy()` in `main.py`
 - TypeScript path alias: `@/*` maps to frontend root
-- No test suite exists — use `audit_pipeline.py` for system validation and benchmarks for quality evaluation
+- No test suite exists — use `audit_pipeline.py` for system validation
+- Evaluation dependencies (bert-score, rouge-score) are installed; evaluation scripts live in `backend/evaluate/`
+- RAG emotion mapping: anxiety→anxious, sadness→sad, anger→angry, fear→anxious, depression→sad, shame→sad, disgust→disgust

@@ -1,3 +1,6 @@
+# Model weights (too large for git)
+*.pth
+
 # Python-generated files
 __pycache__/
 *.py[cod]

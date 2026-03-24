@@ -15,6 +15,7 @@ from agent.knowledge import KnowledgeAgent
 from agent.memory import GraphMemory
 from agent.voice_io import VoiceInterface
 from agent.emptychair_agent import EmptyChairAgent
+from agent.router import RouterAgent
 
 
 class AgenticEmpathySystem:
@@ -25,6 +26,7 @@ class AgenticEmpathySystem:
         self.knowledge = KnowledgeAgent(reset_db=False)
         self.dialogue = DialogueAgent()
         self.voice_io = VoiceInterface()
+        self.router = RouterAgent()
 
         self.user_turn_counters = {}
 
@@ -140,6 +142,32 @@ class AgenticEmpathySystem:
             self.memory.add_turn(user_id, user_input, emotion, ai_response)
 
         return ai_response
+
+    async def process_brain_agentic(self, user_input, user_id, emotion):
+        """Agentic mode: RouterAgent decides which components to use."""
+        has_history = False
+        has_ocean = False
+
+        if self.memory and self.memory.driver:
+            has_history = bool(self.memory.get_context(user_id))
+            profile = self.memory.get_user_profile(user_id)
+            has_ocean = any(v != 0.5 for v in profile.values())
+
+        decisions = self.router.decide(user_input, emotion, has_history, has_ocean)
+
+        print(f"  [Router] {decisions['reasoning']}")
+        print(f"  [Router] RAG={decisions['use_rag']}, Memory={decisions['use_memory']}, OCEAN={decisions['use_ocean']}")
+
+        response = await self.process_brain(
+            user_input=user_input,
+            user_id=user_id,
+            emotion=emotion,
+            use_memory=decisions["use_memory"],
+            use_ocean=decisions["use_ocean"],
+            use_rag=decisions["use_rag"],
+        )
+
+        return response, decisions
 
     def close(self):
         print("Cleaning up system resources...")
