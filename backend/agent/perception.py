@@ -114,10 +114,10 @@ class PerceptionAgent:
             "amusement": "happy", "joy": "happy", "excitement": "happy", "optimism": "happy", 
             "pride": "happy", "relief": "happy",
             "surprise": "surprise", "realization": "surprise", "curiosity": "surprise",    
-            "sadness": "sad", "grief": "sad", "remorse": "sad", "disappointment": "sad",
+            "sadness": "sad", "grief": "depressed", "remorse": "ashamed", "disappointment": "depressed",
             "anger": "angry", "annoyance": "angry",
             "disapproval": "disgust", "disgust": "disgust",
-            "fear": "anxious", "nervousness": "anxious", "embarrassment": "anxious",
+            "fear": "fearful", "nervousness": "fearful", "embarrassment": "ashamed",
             "confusion": "confusion",   
             "neutral": "neutral", "approval": "neutral", "desire": "neutral"
         }

@@ -9,6 +9,76 @@ from core.engine import AgenticEmpathySystem
 # Cuốn sổ tạm lưu bối cảnh Liệu pháp Ghế trống
 empty_chair_sessions = {}
 
+# Onboarding state tracking
+onboarding_sessions = {}
+# Structure: { user_id: { "step": 0, "answers": [] } }
+
+# ── ONBOARDING HELPERS ───────────────────────────────────────────────────
+
+ONBOARDING_QUESTIONS = [
+    (
+        "Before we start, I'd love to get to know you a little better.\n\n"
+        "What's been weighing on you lately? "
+        "Feel free to share as much or as little as you'd like."
+    ),
+    (
+        "Thank you for sharing that.\n\n"
+        "When things get tough, do you usually talk it out with someone, "
+        "or do you tend to process things on your own?"
+    ),
+    (
+        "That really helps me understand you better.\n\n"
+        "One last thing — what would feel most helpful right now? "
+        "Having someone listen and understand you, "
+        "or helping you think through solutions and next steps?"
+    ),
+]
+
+ONBOARDING_COMPLETE_MSG = (
+    "Thank you for letting me get to know you. "
+    "I'll keep everything you've shared in mind as we talk. "
+    "I'm here for you — what would you like to talk about?"
+)
+
+
+def _is_new_user(system: AgenticEmpathySystem, user_id: str) -> bool:
+    """Check if user has no meaningful OCEAN profile yet (all at default 0.5)."""
+    if not system.memory or not system.memory.driver:
+        return False
+    try:
+        profile = system.memory.get_user_profile(user_id)
+        values = list(profile.values())
+        return all(abs(v - 0.5) < 0.01 for v in values)
+    except:
+        return False
+
+
+def _warm_start_ocean_from_text(
+    system: AgenticEmpathySystem,
+    user_id: str,
+    combined_text: str,
+    emotion: str,
+):
+    """Infer OCEAN from combined onboarding answers and save to Neo4j."""
+    if not system.memory or not system.memory.driver:
+        return
+    try:
+        default_profile = (
+            "openness: 0.5, conscientiousness: 0.5, "
+            "extraversion: 0.5, agreeableness: 0.5, neuroticism: 0.5"
+        )
+        initial_traits = system.inference.infer_traits(
+            text=combined_text,
+            emotion=emotion,
+            response_time="normal",
+            past_profile=default_profile
+        )
+        system.memory.update_user_profile(user_id, initial_traits)
+        print(f"OCEAN warm-started for [{user_id}]: {initial_traits}")
+    except Exception as e:
+        print(f"OCEAN warm-start failed: {e}")
+
+
 router = APIRouter()
 
 @router.websocket("/ws/chat/{user_id}")
@@ -19,7 +89,17 @@ async def websocket_chat(
 ):
     await websocket.accept()
     print(f"🔌 Web Client [{user_id}] đã kết nối.")
-    
+
+    # Send first onboarding question if new user
+    if _is_new_user(system, user_id):
+        onboarding_sessions[user_id] = {"step": 0, "answers": []}
+        await websocket.send_json({
+            "type": "message",
+            "content": ONBOARDING_QUESTIONS[0],
+            "mode": "messaging",
+        })
+        print(f"Onboarding started for new user [{user_id}]")
+
     try:
         while True:
             # 1. Nhận dữ liệu từ Frontend
@@ -44,6 +124,51 @@ async def websocket_chat(
             if not user_text:
                 await websocket.send_json({"type": "status", "content": "idle"})
                 continue
+
+            # ── ONBOARDING: 3-question flow for new users ────────────
+            if mode == "messaging" and user_id in onboarding_sessions:
+                session = onboarding_sessions[user_id]
+                step = session["step"]
+
+                # Save current answer
+                session["answers"].append(user_text)
+                session["step"] += 1
+
+                if step < len(ONBOARDING_QUESTIONS) - 1:
+                    # Still have questions — send next one
+                    next_question = ONBOARDING_QUESTIONS[step + 1]
+                    await websocket.send_json({
+                        "type": "message",
+                        "content": next_question,
+                        "mode": mode,
+                    })
+                    await websocket.send_json({"type": "status", "content": "idle"})
+                    continue
+                else:
+                    # All 3 answers collected — warm-start OCEAN
+                    combined_text = " | ".join(session["answers"])
+
+                    percept = await asyncio.to_thread(
+                        system.perception.detect_emotion, combined_text
+                    )
+                    warmstart_emotion = percept.get("emotion", "neutral")
+
+                    await asyncio.to_thread(
+                        _warm_start_ocean_from_text,
+                        system, user_id, combined_text, warmstart_emotion
+                    )
+
+                    # Clean up onboarding session
+                    onboarding_sessions.pop(user_id, None)
+
+                    await websocket.send_json({
+                        "type": "message",
+                        "content": ONBOARDING_COMPLETE_MSG,
+                        "mode": mode,
+                    })
+                    await websocket.send_json({"type": "status", "content": "idle"})
+                    continue
+            # ─────────────────────────────────────────────────────────
 
             # --- GIAI ĐOẠN 2: PHÂN TÍCH CẢM XÚC (PERCEPTION) ---
             percept = await asyncio.to_thread(system.perception.detect_emotion, user_text)

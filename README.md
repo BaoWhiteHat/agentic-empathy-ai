@@ -21,29 +21,123 @@ Phát triển bởi **Lê Quốc Bảo** — Sinh viên Trường Đại học C
 ## 🏗️ Kiến Trúc Hệ Thống
 
 ```
-┌─────────────────────────────────────────────┐
-│                  User Input                  │
-│              (Text / Voice)                  │
-└──────────────────┬──────────────────────────┘
-                   │
-         ┌─────────▼─────────┐
-         │  Perception Agent  │  ← Nhận diện cảm xúc & bối cảnh
-         └─────────┬─────────┘
-                   │
-         ┌─────────▼─────────┐
-         │  Inference Agent   │  ← Cập nhật hồ sơ tính cách (OCEAN)
-         └─────────┬─────────┘
-                   │
-    ┌──────────────┼──────────────┐
-    │              │              │
-┌───▼───┐    ┌────▼────┐   ┌─────▼──────┐
-│ Know- │    │Dialogue │   │Empty Chair │
-│ledge  │    │ Agent   │   │   Agent    │
-│Agent  │    │         │   │            │
-└───────┘    └────┬────┘   └────────────┘
-(RAG/ChromaDB)    │
-                  ▼
-           Final Response
+                        ┌─────────────────────┐
+                        │     User Message    │
+                        └──────────┬──────────┘
+                                   │
+                    ┌──────────────▼────────────────┐
+                    │       Perception Agent        │
+                    │       perception.py           │
+                    │                               │
+                    │  1. Keyword matching          │
+                    │  2. RoBERTa inference         │
+                    │     (roberta-base-go_emotions)│
+                    │                               │
+                    │  Output: emotion_label,       │
+                    │          emotion_score        │
+                    └──────────────┬────────────────┘
+                                   │
+                    ┌──────────────▼──────────────┐
+                    │        Graph Memory         │
+                    │        memory.py            │
+                    │                             │
+                    │  Reads from Neo4j:          │
+                    │  • conversation history     │
+                    │  • user profile             │
+                    │  • relationship context     │
+                    │                             │
+                    │  Output: memory_context     │
+                    └──────────┬──────────┬───────┘
+                               │          │
+               ┌───────────────┘          └──────────────────┐
+               │  Realtime                                   │  Background async
+               ▼                                             ▼
+┌──────────────────────────┐               ┌──────────────────────────────┐
+│     Knowledge Agent       │              │       Inference Agent        │
+│     knowledge.py          │              │       inference.py           │
+│                           │              │                              │
+│  ChromaDB vector search   │              │  Reads from Neo4j:           │
+│  embed: text-embedding    │              │  • OCEAN current scores      │
+│         -3-small          │              │  • conversation history      │
+│                           │              │                              │
+│  Output: rag_examples     │              │  GPT-4o-mini analyzes        │
+│          (top-k chunks)   │              │  → updates scores            │
+└──────────┬────────────────┘              │    O C E A N                 │
+           │                               │                              │
+           │                               │  Writes back → Neo4j         │
+           │                               └──────────────────────────────┘
+           │                                             │
+           │                               ┌────────────▼─────────────────┐
+           │                               │    Narrative Reflection      │
+           │                               │    (triggers every 10 turns) │
+           │                               │                              │
+           │                               │  Summarizes conversation     │
+           │                               │  → generates reflection note │
+           │                               │  → saves to Neo4j            │
+           │                               └──────────────────────────────┘
+           │
+           │         ┌─────────────────────────────────────┐
+           │         │           prompts.py                │
+           │         │   (system prompts for all agents)   │
+           │         └──────────────────┬──────────────────┘
+           │                            │
+           ▼                            ▼
+┌──────────────────────────────────────────────────────────┐
+│                    Dialogue Agent                        │
+│                    dialogue.py                           │
+│                                                          │
+│  Combined input:                                         │
+│  ┌─────────────┐  ┌──────────────┐  ┌─────────────────┐  │
+│  │   emotion   │  │    memory    │  │   rag_examples  │  │
+│  │   label +   │  │   context    │  │   (ChromaDB)    │  │
+│  │   score     │  │   (Neo4j)    │  │                 │  │
+│  └─────────────┘  └──────────────┘  └─────────────────┘  │
+│            ↓               ↓                  ↓          │
+│  ┌──────────────────────────────────────────────────────┐ │
+│  │              GPT-4o-mini                              │ │
+│  │   system prompt (from prompts.py)                     │ │
+│  │   + OCEAN profile (from Inference Agent)              │ │
+│  └──────────────────────────────────────────────────────┘ │
+└──────────────────────────┬───────────────────────────────┘
+                           │
+              ┌────────────▼────────────┐
+              │      Final Response     │
+              └────────────┬────────────┘
+                           │
+            ┌──────────────┴──────────────┐
+            │                             │
+            ▼                             ▼
+┌───────────────────┐         ┌───────────────────────┐
+│  mode: messaging  │         │     mode: voice       │
+│                   │         │                       │
+│  Text response    │         │  User audio           │
+│  → send directly  │         │  → Whisper STT        │
+│    via WebSocket  │         │  → Text (processed    │
+│                   │         │    normally as above) │
+│                   │         │  → ElevenLabs TTS     │
+│                   │         │  → Audio response     │
+│                   │         │    via WebSocket      │
+└───────────────────┘         └───────────────────────┘
+
+
+╔══════════════════════════════════════════════════════════╗
+║         Empty Chair Agent  (runs independently)          ║
+║         emptychair_agent.py                              ║
+║                                                          ║
+║  Trigger: mode = empty-chair                             ║
+║  Does NOT go through Perception → Dialogue pipeline      ║
+║                                                          ║
+║  Input:                                                  ║
+║  • relationship_context (provided by user)               ║
+║  • target_person_profile                                 ║
+║  • dedicated system prompt (from prompts.py)             ║
+║                                                          ║
+║  GPT-4o-mini role-plays as target person                 ║
+║  → Simulates that person's responses                     ║
+║  → Supports empty chair therapy technique                ║
+║                                                          ║
+║  Output → WebSocket → Frontend (empty-chair/page.tsx)    ║
+╚══════════════════════════════════════════════════════════╝
 ```
 
 ### Các Agent

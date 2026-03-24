@@ -33,27 +33,28 @@ export const useChat = () => {
   const [emotion, setEmotion] = useState<string>("Bình thường");
   const [socket, setSocket] = useState<WebSocket | null>(null);
 
-  // 3. Thiết lập kết nối WebSocket
+  // 3. Thiết lập kết nối WebSocket (only reconnect when userId changes)
   useEffect(() => {
     if (!userId) return;
 
     const ws = new WebSocket(`ws://localhost:8000/ws/chat/${userId}`);
-    
+
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      
+
       if (data.type === "message") {
-        const targetMode = data.mode || mode;
+        const targetMode = data.mode || "messaging";
         setChatHistories(prev => ({
           ...prev,
           [targetMode]: [...prev[targetMode as keyof typeof prev], { role: "ai", content: data.content }]
         }));
-      } 
+      }
       else if (data.type === "user_speech") {
-        // 💡 ĐÃ FIX LỖI ẨN: Lưu đoạn chat giọng nói vào đúng mode đang đứng thay vì fix cứng vào 'voice'
+        // Voice transcription — use the mode from the server response
+        const targetMode = data.mode || "voice";
         setChatHistories(prev => ({
           ...prev,
-          [mode]: [...prev[mode as keyof typeof prev], { role: "user", content: data.content }]
+          [targetMode]: [...prev[targetMode as keyof typeof prev], { role: "user", content: data.content }]
         }));
       }
       else if (data.type === "emotion_status") {
@@ -61,12 +62,12 @@ export const useChat = () => {
       }
     };
 
-    ws.onopen = () => console.log(`✅ SoulMate Socket Connected (${mode})`);
-    ws.onclose = () => console.log(`❌ SoulMate Socket Disconnected (${mode})`);
+    ws.onopen = () => console.log("SoulMate Socket Connected");
+    ws.onclose = () => console.log("SoulMate Socket Disconnected");
 
     setSocket(ws);
     return () => ws.close();
-  }, [userId, mode]); // Cập nhật lại socket nếu user hoặc mode thay đổi
+  }, [userId]);
 
   // 4. Hàm gửi tin nhắn
   const sendMessage = useCallback((text: string) => {

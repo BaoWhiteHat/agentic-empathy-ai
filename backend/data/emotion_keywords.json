@@ -1,14 +1,14 @@
 {
   "sad": [
-    "sad", "down", "depressed", "miserable", "hopeless", "lonely",
-    "empty", "hollow", "numb", "heartbroken", "devastated",
+    "sad", "down", "miserable", "lonely",
+    "heartbroken", "devastated",
     "grief", "cry", "crying", "tears", "sobbing", "aching",
     "tired", "exhausted", "burned out", "drained", "fatigue",
-    "lost", "broken", "helpless", "worthless", "useless", "failure",
-    "guilty", "ashamed", "regret", "sorry", "apologize",
+    "lost", "broken", "helpless", "useless",
+    "regret", "sorry", "apologize",
     "unhappy", "discouraged", "defeated", "low", "blue",
-    "nothing matters", "feel heavy", "darkness",
-    "can't go on", "done with life", "give up", "suicidal",
+    "feel heavy",
+    "give up",
     "miss them", "miss him", "miss her", "hurts", "pain"
   ],
 
@@ -32,6 +32,33 @@
     "hate", "hated", "hate you", "can't stand",
     "unfair", "wronged", "treated badly",
     "fuming", "outraged", "shut up", "idiot", "stupid"
+  ],
+
+  "fearful": [
+    "terrified", "horrified", "petrified", "scared stiff",
+    "dread", "nightmare", "phobia", "trauma", "traumatized",
+    "can't face", "too scared", "paralyzing", "frozen with fear",
+    "fright", "horror", "spine chilling", "blood runs cold",
+    "trembling", "shuddering", "dreading", "haunted"
+  ],
+
+  "depressed": [
+    "depressed", "depression", "hopeless", "pointless",
+    "nothing matters", "can't go on", "no reason to live",
+    "feel empty", "feel hollow", "feel numb", "feel dead inside",
+    "darkness", "bleak", "despair", "despairing",
+    "can't get out of bed", "no energy", "no motivation",
+    "life is meaningless", "what's the point", "give up on life",
+    "chronic sadness", "done with life", "suicidal"
+  ],
+
+  "ashamed": [
+    "ashamed", "shame", "shameful", "embarrassed", "embarrassing",
+    "humiliated", "humiliation", "disgrace", "disgraced",
+    "mortified", "guilty", "guilt", "self-blame", "blame myself",
+    "it's my fault", "i'm to blame", "worthless", "i deserve it",
+    "can't forgive myself", "hate myself", "self-loathing",
+    "regret deeply", "so stupid of me", "i failed everyone"
   ],
 
   "happy": [

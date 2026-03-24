@@ -8,7 +8,7 @@ from langchain_core.output_parsers import StrOutputParser
 from .prompts import SOULMATE_SYSTEM_PROMPT, SOULMATE_USER_PROMPT
 
 class DialogueAgent:
-    def __init__(self, model_name: str = "gpt-4o-mini"):
+    def __init__(self, model_name: str = "gpt-3.5-turbo"):
         print("🧠 Loading Dialogue Agent...")
         api_key = os.environ.get("OPENAI_API_KEY")
         

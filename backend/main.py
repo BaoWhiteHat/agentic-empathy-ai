@@ -1,12 +1,15 @@
 import sys
+import io
 import asyncio
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
-# FIX TRIỆT ĐỂ CHO WINDOWS: Phải đặt trước khi import các module khác
+# FIX TRIỆT ĐỂ CHO WINDOWS
 if sys.platform == "win32":
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 
 from core.dependencies import get_system
 from api import chat, profile
