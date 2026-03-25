@@ -13,7 +13,7 @@ class DialogueAgent:
         api_key = os.environ.get("OPENAI_API_KEY")
         
         # Temperature=0.7: Sáng tạo vừa đủ, không quá bay bổng
-        self.llm = ChatOpenAI(model=model_name, temperature=0.7, api_key=api_key)
+        self.llm = ChatOpenAI(model=model_name, temperature=0, api_key=api_key)
         
         self.prompt = ChatPromptTemplate.from_messages([
             ("system", SOULMATE_SYSTEM_PROMPT),

@@ -1,22 +1,21 @@
 """
-EPITOME Empathy Benchmark — SoulMate Ablation Study (v4)
-Generates responses from 6 configs (including Agentic Router), scores with EPITOME models.
+EPITOME Empathy Benchmark v5b — Updated Router Prompt (RAG-only option)
+
+Same as v5 but with improved router prompt that explicitly allows RAG-only decisions.
 
 Usage:
     cd backend
-    uv run python evaluate/benchmark/run_benchmark.py
+    uv run python evaluate/benchmark/run_benchmark_v5b.py
 """
 
 import sys
 import os
 import asyncio
 
-# Fix Windows console encoding for emoji in agent print statements
 if sys.platform == "win32":
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
-# Setup paths
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 BACKEND_DIR = os.path.dirname(os.path.dirname(SCRIPT_DIR))
 sys.path.insert(0, BACKEND_DIR)
@@ -30,13 +29,43 @@ import pandas as pd
 import numpy as np
 from openai import OpenAI
 
-NUM_CONFIGS = 6
-EXPECTED_ROWS = 50 * NUM_CONFIGS  # 300
+NUM_CONFIGS = 5
+EXPECTED_ROWS = 50 * NUM_CONFIGS
+
+USER_IDS = {
+    "RAG+Memory": "bench_ragmem",
+    "RAG+OCEAN": "bench_ragocean",
+    "Agentic": "bench_agentic",
+}
+
+WARMUP_MESSAGES = [
+    "I've been feeling really anxious about school lately",
+    "Sometimes I feel like nobody understands me",
+    "I had a fight with my best friend and I feel terrible",
+    "I can't sleep at night because I keep overthinking",
+    "Today was actually a good day, I felt hopeful",
+]
 
 
-# ============================================================
-# Step 1 — Human Baseline
-# ============================================================
+def clean_neo4j(system):
+    print("\n" + "=" * 60)
+    print("STEP 0: Cleaning old benchmark users from Neo4j")
+    print("=" * 60)
+
+    if not system.memory or not system.memory.driver:
+        print("  No Neo4j connection, skipping cleanup.")
+        return
+
+    try:
+        with system.memory.driver.session() as session:
+            result = session.run("MATCH (u:User) WHERE u.id STARTS WITH 'bench' DETACH DELETE u")
+            summary = result.consume()
+            print(f"  Deleted {summary.counters.nodes_deleted} nodes")
+        print("  Neo4j cleanup complete.")
+    except Exception as e:
+        print(f"  Warning: Neo4j cleanup failed: {e}")
+
+
 def compute_human_baseline():
     print("\n" + "=" * 60)
     print("STEP 1: Computing Human Baseline")
@@ -59,15 +88,13 @@ def compute_human_baseline():
     return baseline
 
 
-# ============================================================
-# Step 2 — Load test seeker posts
-# ============================================================
 def load_test_seekers():
     print("\n" + "=" * 60)
     print("STEP 2: Loading test seeker posts")
     print("=" * 60)
 
-    path = os.path.join(SCRIPT_DIR, "test_seekers.csv")
+    # Reuse same 50 posts from v5
+    path = os.path.join(SCRIPT_DIR, "test_seekers_v5.csv")
     if os.path.exists(path):
         df = pd.read_csv(path)
         print(f"  Loaded {len(df)} seeker posts from cache")
@@ -81,33 +108,13 @@ def load_test_seekers():
     return sample
 
 
-# ============================================================
-# Step 3 — Warm-up phase
-# ============================================================
-# Each memory-using config gets its own user to prevent cross-contamination
-USER_IDS = {
-    "+Memory": "bench_memory",
-    "+Memory+OCEAN": "bench_ocean",
-    "Full SoulMate": "bench_full",
-    "Agentic SoulMate": "bench_agentic",
-}
-
-WARMUP_MESSAGES = [
-    "I've been feeling really anxious about school lately",
-    "Sometimes I feel like nobody understands me",
-    "I had a fight with my best friend and I feel terrible",
-    "I can't sleep at night because I keep overthinking",
-    "Today was actually a good day, I felt hopeful",
-]
-
-
 async def warmup(system):
     print("\n" + "=" * 60)
     print(f"STEP 3: Warm-up phase (5 messages x {len(USER_IDS)} users)")
     print("=" * 60)
 
-    for user_id in USER_IDS.values():
-        print(f"  Warming up user: {user_id}")
+    for config_name, user_id in USER_IDS.items():
+        print(f"  Warming up user: {user_id} ({config_name})")
         for msg in WARMUP_MESSAGES:
             emotion_result = system.perception.detect_emotion(msg)
             emotion = emotion_result["emotion"]
@@ -115,7 +122,6 @@ async def warmup(system):
                 msg, user_id, emotion,
                 use_memory=True, use_ocean=True, use_rag=True
             )
-            # Update OCEAN scores (normally done by WebSocket handler, not process_brain)
             await system.background_learning(msg, user_id, emotion)
 
         profile = system.memory.get_user_profile(user_id) if system.memory else {}
@@ -124,18 +130,25 @@ async def warmup(system):
     print("  All warm-ups complete.")
 
 
-# ============================================================
-# Step 4 — Generate responses
-# ============================================================
+def _router_decision_label(decisions):
+    """Convert router booleans to a human-readable label."""
+    if decisions.get("use_memory") and decisions.get("use_ocean"):
+        return "RAG+Memory+OCEAN"  # shouldn't happen with new prompt
+    if decisions.get("use_memory"):
+        return "RAG+Memory"
+    if decisions.get("use_ocean"):
+        return "RAG+OCEAN"
+    return "RAG_only"
+
+
 async def generate_responses(system, seekers_df):
     print("\n" + "=" * 60)
     print(f"STEP 4: Generating responses ({NUM_CONFIGS} configs x 50 posts)")
     print("=" * 60)
 
-    output_path = os.path.join(SCRIPT_DIR, "generated_responses.csv")
-    router_path = os.path.join(SCRIPT_DIR, "router_decisions.csv")
+    output_path = os.path.join(SCRIPT_DIR, "generated_responses_v5b.csv")
+    router_path = os.path.join(SCRIPT_DIR, "router_decisions_v5b.csv")
 
-    # Check for cached results
     if os.path.exists(output_path):
         existing = pd.read_csv(output_path)
         if len(existing) == EXPECTED_ROWS:
@@ -150,13 +163,12 @@ async def generate_responses(system, seekers_df):
         sp_id = row["sp_id"]
         seeker_post = row["seeker_post"]
 
-        # Shared emotion detection
         emotion_result = system.perception.detect_emotion(seeker_post)
         emotion = emotion_result["emotion"]
 
         print(f"  [{idx+1}/50] sp_id={sp_id} | emotion={emotion}")
 
-        # Config 1 — Baseline (direct GPT-4o-mini)
+        # Config 1 — Baseline
         completion = client.chat.completions.create(
             model="gpt-4o-mini",
             temperature=0,
@@ -168,45 +180,41 @@ async def generate_responses(system, seekers_df):
         resp_baseline = completion.choices[0].message.content
         rows.append({"sp_id": sp_id, "seeker_post": seeker_post, "config": "Baseline", "response": resp_baseline, "emotion": emotion})
 
-        # Config 2 — +RAG
+        # Config 2 — RAG only
         resp_rag = await system.process_brain(
-            seeker_post, "benchmark_rag_user", emotion,
-            use_memory=False, use_ocean=False, use_rag=True
+            seeker_post, "bench_rag", emotion,
+            use_memory=False, use_ocean=False, use_rag=True,
+            save_ai_response=False
         )
-        rows.append({"sp_id": sp_id, "seeker_post": seeker_post, "config": "+RAG", "response": resp_rag, "emotion": emotion})
+        rows.append({"sp_id": sp_id, "seeker_post": seeker_post, "config": "RAG", "response": resp_rag, "emotion": emotion})
 
-        # Config 3 — +Memory (accumulates turns, own user)
-        resp_mem = await system.process_brain(
-            seeker_post, USER_IDS["+Memory"], emotion,
-            use_memory=True, use_ocean=False, use_rag=False
+        # Config 3 — RAG + Memory
+        resp_ragmem = await system.process_brain(
+            seeker_post, USER_IDS["RAG+Memory"], emotion,
+            use_memory=True, use_ocean=False, use_rag=True,
+            save_ai_response=False
         )
-        rows.append({"sp_id": sp_id, "seeker_post": seeker_post, "config": "+Memory", "response": resp_mem, "emotion": emotion})
+        rows.append({"sp_id": sp_id, "seeker_post": seeker_post, "config": "RAG+Memory", "response": resp_ragmem, "emotion": emotion})
 
-        # Config 4 — +Memory+OCEAN (accumulates turns, own user)
-        resp_ocean = await system.process_brain(
-            seeker_post, USER_IDS["+Memory+OCEAN"], emotion,
-            use_memory=True, use_ocean=True, use_rag=False
+        # Config 4 — RAG + OCEAN
+        resp_ragocean = await system.process_brain(
+            seeker_post, USER_IDS["RAG+OCEAN"], emotion,
+            use_memory=False, use_ocean=True, use_rag=True,
+            save_ai_response=False
         )
-        rows.append({"sp_id": sp_id, "seeker_post": seeker_post, "config": "+Memory+OCEAN", "response": resp_ocean, "emotion": emotion})
+        rows.append({"sp_id": sp_id, "seeker_post": seeker_post, "config": "RAG+OCEAN", "response": resp_ragocean, "emotion": emotion})
 
-        # Config 5 — Full SoulMate (accumulates turns, own user)
-        resp_full = await system.process_brain(
-            seeker_post, USER_IDS["Full SoulMate"], emotion,
-            use_memory=True, use_ocean=True, use_rag=True
-        )
-        rows.append({"sp_id": sp_id, "seeker_post": seeker_post, "config": "Full SoulMate", "response": resp_full, "emotion": emotion})
-
-        # Config 6 — Agentic SoulMate (router decides)
+        # Config 5 — Agentic
         resp_agentic, decisions = await system.process_brain_agentic(
-            seeker_post, USER_IDS["Agentic SoulMate"], emotion
+            seeker_post, USER_IDS["Agentic"], emotion,
+            save_ai_response=False
         )
-        rows.append({"sp_id": sp_id, "seeker_post": seeker_post, "config": "Agentic SoulMate", "response": resp_agentic, "emotion": emotion})
+        rows.append({"sp_id": sp_id, "seeker_post": seeker_post, "config": "Agentic", "response": resp_agentic, "emotion": emotion})
         router_rows.append({
             "sp_id": sp_id,
+            "seeker_post": seeker_post,
             "emotion": emotion,
-            "use_rag": decisions["use_rag"],
-            "use_memory": decisions["use_memory"],
-            "use_ocean": decisions["use_ocean"],
+            "router_decision": _router_decision_label(decisions),
             "reasoning": decisions["reasoning"],
         })
 
@@ -221,13 +229,17 @@ async def generate_responses(system, seekers_df):
     return df
 
 
-# ============================================================
-# Step 5 — Score empathy with EPITOME models
-# ============================================================
 def score_responses(responses_df):
     print("\n" + "=" * 60)
     print("STEP 5: Scoring empathy with EPITOME models")
     print("=" * 60)
+
+    scored_path = os.path.join(SCRIPT_DIR, "scored_responses_v5b.csv")
+    if os.path.exists(scored_path):
+        existing = pd.read_csv(scored_path)
+        if len(existing) == EXPECTED_ROWS:
+            print(f"  Found cached scored results ({len(existing)} rows), skipping scoring.")
+            return existing
 
     from epitome_scorer import EpitomeScorer
 
@@ -252,15 +264,11 @@ def score_responses(responses_df):
             print(f"  Scored {idx+1}/{len(responses_df)}")
 
     scored_df = pd.DataFrame(rows)
-    output_path = os.path.join(SCRIPT_DIR, "scored_responses.csv")
-    scored_df.to_csv(output_path, index=False)
-    print(f"  Saved {len(scored_df)} scored rows to {output_path}")
+    scored_df.to_csv(scored_path, index=False)
+    print(f"  Saved {len(scored_df)} scored rows to {scored_path}")
     return scored_df
 
 
-# ============================================================
-# Step 6 — Aggregate and visualize
-# ============================================================
 def aggregate_and_visualize(scored_df, human_baseline):
     print("\n" + "=" * 60)
     print("STEP 6: Aggregating results and generating chart")
@@ -270,7 +278,6 @@ def aggregate_and_visualize(scored_df, human_baseline):
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
-    # Aggregate means per config
     agg = scored_df.groupby("config").agg(
         ER=("ER_score", "mean"),
         IP=("IP_score", "mean"),
@@ -278,12 +285,10 @@ def aggregate_and_visualize(scored_df, human_baseline):
         Total=("total_score", "mean"),
     ).reset_index()
 
-    # Reorder configs
-    config_order = ["Baseline", "+RAG", "+Memory", "+Memory+OCEAN", "Full SoulMate", "Agentic SoulMate"]
+    config_order = ["Baseline", "RAG", "RAG+Memory", "RAG+OCEAN", "Agentic"]
     agg["config"] = pd.Categorical(agg["config"], categories=config_order, ordered=True)
     agg = agg.sort_values("config").reset_index(drop=True)
 
-    # Add human baseline row
     human_row = pd.DataFrame([{
         "config": "Human (Reddit)",
         "ER": human_baseline["ER"],
@@ -293,13 +298,11 @@ def aggregate_and_visualize(scored_df, human_baseline):
     }])
     results = pd.concat([human_row, agg], ignore_index=True)
 
-    # Save CSV
-    results_path = os.path.join(SCRIPT_DIR, "results_v4.csv")
+    results_path = os.path.join(SCRIPT_DIR, "results_v5b.csv")
     results.to_csv(results_path, index=False)
     print(f"\n  Results saved to {results_path}")
     print(results.to_string(index=False))
 
-    # Generate grouped bar chart
     fig, ax = plt.subplots(figsize=(14, 6))
     systems = results["config"].tolist()
     metrics = ["ER", "IP", "EX", "Total"]
@@ -316,101 +319,73 @@ def aggregate_and_visualize(scored_df, human_baseline):
 
     ax.set_xlabel("System")
     ax.set_ylabel("Mean Score")
-    ax.set_title("EPITOME Empathy Benchmark v4 — SoulMate Ablation + Agentic Router")
+    ax.set_title("EPITOME Empathy Benchmark v5b — RAG-base Ablation + Agentic Router (Updated Prompt)")
     ax.set_xticks(x + width * 1.5)
     ax.set_xticklabels(systems, rotation=15, ha="right")
     ax.legend()
     ax.set_ylim(0, max(results["Total"].max() * 1.15, 2.5))
     plt.tight_layout()
 
-    chart_path = os.path.join(SCRIPT_DIR, "results_v4.png")
+    chart_path = os.path.join(SCRIPT_DIR, "results_v5b.png")
     fig.savefig(chart_path, dpi=150)
     plt.close(fig)
     print(f"  Chart saved to {chart_path}")
 
 
-# ============================================================
-# Router analysis
-# ============================================================
 def analyze_router():
     print("\n" + "=" * 60)
     print("STEP 7: Router decision analysis")
     print("=" * 60)
 
-    router_path = os.path.join(SCRIPT_DIR, "router_decisions.csv")
+    router_path = os.path.join(SCRIPT_DIR, "router_decisions_v5b.csv")
     if not os.path.exists(router_path):
         print("  No router decisions found, skipping.")
         return
 
     df = pd.read_csv(router_path)
+    n = len(df)
 
-    print(f"\n  Total decisions: {len(df)}")
-    print(f"  RAG activated:    {df['use_rag'].sum()}/50 ({df['use_rag'].mean()*100:.0f}%)")
-    print(f"  Memory activated: {df['use_memory'].sum()}/50 ({df['use_memory'].mean()*100:.0f}%)")
-    print(f"  OCEAN activated:  {df['use_ocean'].sum()}/50 ({df['use_ocean'].mean()*100:.0f}%)")
+    print(f"\n  Total decisions: {n}")
+    print("\n  Router decision distribution:")
+    for decision, count in df["router_decision"].value_counts().items():
+        print(f"    {decision}: {count}/{n} ({count/n*100:.0f}%)")
 
-    # Combination counts
-    df["combo"] = ""
-    for _, r in df.iterrows():
-        parts = []
-        if r["use_rag"]: parts.append("RAG")
-        if r["use_memory"]: parts.append("Memory")
-        if r["use_ocean"]: parts.append("OCEAN")
-        df.loc[_, "combo"] = "+".join(parts) if parts else "None"
+    print("\n  Router choices by emotion:")
+    for emo in sorted(df["emotion"].unique()):
+        emo_df = df[df["emotion"] == emo]
+        en = len(emo_df)
+        decisions = emo_df["router_decision"].value_counts().to_dict()
+        parts = [f"{k}={v}" for k, v in decisions.items()]
+        print(f"    {emo} (n={en}): {', '.join(parts)}")
 
-    print("\n  Component combinations:")
-    for combo, count in df["combo"].value_counts().items():
-        print(f"    {combo}: {count} ({count/len(df)*100:.0f}%)")
-
-    # By emotion
-    print("\n  RAG activation by emotion:")
-    emo_rag = df.groupby("emotion")["use_rag"].mean()
-    for emo, rate in emo_rag.sort_values(ascending=False).items():
-        n = (df["emotion"] == emo).sum()
-        print(f"    {emo}: {rate*100:.0f}% (n={n})")
-
-    # Save analysis
-    analysis_path = os.path.join(SCRIPT_DIR, "router_analysis.csv")
+    analysis_path = os.path.join(SCRIPT_DIR, "router_analysis_v5b.csv")
     df.to_csv(analysis_path, index=False)
     print(f"\n  Router analysis saved to {analysis_path}")
 
 
-# ============================================================
-# Main
-# ============================================================
 async def main():
     print("=" * 60)
-    print("  EPITOME EMPATHY BENCHMARK v4 — Agentic Router")
+    print("  EPITOME EMPATHY BENCHMARK v5b — Updated Router Prompt")
     print("=" * 60)
 
-    # Step 1
-    human_baseline = compute_human_baseline()
-
-    # Step 2
-    seekers_df = load_test_seekers()
-
-    # Step 3-4: Initialize system, warm up, generate
     from core.engine import AgenticEmpathySystem
     system = AgenticEmpathySystem()
 
+    clean_neo4j(system)
+    human_baseline = compute_human_baseline()
+    seekers_df = load_test_seekers()
     await warmup(system)
     responses_df = await generate_responses(system, seekers_df)
 
-    # Cleanup engine before loading scorer (free GPU memory)
     system.close()
     del system
 
-    # Step 5
     scored_df = score_responses(responses_df)
-
-    # Step 6
     aggregate_and_visualize(scored_df, human_baseline)
-
-    # Step 7
     analyze_router()
 
     print("\n" + "=" * 60)
-    print("  BENCHMARK v4 COMPLETE")
+    print("  BENCHMARK v5b COMPLETE")
     print("=" * 60)
 
 

@@ -105,6 +105,7 @@ class AgenticEmpathySystem:
         use_memory: bool = True,
         use_ocean: bool = True,
         use_rag: bool = True,
+        save_ai_response: bool = True,
     ):
         """Main chat processing pipeline"""
         history_context = ""
@@ -112,7 +113,11 @@ class AgenticEmpathySystem:
         narrative_profile = "No narrative yet."
 
         if use_memory and self.memory and self.memory.driver:
-            history_context = self.memory.get_context(user_id)
+            history_context = self.memory.get_context(
+                user_id,
+                current_emotion=emotion,
+                current_message=user_input
+            )
             current_profile = self.memory.get_user_profile(user_id)
             try:
                 narrative_profile = self.memory.get_narrative_profile(user_id)
@@ -139,21 +144,35 @@ class AgenticEmpathySystem:
         )
 
         if use_memory and self.memory and self.memory.driver:
-            self.memory.add_turn(user_id, user_input, emotion, ai_response)
+            if save_ai_response:
+                self.memory.add_turn(user_id, user_input, emotion, ai_response)
+            else:
+                self.memory.add_turn(user_id, user_input, emotion, "")
 
         return ai_response
 
-    async def process_brain_agentic(self, user_input, user_id, emotion):
+    async def process_brain_agentic(self, user_input, user_id, emotion,
+                                     save_ai_response: bool = True):
         """Agentic mode: RouterAgent decides which components to use."""
         has_history = False
         has_ocean = False
+        narrative = ""
+        ocean_profile_str = ""
 
         if self.memory and self.memory.driver:
             has_history = bool(self.memory.get_context(user_id))
             profile = self.memory.get_user_profile(user_id)
             has_ocean = any(v != 0.5 for v in profile.values())
+            ocean_profile_str = ", ".join([f"{k}: {v}" for k, v in profile.items()])
+            try:
+                narrative = self.memory.get_narrative_profile(user_id)
+            except Exception:
+                narrative = ""
 
-        decisions = self.router.decide(user_input, emotion, has_history, has_ocean)
+        decisions = self.router.decide(
+            user_input, emotion, has_history, has_ocean,
+            narrative=narrative, ocean_profile=ocean_profile_str
+        )
 
         print(f"  [Router] {decisions['reasoning']}")
         print(f"  [Router] RAG={decisions['use_rag']}, Memory={decisions['use_memory']}, OCEAN={decisions['use_ocean']}")
@@ -165,6 +184,7 @@ class AgenticEmpathySystem:
             use_memory=decisions["use_memory"],
             use_ocean=decisions["use_ocean"],
             use_rag=decisions["use_rag"],
+            save_ai_response=save_ai_response,
         )
 
         return response, decisions

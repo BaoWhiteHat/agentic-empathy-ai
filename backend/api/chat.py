@@ -218,7 +218,7 @@ async def websocket_chat(
                     )
                 else:
                     # Dành cho mode Nhắn tin thấu cảm & Tâm sự giọng nói
-                    ai_response = await system.process_brain(user_text, user_id, emotion)
+                    ai_response, _ = await system.process_brain_agentic(user_text, user_id, emotion)
                     
             except Exception as e:
                 print("\n❌ LỖI NGẦM TẠI LANGCHAIN/NEO4J:")

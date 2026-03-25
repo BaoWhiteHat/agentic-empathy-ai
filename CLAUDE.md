@@ -59,14 +59,20 @@ Output: `backend/chroma_db/` collection `soulmate_knowledge_base`.
 
 All agents live in `backend/agent/`. The orchestrator is `backend/core/engine.py` (`AgenticEmpathySystem`).
 
-Processing flow per user message:
-1. **PerceptionAgent** (`perception.py`) — Detects emotion using keyword matching + RoBERTa (`SamLowe/roberta-base-go_emotions`)
-2. **GraphMemory** (`memory.py`) — Retrieves conversation context & user profile from Neo4j
-3. **KnowledgeAgent** (`knowledge.py`) — RAG retrieval from ChromaDB (embeddings via `text-embedding-3-small`)
-4. **DialogueAgent** (`dialogue.py`) — Generates empathetic response using GPT-4o-mini with emotion, memory context, OCEAN profile, and RAG examples
-5. **Background async tasks**: InferenceAgent (`inference.py`) updates OCEAN personality scores; narrative reflection triggers every 10 turns
+**Two processing paths exist:**
 
-System prompts for all agents are centralized in `backend/agent/prompts.py`.
+**Agentic** (`process_brain_agentic()`): RouterAgent dynamically selects components per turn. **This is what the web app uses** (`api/chat.py`).
+**Baseline** (`process_brain()`): All components always active. Used in benchmarks for ablation comparisons (RAG-only, RAG+Memory, etc.).
+
+Processing flow per user message:
+1. **PerceptionAgent** (`perception.py`) — Detects emotion using keyword matching + RoBERTa (`SamLowe/roberta-base-go_emotions`). Falls back to keyword-only if model fails to load. Emotion keywords loaded from `backend/data/emotion_keywords.json`.
+2. **RouterAgent** (`router.py`) — *(agentic path only)* Decides which components to activate. RAG is always on; router selects at most ONE secondary: Memory OR OCEAN (never both). Memory gets priority if both are relevant. Uses GPT-4o-mini with temperature=0.
+3. **GraphMemory** (`memory.py`) — Retrieves conversation context & user profile from Neo4j
+4. **KnowledgeAgent** (`knowledge.py`) — RAG retrieval from ChromaDB (embeddings via `text-embedding-3-small`)
+5. **DialogueAgent** (`dialogue.py`) — Generates empathetic response using GPT-4o-mini (temperature=0) with emotion, memory context, OCEAN profile, and RAG examples
+6. **Background async tasks**: InferenceAgent (`inference.py`) updates OCEAN personality scores; narrative reflection triggers every 10 turns
+
+System prompts for all agents are centralized in `backend/agent/prompts.py`. EmptyChairAgent uses temperature=0.7 for more creative roleplay; all other LLM agents use temperature=0.
 
 **New-user onboarding**: When OCEAN scores are all 0.5 (default), the engine runs a 3-question warm-start flow before main chat begins, then infers initial OCEAN scores from the combined answers.
 
@@ -112,10 +118,35 @@ Empty-chair sessions initialize with a special text format:
 - **LLM**: GPT-4o-mini (dialogue, inference), RoBERTa (emotion detection)
 - **Databases**: Neo4j (graph memory/profiles), ChromaDB (vector store for RAG)
 
+## Evaluation / Benchmarks
+
+Benchmark scripts live in `backend/evaluate/benchmark/`. Uses the EPITOME framework from `behavioral-data/Empathy-Mental-Health` to measure empathy on 3 dimensions: Emotional Reactions (ER), Interpretations (IP), Explorations (EX). Each scored 0–2.
+
+```bash
+cd backend
+uv run python evaluate/benchmark/run_benchmark_v5.py    # Ablation study: 5 configs
+uv run python evaluate/benchmark/run_stability_test.py   # 3-run stability test
+```
+
+### How the benchmark works (7 steps)
+
+1. **Clean Neo4j** — Deletes all `bench*` users to start fresh
+2. **Human baseline** — Computes mean ER/IP/EX from EPITOME Reddit dataset (`data/epitome/`) as reference
+3. **Load test seekers** — 50 seeker posts sampled from EPITOME (seed=42), cached in `test_seekers_v5.csv`
+4. **Warm-up** — Sends 5 messages per benchmark user (`bench_ragmem`, `bench_ragocean`, `bench_agentic`) to build conversation history and OCEAN profiles before testing
+5. **Generate responses** — Each of the 50 posts is processed through 5 configs:
+   - **Baseline**: Raw GPT-4o-mini (no SoulMate pipeline, just a simple empathy prompt)
+   - **RAG**: SoulMate with only KnowledgeAgent (ChromaDB)
+   - **RAG+Memory**: SoulMate with KnowledgeAgent + GraphMemory
+   - **RAG+OCEAN**: SoulMate with KnowledgeAgent + OCEAN personality
+   - **Agentic**: SoulMate with RouterAgent deciding Memory/OCEAN per message
+   - All configs use `save_ai_response=False` to avoid polluting memory during benchmark
+6. **Score empathy** — Each (seeker_post, response) pair is scored by 3 EPITOME classifier models (bi-encoder RoBERTa with cross-attention, pre-trained weights: `reddit_ER.pth`, `reddit_IP.pth`, `reddit_EX.pth`). Output: 0/1/2 per dimension.
+7. **Aggregate & visualize** — Mean scores per config → CSV table + grouped bar chart PNG. Also analyzes RouterAgent decisions (which components it chose, by emotion).
+
 ## Platform Notes
 
-- Windows development environment — backend uses `asyncio.WindowsSelectorEventLoopPolicy()` in `main.py`
+- Windows development environment — backend uses `asyncio.WindowsSelectorEventLoopPolicy()` and UTF-8 stdout/stderr wrapping in `main.py`
 - TypeScript path alias: `@/*` maps to frontend root
 - No test suite exists — use `audit_pipeline.py` for system validation
-- Evaluation dependencies (bert-score, rouge-score) are installed; evaluation scripts live in `backend/evaluate/`
 - RAG emotion mapping: anxiety→anxious, sadness→sad, anger→angry, fear→anxious, depression→sad, shame→sad, disgust→disgust

@@ -1,6 +1,6 @@
 """
 RouterAgent — Dynamically selects which pipeline components to activate per turn.
-Prevents context overload by capping at max 2 components.
+RAG is always on. Router only decides ONE secondary: Memory OR OCEAN, not both.
 """
 
 import os
@@ -8,44 +8,47 @@ import json
 from openai import OpenAI
 
 ROUTER_SYSTEM_PROMPT = """You are a routing agent for a mental health chatbot.
-Given a user's message, their detected emotion, and context about their history,
-decide which support components to activate.
+RAG is ALWAYS activated (non-negotiable).
+Your job: decide ONE secondary component to add, or none.
 
-Components available:
-- RAG: Retrieves real empathetic response examples from a database. Best for: posts needing deep emotional understanding, interpretation of feelings, complex emotional situations.
-- Memory: Recalls past conversation history with this user. Best for: returning users, follow-up conversations, when continuity matters.
-- OCEAN: Uses personality profile (Big Five) to personalize response tone. Best for: users with established profiles (not default 0.5), when personalization would help.
+Options:
+A) RAG only — when the message is straightforward, memory history is NOT relevant to current topic, and personality adaptation is not needed.
+B) RAG + Memory — when the message relates to topics in the user's history summary, continuity matters.
+C) RAG + OCEAN — when the user has non-default personality scores and personalizing tone would help.
 
 Rules:
-- Maximum 2 components per turn (activating all 3 causes context overload and reduces quality)
-- If unsure, prefer RAG (most consistently helpful for empathy)
-- Only activate Memory if user has prior conversation history
-- Only activate OCEAN if user has a non-default personality profile
-- For emotionally heavy posts (depression, suicidal ideation, grief), always include RAG
+- NEVER deactivate RAG
+- Choose RAG only when memory history has no relevant topics and OCEAN is near default
+- Choose at most ONE secondary: Memory OR OCEAN, not both
+- If user has no history → cannot use Memory
+- If OCEAN scores are all default 0.5 → skip OCEAN
 
 Respond in JSON only:
-{"use_memory": bool, "use_ocean": bool, "use_rag": bool, "reasoning": "one sentence"}"""
+{"use_memory": bool, "use_ocean": bool, "use_rag": true, "reasoning": "one sentence"}"""
 
 
 class RouterAgent:
     def __init__(self):
         self.client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
-    def decide(self, seeker_post: str, emotion: str, has_history: bool, has_ocean: bool) -> dict:
+    def decide(self, seeker_post: str, emotion: str, has_history: bool, has_ocean: bool,
+               narrative: str = "", ocean_profile: str = "") -> dict:
         """Decide which components to activate for this turn."""
-        context_info = []
+        context_parts = []
         if has_history:
-            context_info.append("User has prior conversation history.")
+            context_parts.append("User has prior conversation history.")
+            if narrative:
+                context_parts.append(f"History summary: {narrative}")
         else:
-            context_info.append("New user, no prior history.")
+            context_parts.append("New user, no prior history.")
         if has_ocean:
-            context_info.append("User has a non-default OCEAN personality profile.")
+            context_parts.append(f"User OCEAN profile: {ocean_profile}")
         else:
-            context_info.append("User has default OCEAN scores (all 0.5).")
+            context_parts.append("User has default OCEAN scores (all 0.5).")
 
         user_msg = f"""Message: "{seeker_post}"
 Emotion: {emotion}
-Context: {' '.join(context_info)}
+Context: {' '.join(context_parts)}
 
 Which components should be activated? Respond in JSON only."""
 
@@ -64,12 +67,12 @@ Which components should be activated? Respond in JSON only."""
                 raw = raw.split("\n", 1)[1].rsplit("```", 1)[0].strip()
             decisions = json.loads(raw)
 
-            # Enforce max 2 components
-            active = sum([decisions.get("use_memory", False),
-                          decisions.get("use_ocean", False),
-                          decisions.get("use_rag", False)])
-            if active > 2:
-                # Drop OCEAN first (least impactful based on benchmarks)
+            # Enforce: RAG always on
+            decisions["use_rag"] = True
+
+            # Enforce: at most one secondary
+            if decisions.get("use_memory", False) and decisions.get("use_ocean", False):
+                # Prefer Memory over OCEAN when both requested
                 decisions["use_ocean"] = False
 
             # Enforce: no memory without history, no ocean without profile
@@ -81,7 +84,7 @@ Which components should be activated? Respond in JSON only."""
             return {
                 "use_memory": decisions.get("use_memory", False),
                 "use_ocean": decisions.get("use_ocean", False),
-                "use_rag": decisions.get("use_rag", True),
+                "use_rag": True,
                 "reasoning": decisions.get("reasoning", ""),
             }
         except Exception as e:

@@ -58,45 +58,137 @@ class GraphMemory:
         except Exception as e:
             print(f"⚠️ Memory Write Error: {e}")
 
-    def get_context(self, user_id: str, limit: int = 10) -> str:
+    # Stopwords to filter out when extracting keywords for relevance matching
+    _STOPWORDS = {
+        "the", "a", "an", "is", "am", "are", "i", "my", "me",
+        "to", "and", "of", "in", "it", "that", "so", "do", "was",
+        "have", "has", "been", "but", "not", "no", "just", "very",
+        "really", "feel", "feeling", "this", "what", "how", "you",
+        "your", "they", "them", "we", "our", "can", "will", "would",
+        "should", "could", "about", "with", "for", "from", "on", "at",
+    }
+
+    def _extract_keywords(self, message: str) -> list:
+        """Extract meaningful keywords from a message for relevance matching."""
+        words = message.lower().split()
+        return [w for w in words if len(w) >= 3 and w not in self._STOPWORDS]
+
+    def get_context(self, user_id: str, limit: int = 10,
+                    current_emotion: str = None,
+                    current_message: str = None) -> str:
         """
         Lấy ngữ cảnh hội thoại đã được LỌC TRÙNG và LÀM SẠCH.
+        When current_emotion/current_message are provided, returns only
+        relevant turns: 3 most recent + older turns matching emotion or keywords.
         """
         if not self.driver: return ""
 
-        query = """
-        MATCH (u:User {id: $user_id})-[:HAS_TURN]->(t:Turn)
-        RETURN t.user_input AS input, t.ai_response AS response, t.timestamp AS time
-        ORDER BY t.timestamp DESC
-        LIMIT $limit
-        """
+        # --- Default behavior (no filtering) ---
+        if current_emotion is None and current_message is None:
+            query = """
+            MATCH (u:User {id: $user_id})-[:HAS_TURN]->(t:Turn)
+            RETURN t.user_input AS input, t.ai_response AS response, t.timestamp AS time
+            ORDER BY t.timestamp DESC
+            LIMIT $limit
+            """
+            try:
+                with self.driver.session() as session:
+                    result = session.run(query, user_id=user_id, limit=limit)
+                    raw_history = [record for record in result]
+                    raw_history.reverse()
+                    return self._format_turns(raw_history)
+            except Exception as e:
+                print(f"⚠️ Error retrieving context: {e}")
+                return ""
+
+        # --- Filtered behavior (relevance-based) ---
         try:
             with self.driver.session() as session:
-                result = session.run(query, user_id=user_id, limit=limit)
-                
-                raw_history = [record for record in result]
-                raw_history.reverse()
-                
-                seen_inputs = set()
-                clean_lines = []
-                
-                for record in raw_history:
-                    u_in = record['input'].strip()
-                    ai_res = record['response'].strip()
-                    
-                    if u_in in seen_inputs:
-                        continue
-                    seen_inputs.add(u_in)
-                    
-                    clean_lines.append(f"User: {u_in}")
-                    if "System: Acknowledged" not in ai_res:
-                        clean_lines.append(f"Soulmate: {ai_res}")
-                
-                return "\n".join(clean_lines)
+                # Part A: Always keep 3 most recent turns
+                recent_query = """
+                MATCH (u:User {id: $user_id})-[:HAS_TURN]->(t:Turn)
+                RETURN t.user_input AS input, t.ai_response AS response, t.timestamp AS time
+                ORDER BY t.timestamp DESC
+                LIMIT 3
+                """
+                recent_result = session.run(recent_query, user_id=user_id)
+                recent_turns = [record for record in recent_result]
+
+                # Part B: From older turns, filter by emotion or keyword match
+                keywords = self._extract_keywords(current_message) if current_message else []
+                older_limit = max(limit - 3, 4)
+
+                if keywords and current_emotion:
+                    older_query = """
+                    MATCH (u:User {id: $user_id})-[:HAS_TURN]->(t:Turn)
+                    WITH t ORDER BY t.timestamp DESC SKIP 3
+                    WHERE t.emotion = $current_emotion
+                       OR any(word IN $keywords WHERE toLower(t.user_input) CONTAINS toLower(word))
+                    RETURN t.user_input AS input, t.ai_response AS response, t.timestamp AS time
+                    ORDER BY t.timestamp DESC
+                    LIMIT $older_limit
+                    """
+                    older_result = session.run(older_query, user_id=user_id,
+                                               current_emotion=current_emotion,
+                                               keywords=keywords,
+                                               older_limit=older_limit)
+                elif current_emotion:
+                    older_query = """
+                    MATCH (u:User {id: $user_id})-[:HAS_TURN]->(t:Turn)
+                    WITH t ORDER BY t.timestamp DESC SKIP 3
+                    WHERE t.emotion = $current_emotion
+                    RETURN t.user_input AS input, t.ai_response AS response, t.timestamp AS time
+                    ORDER BY t.timestamp DESC
+                    LIMIT $older_limit
+                    """
+                    older_result = session.run(older_query, user_id=user_id,
+                                               current_emotion=current_emotion,
+                                               older_limit=older_limit)
+                else:
+                    older_query = """
+                    MATCH (u:User {id: $user_id})-[:HAS_TURN]->(t:Turn)
+                    WITH t ORDER BY t.timestamp DESC SKIP 3
+                    WHERE any(word IN $keywords WHERE toLower(t.user_input) CONTAINS toLower(word))
+                    RETURN t.user_input AS input, t.ai_response AS response, t.timestamp AS time
+                    ORDER BY t.timestamp DESC
+                    LIMIT $older_limit
+                    """
+                    older_result = session.run(older_query, user_id=user_id,
+                                               keywords=keywords,
+                                               older_limit=older_limit)
+
+                older_turns = [record for record in older_result]
+
+                # Part C: Combine — recent first, then older, deduplicate
+                combined = recent_turns
+                combined.reverse()  # chronological order
+                older_turns.reverse()
+                combined = older_turns + combined  # older first, recent last
+
+                return self._format_turns(combined)
 
         except Exception as e:
-            print(f"⚠️ Error retrieving context: {e}")
+            print(f"⚠️ Error retrieving filtered context: {e}")
             return ""
+
+    def _format_turns(self, records) -> str:
+        """Deduplicate and format turn records into context string."""
+        seen_inputs = set()
+        clean_lines = []
+
+        for record in records:
+            u_in = record['input'].strip()
+            ai_res = record['response'].strip()
+
+            if u_in in seen_inputs:
+                continue
+            seen_inputs.add(u_in)
+
+            clean_lines.append(f"User: {u_in}")
+            if ai_res and "System: Acknowledged" not in ai_res:
+                clean_lines.append(f"Soulmate: {ai_res}")
+
+        return "\n".join(clean_lines)
 
     def get_conflict_history(self, user_id: str, target_name: str, limit: int = 5) -> str:
         """
