@@ -1,7 +1,9 @@
 import asyncio
+import base64
 import json
 import re
-import traceback # Import thêm thư viện này để in lỗi đỏ nếu có
+import threading
+import traceback
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Depends
 from core.dependencies import get_system
 from core.engine import AgenticEmpathySystem
@@ -79,6 +81,31 @@ def _warm_start_ocean_from_text(
         print(f"OCEAN warm-start failed: {e}")
 
 
+async def _stream_tts_to_ws(websocket: WebSocket, voice_io, text: str):
+    """Run ElevenLabs streaming in a thread, forward MP3 chunks to WebSocket as they arrive."""
+    loop = asyncio.get_event_loop()
+    queue: asyncio.Queue = asyncio.Queue()
+
+    def producer():
+        try:
+            for chunk in voice_io.stream_speech_chunks(text):
+                asyncio.run_coroutine_threadsafe(queue.put(chunk), loop)
+        finally:
+            asyncio.run_coroutine_threadsafe(queue.put(None), loop)  # sentinel
+
+    threading.Thread(target=producer, daemon=True).start()
+
+    while True:
+        chunk = await queue.get()
+        if chunk is None:
+            break
+        await websocket.send_json({
+            "type": "audio_chunk",
+            "data": base64.b64encode(chunk).decode("utf-8")
+        })
+    await websocket.send_json({"type": "audio_end"})
+
+
 router = APIRouter()
 
 @router.websocket("/ws/chat/{user_id}")
@@ -100,24 +127,42 @@ async def websocket_chat(
         })
         print(f"Onboarding started for new user [{user_id}]")
 
+    recording_stop_event: threading.Event | None = None
+    recording_task: asyncio.Task | None = None
+
     try:
         while True:
             # 1. Nhận dữ liệu từ Frontend
             data = await websocket.receive_text()
             payload = json.loads(data)
-            
+
             action = payload.get("action", "send_text")
-            mode = payload.get("mode", "messaging") 
+            mode = payload.get("mode", "messaging")
             target_name = payload.get("target_name", "Hình bóng giả định")
-            
+
             user_text = ""
 
-            # --- GIAI ĐOẠN 1: XỬ LÝ ĐẦU VÀO (MICROPHONE HOẶC TEXT) ---
+            # --- GIAI ĐOẠN 1: XỬ LÝ ĐẦU VÀO ---
             if action == "start_recording":
+                # Push-to-talk: start recording in background, wait for stop_recording
+                recording_stop_event = threading.Event()
+                recording_task = asyncio.create_task(
+                    asyncio.to_thread(system.voice_io.record_audio_ptt, recording_stop_event)
+                )
                 await websocket.send_json({"type": "status", "content": "listening"})
-                audio_file = await asyncio.to_thread(system.voice_io.record_audio, duration=4)
-                user_text = await asyncio.to_thread(system.voice_io.transcribe, audio_file)
+                continue
+
+            elif action == "stop_recording":
+                # Signal recording to stop, await the result, then transcribe
+                if recording_stop_event:
+                    recording_stop_event.set()
+                audio_file = await recording_task if recording_task else None
+                recording_stop_event = None
+                recording_task = None
+                if audio_file:
+                    user_text = await asyncio.to_thread(system.voice_io.transcribe, audio_file)
                 await websocket.send_json({"type": "user_speech", "content": user_text})
+
             else:
                 user_text = payload.get("text", "").strip()
 
@@ -235,11 +280,11 @@ async def websocket_chat(
                 "mode": mode
             })
 
-            # --- GIAI ĐOẠN 5: PHÁT GIỌNG NÓI (PYGAME) ---
+            # --- GIAI ĐOẠN 5: PHÁT GIỌNG NÓI (stream MP3 chunks to browser) ---
             use_voice = payload.get("use_voice", False) or (mode == "voice")
             if use_voice:
                 await websocket.send_json({"type": "status", "content": "speaking"})
-                await asyncio.to_thread(system.voice_io.speak_text, ai_response)
+                await _stream_tts_to_ws(websocket, system.voice_io, ai_response)
 
             await websocket.send_json({"type": "status", "content": "idle"})
 

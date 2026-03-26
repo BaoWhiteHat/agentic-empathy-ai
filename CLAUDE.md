@@ -78,7 +78,7 @@ System prompts for all agents are centralized in `backend/agent/prompts.py`. Emp
 
 ### Special Agents
 - **EmptyChairAgent** (`emptychair_agent.py`) — Simulates empty chair psychotherapy; role-plays as a target person given relationship context
-- **VoiceInterface** (`voice_io.py`) — STT via OpenAI Whisper, TTS via ElevenLabs
+- **VoiceInterface** (`voice_io.py`) — STT via OpenAI Whisper (push-to-talk recording with `record_audio_ptt`), TTS via ElevenLabs streaming (`stream_speech_chunks`) or full bytes (`generate_speech_bytes` for serial/local playback). Pygame removed — audio delivered to browser via WebSocket base64 or to ESP32 via serial.
 
 ### API Layer
 - `backend/api/chat.py` — WebSocket endpoint `WS /ws/chat/{user_id}` handling 3 modes: `messaging`, `voice`, `empty-chair`
@@ -86,12 +86,31 @@ System prompts for all agents are centralized in `backend/agent/prompts.py`. Emp
 - `backend/core/dependencies.py` — FastAPI dependency injection (singleton `AgenticEmpathySystem`)
 - Entry point: `backend/main.py`
 
+### Physical Voice Companion (Standalone)
+
+`backend/voice_companion.py` — runs independently (no browser/server needed). Uses laptop mic + full pipeline + sends MP3 audio to ESP32 via USB serial or falls back to laptop speaker.
+
+```bash
+cd backend
+uv run python voice_companion.py   # SPACE = start/stop recording, Q = quit
+```
+
+Config at top of file:
+- `USER_ID` — Neo4j user ID (shares memory with browser sessions)
+- `ESP32_PORT` — COM port (e.g. `COM4`); set `USE_ESP32 = False` to use laptop speaker
+- `BAUD_RATE` — 921600 (must match ESP32 firmware)
+
+ESP32 firmware lives in `esp32/soulmate_speaker/soulmate_speaker.ino`. Requires `ESP32-audioI2S` library. Wiring: MAX98357A on GPIO 22 (DIN) / 26 (BCLK) / 25 (LRC).
+
+Serial protocol: `[4-byte uint32 LE length][MP3 bytes]`
+
 ### WebSocket Message Protocol
 
 **Client → Server:**
 ```json
 {"action": "send_text", "mode": "messaging|voice|empty-chair", "text": "...", "use_voice": false}
 {"action": "start_recording", "mode": "voice"}
+{"action": "stop_recording", "mode": "voice"}
 ```
 Empty-chair sessions initialize with a special text format:
 ```
@@ -103,11 +122,13 @@ Empty-chair sessions initialize with a special text format:
 - `{"type": "emotion_status", "emotion": "...", "confidence": 0.0-1.0}` — Emotion detection result
 - `{"type": "status", "content": "listening|speaking|idle"}` — Voice mode state
 - `{"type": "user_speech", "content": "..."}` — Transcribed speech (voice mode)
+- `{"type": "audio_chunk", "data": "<base64>"}` — Streaming MP3 chunk (voice mode TTS)
+- `{"type": "audio_end"}` — End of TTS stream; browser assembles chunks and plays via Web Audio API
 
 ### Frontend (Next.js App Router)
 
-- **Pages**: `app/messaging/page.tsx` (text chat), `app/voice/page.tsx` (voice orb UI), `app/empty-chair/page.tsx` (therapy setup + chat)
-- **Shared hook**: `hooks/useChat.ts` — WebSocket connection management, multi-mode chat history, emotion state
+- **Pages**: `app/messaging/page.tsx` (text chat), `app/voice/page.tsx` (physical companion monitor — shows live transcript), `app/empty-chair/page.tsx` (therapy setup + chat)
+- **Shared hook**: `hooks/useChat.ts` — WebSocket connection management, multi-mode chat history, emotion state, streaming audio playback via Web Audio API (`AudioContext` unlocked on user gesture)
 - **Components**: `Sidebar.tsx` (nav + OCEAN radar chart), `OceanChart.tsx` (Recharts radar, polls `/profile/ocean/{user_id}` every 5s)
 - **Context**: `UserContext.tsx` (user ID, localStorage-backed), `ThemeContext.tsx` (dark/light mode)
 - **Styling**: Tailwind CSS 4 + Framer Motion animations; color-coded by mode (blue=messaging, indigo=voice, purple=empty-chair)
@@ -184,3 +205,6 @@ Output files in `backend/evaluate/benchmark/`:
 - TypeScript path alias: `@/*` maps to frontend root
 - No test suite exists — use `audit_pipeline.py` for system validation
 - RAG emotion mapping: anxiety→anxious, sadness→sad, anger→angry, fear→anxious, depression→sad, shame→sad, disgust→disgust
+- ElevenLabs voice: uses `EXAVITQu4vr4xnSDxMaL` (Sarah, free premade). The original voice ID `2EiwWnXFnvU5JabPnv8n` required a paid plan — do not revert.
+- Voice recording uses push-to-talk (`record_audio_ptt` with `threading.Event`) — VAD-based recording was removed due to unreliable silence detection across different mic levels.
+- Dialogue prompt (`prompts.py`) has a SELF-REFERENCE rule: when user asks about something SoulMate previously said, the AI must look up its own last response in memory context and clarify it directly — not give a generic empathy response.

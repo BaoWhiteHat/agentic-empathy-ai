@@ -1,48 +1,40 @@
 import os
-import time
+import numpy as np
 import sounddevice as sd
 import soundfile as sf
-import pygame 
 from openai import OpenAI
 from elevenlabs.client import ElevenLabs
 
+# Absolute path for mic recording — reliable regardless of CWD
+_DIR = os.path.dirname(os.path.abspath(__file__))
+_TEMP_INPUT = os.path.join(_DIR, "temp_input.wav")
+
 class VoiceInterface:
     def __init__(self):
-        print("🎙️ Loading Voice Module (Whisper + ElevenLabs + Pygame)...")
+        print("🎙️ Loading Voice Module (Whisper + ElevenLabs)...")
         self.openai_client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
         self.eleven_api_key = os.environ.get("ELEVEN_API_KEY")
         self.eleven_client = ElevenLabs(api_key=self.eleven_api_key)
-        self.voice_id = "2EiwWnXFnvU5JabPnv8n" 
-        self._init_mixer()
+        self.voice_id = "EXAVITQu4vr4xnSDxMaL"  # Sarah — Mature, Reassuring (free premade)
 
-    def _init_mixer(self):
-        """Khởi tạo mixer an toàn"""
+    def record_audio_ptt(self, stop_event, fs=24000, chunk_ms=100):
+        """Record until stop_event is set (push-to-talk). No silence threshold needed."""
+        chunk_samples = int(fs * chunk_ms / 1000)
+        chunks = []
+        print("   (PTT: đang ghi âm...)")
         try:
-            if not pygame.mixer.get_init():
-                pygame.mixer.init()
+            with sd.InputStream(samplerate=fs, channels=1, dtype='float32') as stream:
+                while not stop_event.is_set():
+                    data, _ = stream.read(chunk_samples)
+                    chunks.append(data.copy())
+            if not chunks:
+                return None
+            recording = np.concatenate(chunks, axis=0)
+            sf.write(_TEMP_INPUT, recording, fs)
+            print(f"   (PTT xong: {len(recording)/fs:.1f}s)")
+            return _TEMP_INPUT
         except Exception as e:
-            print(f"⚠️ Lỗi Mixer: {e}")
-
-    def stop_all_audio(self):
-        """Dọn dẹp để không bị lỗi CancelledError khi reload"""
-        try:
-            if pygame.mixer.get_init():
-                pygame.mixer.music.stop()
-                pygame.mixer.music.unload()
-                pygame.mixer.quit()
-                print("✅ Pygame Mixer đã nghỉ ngơi.")
-        except: pass
-
-    def record_audio(self, duration=4, fs=24000):
-        print(f"   (Đang nghe trong {duration}s...)")
-        try:
-            recording = sd.rec(int(duration * fs), samplerate=fs, channels=1, dtype='float32')
-            sd.wait()
-            filename = "temp_input.wav"
-            sf.write(filename, recording, fs)
-            return filename
-        except Exception as e:
-            print(f"❌ Lỗi Mic: {e}")
+            print(f"❌ Lỗi Mic PTT: {e}")
             return None
 
     def transcribe(self, audio_filename):
@@ -50,39 +42,43 @@ class VoiceInterface:
         try:
             with open(audio_filename, "rb") as audio_file:
                 transcript = self.openai_client.audio.transcriptions.create(
-                    model="whisper-1", file=audio_file, language="vi" 
+                    model="whisper-1", file=audio_file, language="vi"
                 )
             return transcript.text.strip()
         except Exception as e:
             print(f"❌ Lỗi Whisper: {e}")
             return ""
 
-    def speak_text(self, text):
-        """Phát âm thanh qua file tạm (Cách ổn định nhất cho Windows)"""
-        if not text: return
-        self._init_mixer()
+    def generate_speech_bytes(self, text) -> bytes | None:
+        """Generate full TTS audio and return MP3 bytes (for serial/local playback)."""
+        if not text:
+            return None
         try:
-            print(f"🔊 SoulMate đang trả lời...")
-            # Tải toàn bộ audio về (vẫn rất nhanh với model turbo)
+            print(f"🔊 Generating speech...")
             audio_data = self.eleven_client.text_to_speech.convert(
                 text=text,
                 voice_id=self.voice_id,
                 model_id="eleven_turbo_v2_5",
                 output_format="mp3_44100_128"
             )
-            
-            temp_file = "temp_speech.mp3"
-            with open(temp_file, "wb") as f:
-                for chunk in audio_data:
-                    if chunk: f.write(chunk)
-            
-            if os.path.exists(temp_file):
-                pygame.mixer.music.load(temp_file)
-                pygame.mixer.music.play()
-                while pygame.mixer.music.get_busy():
-                    time.sleep(0.1)
-                pygame.mixer.music.unload()
-                try: os.remove(temp_file) # Xóa file tạm sau khi dùng xong
-                except: pass
+            return b"".join(chunk for chunk in audio_data if chunk)
         except Exception as e:
-            print(f"❌ Lỗi Phát âm thanh: {e}")
+            print(f"❌ TTS error: {e}")
+            return None
+
+    def stream_speech_chunks(self, text):
+        """Yield MP3 byte chunks from ElevenLabs streaming TTS as they arrive."""
+        if not text:
+            return
+        try:
+            print(f"🔊 SoulMate đang tổng hợp giọng nói (streaming)...")
+            for chunk in self.eleven_client.text_to_speech.stream(
+                text=text,
+                voice_id=self.voice_id,
+                model_id="eleven_turbo_v2_5",
+                output_format="mp3_44100_128"
+            ):
+                if chunk:
+                    yield chunk
+        except Exception as e:
+            print(f"❌ Lỗi TTS stream: {e}")

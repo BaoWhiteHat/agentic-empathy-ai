@@ -1,7 +1,7 @@
 // hooks/useChat.ts
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react'; // useCallback kept for sendMessage
 import { useUser } from '../context/UserContext';
-import { usePathname } from 'next/navigation'; // 💡 Thêm Hook này của Next.js
+import { usePathname } from 'next/navigation';
 
 interface Message {
   role: 'user' | 'ai';
@@ -33,6 +33,19 @@ export const useChat = () => {
   const [emotion, setEmotion] = useState<string>("Bình thường");
   const [socket, setSocket] = useState<WebSocket | null>(null);
 
+  // Audio playback via Web Audio API (bypasses autoplay policy when unlocked during user gesture)
+  const audioChunksRef = useRef<Uint8Array[]>([]);
+  const audioCtxRef = useRef<AudioContext | null>(null);
+
+  const unlockAudio = useCallback(() => {
+    if (!audioCtxRef.current) {
+      audioCtxRef.current = new AudioContext();
+    }
+    if (audioCtxRef.current.state === 'suspended') {
+      audioCtxRef.current.resume();
+    }
+  }, []);
+
   // 3. Thiết lập kết nối WebSocket (only reconnect when userId changes)
   useEffect(() => {
     if (!userId) return;
@@ -56,6 +69,30 @@ export const useChat = () => {
           ...prev,
           [targetMode]: [...prev[targetMode as keyof typeof prev], { role: "user", content: data.content }]
         }));
+      }
+      else if (data.type === "audio_chunk") {
+        const binary = atob(data.data);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+        audioChunksRef.current.push(bytes);
+      }
+      else if (data.type === "audio_end") {
+        const chunks = audioChunksRef.current;
+        audioChunksRef.current = [];
+        if (chunks.length === 0) return;
+        const totalLength = chunks.reduce((sum, b) => sum + b.length, 0);
+        const combined = new Uint8Array(totalLength);
+        let offset = 0;
+        for (const chunk of chunks) { combined.set(chunk, offset); offset += chunk.length; }
+        const ctx = audioCtxRef.current;
+        if (ctx) {
+          ctx.decodeAudioData(combined.buffer, (buffer) => {
+            const source = ctx.createBufferSource();
+            source.buffer = buffer;
+            source.connect(ctx.destination);
+            source.start(0);
+          }, (e) => console.error('Audio decode failed:', e));
+        }
       }
       else if (data.type === "emotion_status") {
         setEmotion(data.emotion);
@@ -90,10 +127,11 @@ export const useChat = () => {
     return chatHistories[mode as keyof typeof chatHistories] || [];
   }, [chatHistories, mode]);
 
-  return { 
-    messages: currentMessages, 
-    sendMessage, 
-    emotion, 
-    socket 
+  return {
+    messages: currentMessages,
+    sendMessage,
+    emotion,
+    socket,
+    unlockAudio,
   };
 };

@@ -15,9 +15,10 @@ Phát triển bởi **Lê Quốc Bảo** — Sinh viên Trường Đại học C
 | 🗂️ **Graph Memory**             | Neo4j lưu hồ sơ tâm lý OCEAN (EMA smoothing) & lịch sử hội thoại theo thời gian thực |
 | 📚 **RAG Knowledge Base**       | ChromaDB + EPITOME/ESConv dataset cung cấp ví dụ thấu cảm cho Dialogue Agent |
 | ⚡ **Real-time WebSocket**      | Chat liên tục, độ trễ thấp qua 3 chế độ: nhắn tin, giọng nói, ghế trống |
-| 🎙️ **Voice I/O**                | Giao tiếp bằng giọng nói (OpenAI Whisper STT + ElevenLabs TTS)       |
+| 🎙️ **Voice I/O**                | Giao tiếp bằng giọng nói (OpenAI Whisper STT + ElevenLabs streaming TTS, push-to-talk) |
 | 🛋️ **Empty Chair Therapy**      | Agent mô phỏng liệu pháp Gestalt "Chiếc ghế trống"                  |
 | 🌡️ **Warm-start Onboarding**   | 3 câu hỏi khởi đầu để xây dựng hồ sơ OCEAN ban đầu cho user mới    |
+| 🔌 **Physical Companion**       | Standalone script + ESP32 speaker qua USB serial — SoulMate có thể có thân xác vật lý |
 
 ---
 
@@ -380,6 +381,50 @@ uv run python evaluate/benchmark/finalize_full.py
 # Stability test (3 lần chạy)
 uv run python evaluate/benchmark/run_stability_test.py
 ```
+
+---
+
+## 🔌 Physical Companion (ESP32)
+
+SoulMate có thể chạy hoàn toàn không cần trình duyệt — giao tiếp qua mic laptop và phát âm thanh qua loa ESP32 kết nối USB.
+
+```
+Laptop mic → Whisper STT → Pipeline → ElevenLabs TTS → USB Serial → ESP32 → Loa
+```
+
+### Chạy standalone
+
+```bash
+cd backend
+uv run python voice_companion.py   # SPACE = bắt đầu/dừng thu âm, Q = thoát
+```
+
+Cấu hình trong `voice_companion.py`:
+```python
+USER_ID    = "Ghostman"   # ID user (dùng chung Neo4j với browser)
+ESP32_PORT = "COM4"       # Xem Device Manager → Ports
+USE_ESP32  = True         # False = phát qua loa laptop
+```
+
+### Hardware
+
+| Linh kiện | Kết nối |
+|---|---|
+| MAX98357A DIN | GPIO 22 |
+| MAX98357A BCLK | GPIO 26 |
+| MAX98357A LRC | GPIO 25 |
+| MAX98357A VDD | 5V |
+
+Firmware: `esp32/soulmate_speaker/soulmate_speaker.ino`
+Library cần cài: **ESP32-audioI2S** (schreibfaul1) qua Arduino Library Manager.
+
+### Thứ tự setup ESP32
+
+1. Wire MAX98357A theo bảng trên
+2. Flash firmware qua Arduino IDE (board: ESP32 Dev Module)
+3. Tìm COM port trong Device Manager
+4. Cập nhật `ESP32_PORT` và `USE_ESP32 = True`
+5. Chạy `voice_companion.py`
 
 ---
 
