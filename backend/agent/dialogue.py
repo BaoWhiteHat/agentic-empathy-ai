@@ -9,7 +9,7 @@ from .prompts import SOULMATE_SYSTEM_PROMPT, SOULMATE_USER_PROMPT
 
 class DialogueAgent:
     def __init__(self, model_name: str = "gpt-3.5-turbo"):
-        print("🧠 Loading Dialogue Agent...")
+        print("Loading Dialogue Agent...")
         api_key = os.environ.get("OPENAI_API_KEY")
         
         # Temperature=0.7: Sáng tạo vừa đủ, không quá bay bổng
@@ -59,6 +59,6 @@ class DialogueAgent:
             return response.strip().replace('"', '') # Xóa dấu ngoặc kép thừa nếu có
             
         except Exception as e:
-            print(f"❌ Dialogue Error: {e}")
+            print(f"Dialogue Error: {e}")
             # Fallback an toàn khi hệ thống lỗi
             return "Mình đang lắng nghe đây. Bạn kể tiếp đi..."

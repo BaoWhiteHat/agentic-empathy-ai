@@ -21,6 +21,8 @@ if sys.platform == "win32":
 # Setup paths
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 BACKEND_DIR = os.path.dirname(os.path.dirname(SCRIPT_DIR))
+MODELS_DIR = os.path.join(SCRIPT_DIR, "models")
+PILOT_DIR = os.path.join(SCRIPT_DIR, "results", "pilot")
 sys.path.insert(0, BACKEND_DIR)
 sys.path.insert(0, SCRIPT_DIR)
 os.chdir(BACKEND_DIR)
@@ -111,7 +113,7 @@ def load_test_seekers():
     print("STEP 2: Loading test seeker posts")
     print("=" * 60)
 
-    path = os.path.join(SCRIPT_DIR, "test_seekers_v5.csv")
+    path = os.path.join(PILOT_DIR, "test_seekers_v5.csv")
     if os.path.exists(path):
         df = pd.read_csv(path)
         print(f"  Loaded {len(df)} seeker posts from cache")
@@ -159,8 +161,8 @@ async def generate_responses(system, seekers_df):
     print(f"STEP 4: Generating responses ({NUM_CONFIGS} configs x 50 posts)")
     print("=" * 60)
 
-    output_path = os.path.join(SCRIPT_DIR, "generated_responses_v5.csv")
-    router_path = os.path.join(SCRIPT_DIR, "router_decisions_v5.csv")
+    output_path = os.path.join(PILOT_DIR, "generated_responses_v5.csv")
+    router_path = os.path.join(PILOT_DIR, "router_decisions_v5.csv")
 
     # Check for cached results
     if os.path.exists(output_path):
@@ -253,7 +255,7 @@ def score_responses(responses_df):
     print("STEP 5: Scoring empathy with EPITOME models")
     print("=" * 60)
 
-    scored_path = os.path.join(SCRIPT_DIR, "scored_responses_v5.csv")
+    scored_path = os.path.join(PILOT_DIR, "scored_responses_v5.csv")
     if os.path.exists(scored_path):
         existing = pd.read_csv(scored_path)
         if len(existing) == EXPECTED_ROWS:
@@ -263,9 +265,9 @@ def score_responses(responses_df):
     from epitome_scorer import EpitomeScorer
 
     scorer = EpitomeScorer(
-        er_path=os.path.join(SCRIPT_DIR, "reddit_ER.pth"),
-        ip_path=os.path.join(SCRIPT_DIR, "reddit_IP.pth"),
-        ex_path=os.path.join(SCRIPT_DIR, "reddit_EX.pth"),
+        er_path=os.path.join(MODELS_DIR, "reddit_ER.pth"),
+        ip_path=os.path.join(MODELS_DIR, "reddit_IP.pth"),
+        ex_path=os.path.join(MODELS_DIR, "reddit_EX.pth"),
     )
 
     rows = []
@@ -279,7 +281,7 @@ def score_responses(responses_df):
             "EX_score": scores["EX"],
             "total_score": scores["ER"] + scores["IP"] + scores["EX"],
         })
-        if (idx + 1) % 50 == 0:
+        if (idx + 1) % 100 == 0:
             print(f"  Scored {idx+1}/{len(responses_df)}")
 
     scored_df = pd.DataFrame(rows)
@@ -324,7 +326,7 @@ def aggregate_and_visualize(scored_df, human_baseline):
     results = pd.concat([human_row, agg], ignore_index=True)
 
     # Save CSV
-    results_path = os.path.join(SCRIPT_DIR, "results_v5.csv")
+    results_path = os.path.join(PILOT_DIR, "results_v5.csv")
     results.to_csv(results_path, index=False)
     print(f"\n  Results saved to {results_path}")
     print(results.to_string(index=False))
@@ -353,7 +355,7 @@ def aggregate_and_visualize(scored_df, human_baseline):
     ax.set_ylim(0, max(results["Total"].max() * 1.15, 2.5))
     plt.tight_layout()
 
-    chart_path = os.path.join(SCRIPT_DIR, "results_v5.png")
+    chart_path = os.path.join(PILOT_DIR, "results_v5.png")
     fig.savefig(chart_path, dpi=150)
     plt.close(fig)
     print(f"  Chart saved to {chart_path}")
@@ -367,17 +369,18 @@ def analyze_router():
     print("STEP 7: Router decision analysis")
     print("=" * 60)
 
-    router_path = os.path.join(SCRIPT_DIR, "router_decisions_v5.csv")
+    router_path = os.path.join(PILOT_DIR, "router_decisions_v5.csv")
     if not os.path.exists(router_path):
         print("  No router decisions found, skipping.")
         return
 
     df = pd.read_csv(router_path)
 
-    print(f"\n  Total decisions: {len(df)}")
-    print(f"  RAG activated:    {df['use_rag'].sum()}/50 ({df['use_rag'].mean()*100:.0f}%)")
-    print(f"  Memory activated: {df['use_memory'].sum()}/50 ({df['use_memory'].mean()*100:.0f}%)")
-    print(f"  OCEAN activated:  {df['use_ocean'].sum()}/50 ({df['use_ocean'].mean()*100:.0f}%)")
+    n = len(df)
+    print(f"\n  Total decisions: {n}")
+    print(f"  RAG activated:    {df['use_rag'].sum()}/{n} ({df['use_rag'].mean()*100:.0f}%)")
+    print(f"  Memory activated: {df['use_memory'].sum()}/{n} ({df['use_memory'].mean()*100:.0f}%)")
+    print(f"  OCEAN activated:  {df['use_ocean'].sum()}/{n} ({df['use_ocean'].mean()*100:.0f}%)")
 
     # Combination counts
     combos = []
@@ -403,7 +406,7 @@ def analyze_router():
         print(f"    {emo} (n={n}): Memory={mem}, OCEAN={ocean}")
 
     # Save analysis
-    analysis_path = os.path.join(SCRIPT_DIR, "router_analysis_v5.csv")
+    analysis_path = os.path.join(PILOT_DIR, "router_analysis_v5.csv")
     df.to_csv(analysis_path, index=False)
     print(f"\n  Router analysis saved to {analysis_path}")
 

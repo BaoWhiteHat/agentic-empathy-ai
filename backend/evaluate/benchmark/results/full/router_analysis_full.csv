@@ -1,0 +1,1176 @@
+sp_id,emotion,use_rag,use_memory,use_ocean,reasoning,combo
+65m92s,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9ezsfi,love,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6b2cmc,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8iz0as,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+aow3l9,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5aliuq,depressed,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+auo0t4,disgust,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7oi3es,disgust,True,False,False,"The user has no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8r6onw,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7gipvi,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5l3qho,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+73yymy,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7vs790,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+96zkq7,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+ab2lkb,love,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+aad2xy,fearful,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+8jsjf8,confusion,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+7409m9,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5xea9y,surprise,True,False,False,"The user has no prior history and default OCEAN scores, so only RAG is activated.",RAG
+50sgzd,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+5bftsk,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+afrkpz,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+4bfsbp,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+52z6f7,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+5ycfvy,confusion,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+8v44ed,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+60bfpl,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5bwehm,disgust,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+75b9y7,neutral,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+51jqxo,disgust,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+7fc5zn,happy,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+91lmlc,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+av5m25,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7xbcg0,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+64oj5u,love,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7f5fsf,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+7e6upg,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6x3pj9,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5pc1m5,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8rg0st,sad,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+72aafz,happy,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+46qwzw,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4txc2v,confusion,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+6asair,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+anl7mz,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7x6g2f,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8oe8ku,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8ddtra,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+79mrmc,confusion,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+84nlem,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+akxbo9,fearful,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+8vhyxw,sad,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6d5crp,confusion,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+8obw80,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5wtgcl,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+43i6ys,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8xn4u4,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+96vh61,anxious,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+abe2qp,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+7w5szr,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7klbxa,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4vgd9d,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7cj3mw,sad,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+95pf4d,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated to address their urgent emotional state.",RAG
+7rhsvy,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9clf40,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+511gnt,neutral,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6rijqn,sad,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5as2mw,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7p680u,angry,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7jd5nn,confusion,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+8uvz33,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+98llrh,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6v4wtx,disgust,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+67q3pg,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+5b22h0,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5d14si,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+60qpap,sad,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+ag4b23,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+5e1hfm,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+4jo290,happy,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+7m7ncr,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+70znnh,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+57lakv,confusion,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5ith76,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, making RAG the only applicable component.",RAG
+a3ucss,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+5exud4,fearful,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8a6nbe,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5udu49,confusion,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+8j0pu8,confusion,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+9clfjw,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+7ngkf3,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8j7t4g,sad,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+85o241,anxious,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+4rroe8,confusion,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+7vzguc,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+70voy4,depressed,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+99y2b5,confusion,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+a60p68,neutral,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+5hduca,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+67m9o2,surprise,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+85fknw,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+3v120v,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+8t5jbk,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4an3xj,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+8enrwz,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5m2v3v,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+8dkhol,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6vb23p,neutral,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9uva8p,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+a0bsvt,sad,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+78kh54,surprise,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+6hi6y0,disgust,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+90wh5n,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5bm7sa,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+986zsw,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+a3x9u2,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5re5nv,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+9gcz5u,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+53sgww,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7rh2lc,sad,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+7ydypn,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5f4qoc,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7apk4s,sad,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+671wsw,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4m4jic,angry,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+4zg350,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7kzcgw,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6xmj77,depressed,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+7t3djl,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+7edbtz,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7cwhak,depressed,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+94he9x,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7cylmj,confusion,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+9iwtlh,confusion,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6rg6e3,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7kyxn8,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7imsph,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+5i4sn3,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+72cte1,angry,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4p0rg1,anxious,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4l3izw,surprise,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+7fu3sn,neutral,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+48rl93,love,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9u0eyv,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+9vvfoe,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5tmcoq,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+67ptg1,anxious,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+45q95z,depressed,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+7iu1d7,depressed,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+7i9bab,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9bg2jo,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+57wcmu,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6klnmi,depressed,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+5x7d0z,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9970re,happy,True,False,False,"The user is new with no history and default OCEAN scores, making RAG the only applicable component.",RAG
+a0ivgz,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated to address their immediate concerns.",RAG
+7h1jip,disgust,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+9lu4cj,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+aebx7s,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+95hzea,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+asvhfd,confusion,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+5mq9fs,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+ae3qg2,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+albfkl,love,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+4p0a7c,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+643090,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7hdb2w,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4z4hp6,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5p2qpo,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+69ts99,fearful,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5hratc,neutral,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4iekwk,anxious,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+a40jby,happy,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+9c5fwd,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4dwwoz,neutral,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7yeqp4,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+8pymdk,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+80j21c,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+5ytpwn,surprise,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+amqzij,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8idu1g,surprise,True,False,False,"The user has no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9o2bo1,confusion,True,False,False,"The user is new with no prior history and has default OCEAN scores, making RAG the only applicable component.",RAG
+5qb992,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+40xgft,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5ja51t,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7bhyiy,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7s2wnt,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+7ttmro,sad,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+arw86q,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+61cmzj,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8q78ps,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+7qjlb1,surprise,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+a8qz55,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4nfkpk,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4vjbxw,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+9ht26a,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7s3lnz,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+87rmyd,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7ikzbl,anxious,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+ahlsym,sad,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+58dpyy,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9ybhyr,disgust,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8b31ce,surprise,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+3wpbtb,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+6qsp8v,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+603c09,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6r0wrj,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+4za3z1,surprise,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+al5o47,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4lfgaf,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+8pfmx8,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5c6vmi,fearful,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+71g1s5,depressed,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9a4oy8,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6g5jbx,confusion,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+4c0k4h,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6i75r4,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+4hlqkr,sad,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+7k50g7,sad,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+72a8dp,confusion,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6f91tb,anxious,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+9w80y9,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6fb9i5,disgust,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+6b2tc9,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+769n53,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+8f8qqe,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+4w650t,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+5jngfn,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+61par0,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9wxbo1,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+a85ljt,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8z2fy2,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5x02or,confusion,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7j313g,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+6e8c95,neutral,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+4rub18,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4cubbr,angry,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+7838g0,happy,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+58e77l,sad,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+54uxww,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8sueoe,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4zqjob,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5ey9m8,love,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+aq6thj,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7i9p0y,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+8tcxx6,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7q2t44,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7g53g3,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9onf35,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5aa7u1,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+79ca70,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8x7msu,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+85zveo,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+55bxju,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4crhso,anxious,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5e6w4s,neutral,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6wpqm5,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+6yao7x,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7u6d2c,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+466esw,confusion,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+9mgu59,confusion,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+47u2q9,neutral,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+8pelt1,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated to address their immediate distress.",RAG
+6cajjn,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+a2vulb,depressed,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+4kgmlf,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+82n00x,sad,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7d0y7r,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+88em9f,neutral,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4lz36y,disgust,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+agpgmn,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+a3phop,surprise,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+8ex05i,disgust,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+9yf8st,depressed,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+7px0ul,depressed,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8813yy,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+7hvmne,love,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+6u6xx5,love,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+70wx6v,angry,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+7a92ij,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+5vusnd,anxious,True,False,False,"The user is new with no prior history and has default OCEAN scores, making RAG the only applicable component.",RAG
+6ohxzt,sad,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+8qqmo9,anxious,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5tsuvo,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+4ou6k1,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6jwgyo,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9a00i3,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7s7ohy,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7l5o4v,surprise,True,False,False,"The user is new with no prior history and has default OCEAN scores, making RAG the only applicable component.",RAG
+4m5haa,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+8z2iq9,angry,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+6mluo8,anxious,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+ajhuga,disgust,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8dk85o,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+ahrg14,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+5eexwk,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8ism9n,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9bh63s,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8e5jsr,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7e3sri,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4vg5fw,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4gfxk7,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6cw0os,surprise,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+4xum28,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+7hcbbx,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+55lvmt,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7uxpna,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9iy4ho,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6o4xg8,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7b3d9t,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+48863h,fearful,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+6jr5eh,fearful,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6rwczc,disgust,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4nsw4k,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, making RAG the only applicable component.",RAG
+apmw55,disgust,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5z6eaa,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6453a9,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5xtiuf,anxious,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+80rbbc,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+6qsios,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7mbnbd,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+61j5vz,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+arqwlv,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4gxyqy,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9mn5yb,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+82wfu3,confusion,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+9xb7er,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4bdbyc,neutral,True,False,False,"The message is straightforward, and there is no relevant memory history or need for personality adaptation.",RAG
+8rnhg2,surprise,True,False,False,"The user is new with no history and default OCEAN scores, making RAG the only applicable component.",RAG
+a250v8,love,True,False,False,"The user has no prior history and default OCEAN scores, so only RAG is activated.",RAG
+akg26j,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6i2vgc,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5hxi54,surprise,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+5dmcm1,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+8fzl06,fearful,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8411b7,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8bmpwl,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+9dw1z4,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+5u2gfn,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7th7hg,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+ancu99,fearful,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+86yc65,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8ct4n0,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7cv95e,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6l2ex7,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+anntai,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+7c9kmi,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+4g64lj,surprise,True,False,False,"The user is new with no prior history and has default OCEAN scores, making RAG the only applicable component.",RAG
+6h3enf,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated to address their serious feelings.",RAG
+75a8cd,happy,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+afi36d,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+at1wee,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6q10ba,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+6mxt7u,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+5jagpb,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5enk9x,anxious,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+694qqi,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+7dulxc,surprise,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+6ywfad,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+99j608,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7pfhze,love,True,False,False,"The user is new with no prior history and has default OCEAN scores, making RAG the only applicable component.",RAG
+9xe1be,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7bryti,neutral,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+4lxxt7,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4xbmv7,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6cayf3,disgust,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+5ydvxn,love,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+ab4kbc,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9lqtt3,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7uj06g,fearful,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8l86vw,anxious,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8et77h,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+69kb5n,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7he2vt,surprise,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+81vr53,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9c2dz3,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+70pejb,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+74cjcv,love,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+5f3l9n,surprise,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+7xmksy,love,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+58c8en,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, making RAG the only applicable component.",RAG
+5068sh,happy,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7msh2o,love,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7p3hd3,surprise,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+9v6l4y,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9nr50q,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8592pp,angry,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+aiwexj,neutral,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+84c795,happy,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8fp0vr,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+akowzw,depressed,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7b5hwu,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9w4syj,love,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5l7k7i,disgust,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+701x8g,happy,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+5gijsz,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+54jlm2,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+58bq47,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4i3mse,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+7fgw7h,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4gcsti,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9i6urj,depressed,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+94mt3w,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5l2xtb,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9pjm4g,neutral,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+95rgi4,fearful,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+aivjx4,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8orcbj,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7lo282,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8itw05,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4jgumh,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+780vy8,angry,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+6zets9,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6dd839,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7c41xv,angry,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+972h4i,sad,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4b2sb4,confusion,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+3yzqcy,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+a4hp3u,love,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5axbtx,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+ak96jy,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+8wxggd,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6vdc5g,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+7bteqe,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+73cm60,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6j5dru,love,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+6j6j5k,confusion,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9kw2bx,love,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+90r0cp,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+7wrqdo,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+90c9nh,depressed,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6jklrv,confusion,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8rh086,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+67kvji,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+99re7l,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+a6qac1,surprise,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+a9czb8,sad,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7xwrph,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5pmw4z,anxious,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9ybl4m,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+763mty,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+85owjb,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+acr8tg,confusion,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7b56j0,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+63b1w4,happy,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8jrrc8,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4ssn7z,love,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+9d2oko,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+7hcxab,confusion,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+9wq5o8,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9gyd3j,anxious,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7nz1zc,sad,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6fd6q6,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6luw0n,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+7k9od6,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4umpyv,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+3y7111,depressed,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+9y3vsn,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7rg50j,happy,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+5dq5g1,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8e504b,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+4ie6uq,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+7eovdf,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+7lzs2q,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+77tcfy,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5qzaks,confusion,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+8jrn4f,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4r2iri,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+509gwc,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7d7yp7,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7dxdm8,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+7ca2nr,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5opvlz,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6740ou,neutral,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+3xkfdv,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+7lf8br,fearful,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+61b1x6,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4enza0,confusion,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8q2zqr,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+7nqz38,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5nv40e,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+815nk6,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5ujdpq,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+anju17,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+42qa60,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7ifnxl,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+55n4rw,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+8jhdd8,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5n6rva,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8xwvhq,angry,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4x58ff,disgust,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+53yfdc,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7b3xas,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+9je5wx,love,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+443e82,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6cp3k4,love,True,False,False,"The user is new with no prior history and has default OCEAN scores, making RAG the only applicable component.",RAG
+9ey3bw,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8djtha,confusion,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+5prjnv,love,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+a9n8c9,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9t40v8,sad,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5l7zi0,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4hud7p,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5s57cj,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+5r6q9t,depressed,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+9iwiem,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+5idmu2,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5nsdwn,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9nevlr,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+6s7vk3,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5ilqcc,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8yenla,disgust,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+4oanpk,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5de8vm,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+7rzgvi,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+973eqv,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9ks99d,ashamed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+67ip3o,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+aq24qu,fearful,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7shzxy,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+5bebzf,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5ods3n,surprise,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+713pmf,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5j3kx8,ashamed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+85jcgz,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4lo8w5,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4ge87m,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+3yhfqm,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5wgi8k,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7rgmoe,depressed,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4fa0vd,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+a9vdpg,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5cdjtt,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6ol9l0,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+ag4bih,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5i3pxv,disgust,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+afh6zf,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6w0pv6,angry,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+7ml5bp,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+4m3xmb,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8g1fig,love,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5tu5hm,sad,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+9lihrg,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+aij479,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5j95cj,angry,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+450qzs,angry,True,False,False,"The message is straightforward, and the user has no history or relevant personality scores.",RAG
+7ycdeh,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+79mdvx,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+9lpbx2,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8n5q6t,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8cbvqm,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+43mrfw,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+6m2aki,fearful,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+3zlyhc,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9c1pry,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+40kfmt,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6yx6ih,fearful,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7dwkc1,neutral,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5i8lla,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9v4kw1,confusion,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+7wyujp,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7kqtdl,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+8oxban,anxious,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5mkspw,neutral,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+82rmnm,surprise,True,False,False,"The user is new with no prior history and has default OCEAN scores, making RAG the only applicable component.",RAG
+8om9dz,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+98qwy3,neutral,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4zbefg,love,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+93am2c,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8lxr71,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4j6dci,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5wzvgy,sad,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+6ufvdy,disgust,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+7bbcrk,anxious,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+4ulpdz,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+97lhhp,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+a3slpl,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8kjqux,anxious,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+72ei6o,love,True,False,False,"The user is new with no history and has default OCEAN scores, so only RAG is activated.",RAG
+6sfuku,fearful,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+aako4n,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6kuk5x,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7kp68i,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+9hs6sw,neutral,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+6u9ozm,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+ahl3fl,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5s6sgr,surprise,True,False,False,"The user has no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6rou0q,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+51g31m,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5bb8pd,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+8ebccq,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9bbid1,neutral,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5gr8g5,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+9r5g1y,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+84pdf5,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5fun0r,neutral,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7zjpho,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8tlyny,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7ntdu7,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+ajj2al,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7kwoxl,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7fr7ez,anxious,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+a8vveo,love,True,False,False,"The user has no prior history and default OCEAN scores, so only RAG is activated.",RAG
+57jzki,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8jx0gy,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+87h9bi,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+55ceyh,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5nm51q,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5twivx,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+alykmh,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9536w9,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5o1uev,angry,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9h94rb,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+ap7c4c,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+a3wjfw,sad,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+9kvpuz,neutral,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+85ve3y,neutral,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4ruq3i,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+96uclb,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+78wlo4,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9hmab0,love,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+a4irt2,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7vgst4,sad,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+740few,depressed,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+60lf29,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, making RAG the only applicable component.",RAG
+4re82s,confusion,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4ynw6b,ashamed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7awu4o,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+ag61pp,neutral,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5i20sa,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+47nm79,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated to address their urgent concerns.",RAG
+5we86k,anxious,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+48l95s,sad,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+593joa,confusion,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+a68do7,disgust,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+6yzwfw,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+anbrl8,depressed,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9aygym,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6uz7za,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5xo8sa,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+8yn5uc,fearful,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+70m7ds,surprise,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+537kzt,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+53pajy,angry,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+7cz467,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4ovbz0,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+5lh0vr,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+4ars61,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+amavjs,disgust,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+ag2rwr,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+84sy7n,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+6xcakf,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5ryf0g,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8fnk5b,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5fzilb,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7sl9h7,love,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8w0orm,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4ofa91,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated to address their immediate distress.",RAG
+47jmki,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated to address their urgent need for help.",RAG
+aowluc,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8sl68s,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+91uaxv,sad,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+4ztdjq,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+ahkzpu,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+a932r2,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9zm11s,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+7173a5,sad,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+4a7g4v,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8pgzxs,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+56m7go,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+5cc9vc,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6ztcdh,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+5eqh4o,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+agpfjm,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6b029n,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+85pe7c,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+85agap,anxious,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+a0t5c5,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+6xq3jd,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7waihc,love,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8e07qg,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+8uu3xd,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9ywiu1,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8omvko,confusion,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+4kp9b2,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5ii6v9,angry,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4omg7m,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+60pllq,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4po2yr,love,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+4o43ko,surprise,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+4us4zc,surprise,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+8i1u6v,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+94to2s,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5rsrzt,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+aicmmf,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9f0jbu,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+aa5i06,neutral,True,False,False,"The message is straightforward, with no relevant memory history and default OCEAN scores.",RAG
+9oqaib,anxious,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8xm604,neutral,True,False,False,"The user has no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+4ibahh,love,True,False,False,"The user is new with no prior history and has default OCEAN scores, making RAG the only applicable component.",RAG
+6pos8l,angry,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7qk7du,love,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5vdm7o,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+a8n531,surprise,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+5d1ags,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7l5vbj,angry,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+8pxx1i,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+a027yu,love,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+41g07l,neutral,True,False,False,"The message is straightforward, there is no prior history to consider, and the OCEAN scores are all default.",RAG
+4ky3sa,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+46ozpl,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+9ncuo8,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+94yi92,sad,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+6do7xh,sad,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+536ug8,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5g28fa,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+86rfig,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+ai6mv8,angry,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+6hg06u,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6z30zo,disgust,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+7bb2u4,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6jy84v,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+66rj6l,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6ts60e,sad,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7ghwm3,sad,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+5c86zs,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5q1gm7,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7b3lo2,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7abvte,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated to address the urgent situation.",RAG
+4nflzk,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+554mlg,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5pa2cg,love,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+42s5ip,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7pis9t,happy,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+616jh3,surprise,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+7uekc6,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9d3bfr,happy,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5pxdv9,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+87pxoj,confusion,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+50uau5,fearful,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+83ztxo,confusion,True,False,False,"The user is new with no prior history and has default OCEAN scores, making RAG the only applicable component.",RAG
+8zt8qp,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+70tzqg,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4j9w3u,angry,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+8odawg,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+auclqc,anxious,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+4aui7g,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9ehh8v,disgust,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+7n7m43,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4bsyvr,disgust,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+6d33nf,love,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8aou5z,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+5tvsg4,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5yyjdk,fearful,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9yik1l,fearful,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+73glt1,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7htaxo,confusion,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+93xe6e,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+aceofa,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9scbmd,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+7dtnn4,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+4pkdhe,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+50y9wz,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+608rsl,angry,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+68o7h2,neutral,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+8fynpz,surprise,True,False,False,"The user has no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+4sfe5t,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9cjayp,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+6o38f8,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+69l3o3,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5lmx08,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7ugx1u,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7iqybu,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+60rs9u,angry,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+99bkji,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5jnlge,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8hbja7,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9pnz1i,depressed,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7q8xse,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+72txzu,disgust,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+8op5e0,love,True,False,False,"The user is new with no prior history and has default OCEAN scores, making RAG the only applicable component.",RAG
+4dbz1e,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5fqxhf,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+arob7h,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+8mfo3l,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+6hqql2,angry,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+6tgn2e,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+76ilmq,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8gmzey,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+79etx5,love,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+6bnrre,love,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4ggkz9,disgust,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+6e7muq,disgust,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5hw5nl,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+6y59xs,anxious,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+858xjm,sad,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+73k5al,sad,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8r8vqe,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+44lud8,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5184ji,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7wy8wm,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+ambd5k,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+8kiakb,neutral,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+9ztowb,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+80nry1,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+3voq6z,love,True,False,False,"The message is straightforward, the user has no prior history, and OCEAN scores are all default.",RAG
+4b9a8o,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6eztq9,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5uqfup,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8c5qi3,happy,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+9z9wim,love,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+722q63,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+99jo4q,happy,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+6swxus,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+638z3h,sad,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+91da89,confusion,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+73u8gw,confusion,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+6pnt5f,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+563yr1,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9g685o,confusion,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+9e9s5b,neutral,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated to address their urgent feelings.",RAG
+askar7,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+5yk5vw,confusion,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+5fxyzz,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+6ay35x,sad,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7k3p4l,anxious,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+4u0zy4,love,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+52hg7r,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+65rcgo,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+a8p3h3,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+78hlrc,disgust,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+6l2t1o,confusion,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+96eudv,angry,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+76qvw3,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6zr68u,disgust,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+6xbvzc,neutral,True,False,False,"The user has no prior history and default OCEAN scores, so only RAG is activated.",RAG
+68akv4,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4aoqyh,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+649npl,ashamed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7jf9u1,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+69kno0,sad,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+507z99,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+aoj20l,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+53q0p5,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+agq9nm,disgust,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8fsmdm,love,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5eg6ys,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated to address the serious situation.",RAG
+7auvhw,sad,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+4wjcb8,sad,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+4yryue,neutral,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+7zbhav,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+837cyp,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+a76r3x,happy,True,False,False,"The user is new with no prior history and has default OCEAN scores, making RAG the only applicable component.",RAG
+69wqun,angry,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+8e6t0k,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+aivw81,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5da1yu,surprise,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+7nc50s,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+678p0a,love,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+4g88s4,sad,True,False,False,"The user has no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4jj58t,neutral,True,False,False,"The message is straightforward, and there is no relevant memory history or need for personality adaptation.",RAG
+7jgq9l,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6yz4ux,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+69p847,anxious,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8df5kx,love,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+6sg4bb,sad,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5eb9uu,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+ai5v34,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+4tkvt2,angry,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+9ybldr,sad,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+aksp4u,sad,True,False,False,"The user is new with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+3x9r2r,love,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+79mw1f,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6see88,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7fthee,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9e2j4m,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+a78rae,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+aexv06,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7w5l2q,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4r48nf,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6sj965,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+49ycp3,ashamed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+7ogyja,sad,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7shhy2,anxious,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4te8vi,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5en5ol,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+6a7t5u,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+ankac4,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7j90re,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+8varq3,anxious,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4q64wm,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4ctivd,sad,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+6cyjk7,disgust,True,False,False,"The user has no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6bwflh,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+71pve8,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+86binr,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+ah7r9d,love,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8ixjaz,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+5z24t7,happy,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7qky2a,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+84r82p,anxious,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated to address their immediate concerns.",RAG
+5g86hv,love,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+aum357,sad,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+abl9su,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7xub39,surprise,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+66tjo8,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9w7hvy,love,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4orouw,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7cekpz,love,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+5zu28i,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+728p0m,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9yvfwn,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+3ydiho,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+83shz0,neutral,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6mk38k,confusion,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7efwj6,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+68j0ou,surprise,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+9kvzj4,neutral,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+84mkp3,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9u936c,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4frrey,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+579iuy,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7nzclt,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8ohaam,surprise,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+5k63am,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7bae7a,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5ca36b,happy,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+aaxy5p,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4cuqp6,angry,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+aas5b3,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+94lg72,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5j7c1b,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+8uhkiz,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+53pbcd,love,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+6010pp,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+a32x96,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, making RAG the only applicable component.",RAG
+8uz2je,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+89g073,fearful,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated to address their immediate emotional distress.",RAG
+ajccfi,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8mmxvf,love,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+88gtly,sad,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5h3fiv,sad,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4btudz,angry,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9trws2,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+7mo4wk,surprise,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+6kaksu,anxious,True,False,False,"The user has no prior history and default OCEAN scores, so only RAG is activated.",RAG
+79ud4y,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+a0l9kg,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+9klfjo,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+as0has,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4dfcbs,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5rrm33,fearful,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8ioneq,sad,True,False,False,"The message is straightforward, and the user has no history or relevant personality scores to adapt.",RAG
+4gllf7,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+87q8vm,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+424dis,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4vqpwe,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8cmai2,neutral,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8brepv,confusion,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8u00cc,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+92x489,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+5z1u9u,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+749n2t,love,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8pab6v,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4vmhxb,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+9d2y09,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+90a7tg,confusion,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+6hx42r,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7m6icw,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7m5vti,surprise,True,False,False,"The user is new with no prior history and has default OCEAN scores, making RAG the only applicable component.",RAG
+8vocpi,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+9fqmg6,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6hxyky,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7titw6,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7o29sw,surprise,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+55kkc7,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+aqo5p3,sad,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+7cdk4f,anxious,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+44ji4b,confusion,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8pwlqw,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+4vb9g7,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6z4gux,ashamed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4auq7z,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+9t0b89,fearful,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+57aasm,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9n4aq9,love,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+6h5qn4,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated to address their urgent emotional state.",RAG
+3vz0tb,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+6t909j,happy,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+95itii,confusion,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+4krh10,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+8vshuh,surprise,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+6568lp,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+a176pb,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+avv551,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7ala14,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9pzw22,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5jhd8v,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7wztma,neutral,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+72xox6,confusion,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+7x1hxh,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9mbmos,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8z86fl,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+82vjxb,confusion,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+4e6zdu,love,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+84jypi,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+asfzaa,disgust,True,False,False,"The user is new with no history and has default OCEAN scores, so only RAG is activated.",RAG
+a2bynd,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+77q0he,disgust,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+7g4yaz,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+68qep0,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4ags76,love,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+98p0iy,neutral,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6z3isi,surprise,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+4r4w4o,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9o9959,confusion,True,False,False,"The user is new with no prior history and has default OCEAN scores, making RAG the only applicable component.",RAG
+5wz4tv,love,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+993jlx,neutral,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+4l3230,sad,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+5m960w,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4qzjiw,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+6jbhaj,love,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7yj1vm,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+5yrikg,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+6v4ez7,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6rux1d,love,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+5jp4eb,happy,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+6c8ngy,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+7xx6cl,neutral,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9cleeq,confusion,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+709nzt,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+3yiuby,confusion,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9ydfvf,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8dlors,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9m8yju,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9es7lj,ashamed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+72wy4r,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5f8vn0,neutral,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+81be3q,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+57dlt5,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+altvt1,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7526gz,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5kn0qi,love,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+a0vqix,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7opf61,confusion,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+802yq1,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8gv41i,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5pavbi,neutral,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+9jzn8c,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+89u0gy,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+3yygk8,love,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+3vetnj,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5spwc0,depressed,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+7449mb,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+4lm349,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+9x0o4u,love,True,False,False,"The user has no prior history and default OCEAN scores, so only RAG is activated.",RAG
+92ujtd,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8wu4hi,neutral,True,False,False,"The user has no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5yuep2,love,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+apkvrz,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+4so3jc,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+7ndoqa,neutral,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+69r2nv,fearful,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6qlu6q,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9o4gol,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+5z8p65,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+90v8wy,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8j2shr,happy,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+5u3ec5,angry,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+4s4ym0,sad,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+6cq3i1,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+asnbax,fearful,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+69xtjc,happy,True,False,False,"The user has no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5ziak3,happy,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+a5xefe,sad,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+akjhtk,angry,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8fx4mo,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7cc2kl,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+8x92t0,angry,True,False,False,"The user is new with no prior history and has default OCEAN scores, making RAG the only applicable component.",RAG
+9qjzms,surprise,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+80uugl,love,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9f5bbo,depressed,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+a0crx9,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4byb1t,angry,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+8m0b6z,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+87pld2,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4ie6oy,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9tdmnc,love,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+auxkdf,angry,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+785fqc,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5iyggy,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4k8md9,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+aefx1p,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7ytxs5,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+966y9q,sad,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+64okg1,sad,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+6xrpju,confusion,True,False,False,"The user is new with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+7xv983,confusion,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+8s455n,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+3vacmu,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+a912wg,anxious,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7srv10,confusion,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+aj7n9z,love,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9hnbw4,confusion,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+7agt1x,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5652ub,surprise,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+8um7nn,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+94tesn,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7ey6aa,anxious,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+7xxq8a,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8qb1u4,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7wgecs,neutral,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+87jlkn,fearful,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+6w6lgr,sad,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+78u3b3,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+92harw,anxious,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+7qpmkz,confusion,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+a9vss2,sad,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7ra3yb,sad,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+aotieu,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, making RAG the only applicable component.",RAG
+ananhi,love,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+687f9d,sad,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+7b9heo,ashamed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5b73im,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5sbari,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+aik0i4,surprise,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+8h50wp,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4kkcv6,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8kl1lp,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6ebq1w,angry,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+7a8za1,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6g51xw,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+anzobr,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4rb0nz,love,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+718wyg,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+84knry,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+78chdu,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+7ahq41,surprise,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+77341o,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+6m3598,confusion,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+84q553,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8xby9p,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+9960jm,neutral,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+5x8ucn,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+41jui5,anxious,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+aa0xrp,neutral,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+67jugw,confusion,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7qk5o1,anxious,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+4m926s,confusion,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5tdc9p,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8ijwyy,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8sf9dk,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+a8vp47,happy,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+4dxirk,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8290nq,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+9jsg7j,happy,True,False,False,"The user has no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7dhq2f,sad,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7999cv,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+8ts4ap,happy,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9rmxdv,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+5uusi7,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+4wj8yx,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+al9cvm,surprise,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+84v6wi,surprise,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+5ejbtr,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+56wj0p,confusion,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+4tq63e,depressed,True,False,False,"The user is new with no prior history and has default OCEAN scores, so only RAG is activated.",RAG
+ar5a4a,neutral,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+a5vkiv,depressed,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+ajv9ba,angry,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+7hf4q8,neutral,True,False,False,"The user is new with no history and default OCEAN scores, so only RAG is activated.",RAG
+7rxnzv,sad,True,False,False,"The user is a new user with no prior history and default OCEAN scores, making RAG the only applicable component.",RAG
+70m1bh,confusion,True,False,False,"The user is a new user with no prior history and default OCEAN scores, so only RAG is activated.",RAG
+9yw0d6,disgust,True,False,False,"The user is new with no prior history and default OCEAN scores, so only RAG is activated.",RAG

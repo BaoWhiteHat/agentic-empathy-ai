@@ -16,6 +16,9 @@ if sys.platform == "win32":
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 BACKEND_DIR = os.path.dirname(os.path.dirname(SCRIPT_DIR))
+MODELS_DIR = os.path.join(SCRIPT_DIR, "models")
+PILOT_DIR = os.path.join(SCRIPT_DIR, "results", "pilot")
+STABILITY_DIR = os.path.join(SCRIPT_DIR, "results", "stability")
 sys.path.insert(0, BACKEND_DIR)
 sys.path.insert(0, SCRIPT_DIR)
 os.chdir(BACKEND_DIR)
@@ -47,7 +50,7 @@ WARMUP_MESSAGES = [
 
 
 def load_test_seekers():
-    path = os.path.join(SCRIPT_DIR, "test_seekers_v5.csv")
+    path = os.path.join(PILOT_DIR, "test_seekers_v5.csv")
     if os.path.exists(path):
         return pd.read_csv(path)
     er = pd.read_csv("data/epitome/emotional-reactions-reddit.csv")
@@ -171,9 +174,9 @@ def score_responses(responses_df):
     from epitome_scorer import EpitomeScorer
 
     scorer = EpitomeScorer(
-        er_path=os.path.join(SCRIPT_DIR, "reddit_ER.pth"),
-        ip_path=os.path.join(SCRIPT_DIR, "reddit_IP.pth"),
-        ex_path=os.path.join(SCRIPT_DIR, "reddit_EX.pth"),
+        er_path=os.path.join(MODELS_DIR, "reddit_ER.pth"),
+        ip_path=os.path.join(MODELS_DIR, "reddit_IP.pth"),
+        ex_path=os.path.join(MODELS_DIR, "reddit_EX.pth"),
     )
 
     rows = []
@@ -234,8 +237,8 @@ async def main():
         responses_df, router_df = await generate_responses(system, seekers_df)
 
         # Save generated responses
-        responses_df.to_csv(os.path.join(SCRIPT_DIR, f"generated_responses_run{run_num}.csv"), index=False)
-        router_df.to_csv(os.path.join(SCRIPT_DIR, f"router_analysis_run{run_num}.csv"), index=False)
+        responses_df.to_csv(os.path.join(STABILITY_DIR, f"generated_responses_run{run_num}.csv"), index=False)
+        router_df.to_csv(os.path.join(STABILITY_DIR, f"router_analysis_run{run_num}.csv"), index=False)
 
         # Cleanup engine before scoring
         system.close()
@@ -244,7 +247,7 @@ async def main():
         # Score
         print(f"  [Run {run_num}] Scoring...")
         scored_df = score_responses(responses_df)
-        scored_df.to_csv(os.path.join(SCRIPT_DIR, f"scored_responses_run{run_num}.csv"), index=False)
+        scored_df.to_csv(os.path.join(STABILITY_DIR, f"scored_responses_run{run_num}.csv"), index=False)
 
         # Aggregate
         run_agg = aggregate_run(scored_df)
@@ -262,7 +265,7 @@ async def main():
             "Total": human_baseline["Total"], "run": run_num,
         }])
         run_results = pd.concat([human_row, run_agg], ignore_index=True)
-        run_results.to_csv(os.path.join(SCRIPT_DIR, f"results_run{run_num}.csv"), index=False)
+        run_results.to_csv(os.path.join(STABILITY_DIR, f"results_run{run_num}.csv"), index=False)
 
         print(f"\n  Run {run_num} results:")
         print(run_results[["config", "ER", "IP", "EX", "Total"]].to_string(index=False))
@@ -319,8 +322,8 @@ async def main():
     print("\n" + display_df.to_string(index=False))
 
     # Save
-    stability.to_csv(os.path.join(SCRIPT_DIR, "results_stability.csv"), index=False)
-    display_df.to_csv(os.path.join(SCRIPT_DIR, "results_stability_formatted.csv"), index=False)
+    stability.to_csv(os.path.join(STABILITY_DIR, "results_stability.csv"), index=False)
+    display_df.to_csv(os.path.join(STABILITY_DIR, "results_stability_formatted.csv"), index=False)
     print(f"\n  Saved to results_stability.csv and results_stability_formatted.csv")
 
     # Also save per-run comparison

@@ -1,0 +1,6 @@
+comparison,mean_A,mean_B,mean_diff,wilcoxon_p,significant_p05,n_posts,n_nonzero_diffs
+Agentic vs Baseline,2.404,1.848,0.556,2.3324279848666e-37,True,1000,799
+Agentic vs RAG,2.404,2.394,0.01,0.8396281531169711,False,1000,307
+Agentic vs RAG+Memory,2.404,2.389,0.015,0.8914336731367133,False,1000,331
+Agentic vs RAG+OCEAN,2.404,2.39,0.014,0.7014744453884936,False,1000,322
+RAG vs Baseline,2.394,1.848,0.546,3.9514834061067767e-36,True,1000,803

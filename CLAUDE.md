@@ -124,25 +124,59 @@ Benchmark scripts live in `backend/evaluate/benchmark/`. Uses the EPITOME framew
 
 ```bash
 cd backend
-uv run python evaluate/benchmark/run_benchmark_v5.py    # Ablation study: 5 configs
-uv run python evaluate/benchmark/run_stability_test.py   # 3-run stability test
+uv run python evaluate/benchmark/run_benchmark_v5.py      # Quick ablation: 5 configs × 50 posts
+uv run python evaluate/benchmark/run_benchmark_full.py     # Full dataset: 5 configs × 1,000 posts (5,000 responses)
+uv run python evaluate/benchmark/finalize_full.py          # Score & visualize full results (no API calls)
+uv run python evaluate/benchmark/run_stability_test.py     # 3-run stability test
 ```
+
+### Benchmark scripts
+
+| Script | Posts | Purpose |
+|--------|-------|---------|
+| `run_benchmark_v5.py` | 50 | Quick ablation study, fast iteration |
+| `run_benchmark_full.py` | 1,000+ | Full dataset run, resume-safe with checkpoints every 25 posts |
+| `finalize_full.py` | — | Scores existing responses & generates results (no API cost) |
+| `run_stability_test.py` | 50×3 | 3-run stability test |
 
 ### How the benchmark works (7 steps)
 
 1. **Clean Neo4j** — Deletes all `bench*` users to start fresh
 2. **Human baseline** — Computes mean ER/IP/EX from EPITOME Reddit dataset (`data/epitome/`) as reference
-3. **Load test seekers** — 50 seeker posts sampled from EPITOME (seed=42), cached in `test_seekers_v5.csv`
+3. **Load test seekers** — v5: 50 sampled posts (seed=42); full: all unique posts from EPITOME
 4. **Warm-up** — Sends 5 messages per benchmark user (`bench_ragmem`, `bench_ragocean`, `bench_agentic`) to build conversation history and OCEAN profiles before testing
-5. **Generate responses** — Each of the 50 posts is processed through 5 configs:
+5. **Generate responses** — Each post is processed through 5 configs:
    - **Baseline**: Raw GPT-4o-mini (no SoulMate pipeline, just a simple empathy prompt)
    - **RAG**: SoulMate with only KnowledgeAgent (ChromaDB)
    - **RAG+Memory**: SoulMate with KnowledgeAgent + GraphMemory
    - **RAG+OCEAN**: SoulMate with KnowledgeAgent + OCEAN personality
    - **Agentic**: SoulMate with RouterAgent deciding Memory/OCEAN per message
-   - All configs use `save_ai_response=False` to avoid polluting memory during benchmark
+   - All configs use `temperature=0`, `save_ai_response=False`
 6. **Score empathy** — Each (seeker_post, response) pair is scored by 3 EPITOME classifier models (bi-encoder RoBERTa with cross-attention, pre-trained weights: `reddit_ER.pth`, `reddit_IP.pth`, `reddit_EX.pth`). Output: 0/1/2 per dimension.
 7. **Aggregate & visualize** — Mean scores per config → CSV table + grouped bar chart PNG. Also analyzes RouterAgent decisions (which components it chose, by emotion).
+
+### Full benchmark results (1,000 posts × 5 configs = 5,000 responses)
+
+| Config | ER | IP | EX | Total |
+|--------|------|------|------|-------|
+| Human (Reddit) | 0.39 | 0.91 | 0.28 | 1.57 |
+| Baseline | 1.69 | 0.07 | 0.09 | 1.85 |
+| RAG | 1.04 | 0.59 | 0.76 | 2.39 |
+| RAG+Memory | 1.05 | 0.62 | 0.72 | 2.39 |
+| RAG+OCEAN | 1.03 | 0.59 | 0.77 | 2.39 |
+| **Agentic** | **1.04** | **0.60** | **0.76** | **2.40** |
+
+**Statistical significance** (Wilcoxon signed-rank test, N=1,000):
+- Agentic vs Baseline: p = 2.33e-37 (significant)
+- RAG vs Baseline: p = 3.95e-36 (significant)
+- Agentic vs RAG/RAG+Memory/RAG+OCEAN: p > 0.7 (not significant — RAG is the dominant factor)
+
+Output files in `backend/evaluate/benchmark/`:
+- `results_full.csv`, `results_full.png` — aggregated results & chart
+- `scored_responses_full.csv` — per-post scores (for statistical tests)
+- `generated_responses_full.csv` — all 5,000 responses
+- `router_analysis_full.csv` — router decision breakdown
+- `statistical_tests.csv` — Wilcoxon test results
 
 ## Platform Notes
 
