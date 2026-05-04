@@ -30,7 +30,7 @@ export const useChat = () => {
     'empty-chair': []
   });
 
-  const [emotion, setEmotion] = useState<string>("Bình thường");
+  const [emotion, setEmotion] = useState<string>("Neutral");
   const [socket, setSocket] = useState<WebSocket | null>(null);
 
   // Audio playback via Web Audio API (bypasses autoplay policy when unlocked during user gesture)

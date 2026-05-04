@@ -48,11 +48,11 @@ function AuthWrapper({ children }: { children: React.ReactNode }) {
 
           <div className="bg-card/40 backdrop-blur-2xl p-10 rounded-[2.5rem] border border-border shadow-2xl space-y-6 text-left">
             <div>
-              <label className="block text-[11px] font-black text-slate-500 uppercase tracking-[0.2em] mb-3 px-1">Định danh của bạn</label>
+              <label className="block text-[11px] font-black text-slate-500 uppercase tracking-[0.2em] mb-3 px-1">Your Identity</label>
               <input 
                 autoFocus
                 className="w-full px-5 py-4 bg-background/50 border border-border rounded-2xl outline-none focus:border-blue-500/50 transition-all font-medium"
-                placeholder="Ví dụ: bao_uit..."
+                placeholder="Eg: bao_uit..."
                 value={tempId}
                 onChange={(e) => setTempId(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && tempId && setUserId(tempId)}
@@ -62,10 +62,10 @@ function AuthWrapper({ children }: { children: React.ReactNode }) {
               onClick={() => tempId && setUserId(tempId)}
               className="w-full p-4 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl font-bold transition-all shadow-xl shadow-blue-900/20 flex items-center justify-center gap-2"
             >
-              Bắt đầu hành trình <Sparkles className="w-4 h-4" />
+              Start Your Journey <Sparkles className="w-4 h-4" />
             </button>
           </div>
-          <p className="mt-8 text-slate-500 text-xs font-medium uppercase tracking-widest">Developed with ❤️ at UIT</p>
+          <p className="mt-8 text-slate-500 text-xs font-medium uppercase">You are the sky. Everything else - it’s just the weather</p>
         </motion.div>
       </div>
     );

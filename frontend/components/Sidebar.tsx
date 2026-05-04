@@ -14,9 +14,9 @@ export default function Sidebar() {
 
   // Định nghĩa menu với path thay vì id
   const menuItems = [
-    { path: '/messaging', label: 'Nhắn tin thấu cảm', icon: <MessageSquare className="w-5 h-5" /> },
-    { path: '/voice', label: 'Tâm sự giọng nói', icon: <Mic className="w-5 h-5" /> },
-    { path: '/empty-chair', label: 'Liệu pháp Ghế trống', icon: <UserRound className="w-5 h-5" /> },
+    { path: '/messaging', label: 'Empathetic Chat', icon: <MessageSquare className="w-5 h-5" /> },
+    { path: '/voice', label: 'Heart-to-Heart Voice', icon: <Mic className="w-5 h-5" /> },
+    { path: '/empty-chair', label: 'Empty Chair Technique', icon: <UserRound className="w-5 h-5" /> },
   ];
 
   const handleLogout = () => {
@@ -44,7 +44,7 @@ export default function Sidebar() {
       {/* 2. KHU VỰC BIỂU ĐỒ OCEAN */}
       <div className="mb-8 w-full min-h-[320px] bg-background/40 rounded-2xl border border-border relative flex flex-col items-center justify-start shadow-inner transition-colors shrink-0">
         <p className="w-full text-center text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest pt-4 pb-2 border-b border-border/50">
-          Biến thiên tâm lý
+          Personality Profile
         </p>
         <div className="w-full flex-1 p-2">
            {userId ? <OceanChart userId={userId} /> : null}
@@ -95,7 +95,7 @@ export default function Sidebar() {
           <div className="p-2 rounded-lg bg-slate-200 dark:bg-slate-800/50 group-hover:bg-slate-300 dark:group-hover:bg-slate-700/50 transition-colors text-amber-500 dark:text-blue-400">
             {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </div>
-          <span className="font-semibold text-sm">{theme === 'dark' ? 'Chế độ Sáng' : 'Chế độ Tối'}</span>
+          <span className="font-semibold text-sm">{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
         </button>
 
         <div className="p-4 bg-background/50 rounded-2xl border border-border flex items-center gap-4 group cursor-default shadow-sm">
@@ -109,7 +109,7 @@ export default function Sidebar() {
           </div>
           <div className="overflow-hidden">
             <p className="text-sm font-bold text-foreground truncate group-hover:text-blue-500 transition-colors">{userId}</p>
-            <p className="text-[10px] text-slate-500 font-medium uppercase tracking-wider mt-0.5">Trực tuyến</p>
+            <p className="text-[10px] text-slate-500 font-medium uppercase tracking-wider mt-0.5">ONLINE</p>
           </div>
         </div>
 
@@ -118,7 +118,7 @@ export default function Sidebar() {
           className="w-full flex items-center justify-center gap-2 p-3 rounded-xl text-slate-500 hover:text-red-500 hover:bg-red-500/10 transition-all duration-200 text-xs font-bold border border-transparent hover:border-red-500/20"
         >
           <LogOut className="w-4 h-4" />
-          ĐĂNG XUẤT
+          LOG OUT
         </button>
       </div>
     </aside>

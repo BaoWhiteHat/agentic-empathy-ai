@@ -157,7 +157,7 @@ async def generate_responses(system, seekers_df):
                       "response": resp, "emotion": emotion})
 
         # Config 5 — Agentic
-        resp, decisions = await system.process_brain_agentic(
+        resp, decisions, _ = await system.process_brain_agentic(
             seeker_post, USER_IDS["Agentic"], emotion, save_ai_response=False)
         rows.append({"sp_id": sp_id, "seeker_post": seeker_post, "config": "Agentic",
                       "response": resp, "emotion": emotion})

@@ -1,6 +1,7 @@
 import sys
 import os
 import asyncio
+from dataclasses import asdict
 from dotenv import load_dotenv
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -16,6 +17,7 @@ from agent.memory import GraphMemory
 from agent.voice_io import VoiceInterface
 from agent.emptychair_agent import EmptyChairAgent
 from agent.router import RouterAgent
+from agent.safety import SafetyGuardrail
 
 
 class AgenticEmpathySystem:
@@ -27,6 +29,7 @@ class AgenticEmpathySystem:
         self.dialogue = DialogueAgent()
         self.voice_io = VoiceInterface()
         self.router = RouterAgent()
+        self.safety = SafetyGuardrail()
 
         self.user_turn_counters = {}
 
@@ -73,6 +76,11 @@ class AgenticEmpathySystem:
             print(f"      {direction} {trait.capitalize()}: {sign}{change:.3f}")
         print("")
 
+    def _append_safety_reason(self, base_reason: str, extra_reason: str) -> str:
+        if base_reason:
+            return f"{base_reason} | {extra_reason}"
+        return extra_reason
+
     async def manage_reflection(self, user_id):
         """Task 2: Narrative reflection every 10 turns per user (runs in background)"""
         self.user_turn_counters[user_id] = self.user_turn_counters.get(user_id, 0) + 1
@@ -106,23 +114,35 @@ class AgenticEmpathySystem:
         use_ocean: bool = True,
         use_rag: bool = True,
         save_ai_response: bool = True,
+        safe_mode: bool = False,
+        risk_type: str = "normal_support",
+        safety_instruction: str = "",
+        safety_decision=None,
     ):
         """Main chat processing pipeline"""
         history_context = ""
         current_profile = {}
         narrative_profile = "No narrative yet."
 
-        if use_memory and self.memory and self.memory.driver:
-            history_context = self.memory.get_context(
-                user_id,
-                current_emotion=emotion,
-                current_message=user_input
-            )
-            current_profile = self.memory.get_user_profile(user_id)
-            try:
-                narrative_profile = self.memory.get_narrative_profile(user_id)
-            except Exception:
-                pass
+        if safety_decision:
+            use_memory = use_memory and safety_decision.allow_memory
+            use_ocean = use_ocean and safety_decision.allow_ocean
+            use_rag = use_rag and safety_decision.allow_rag
+
+        if self.memory and self.memory.driver:
+            if use_memory:
+                history_context = self.memory.get_context(
+                    user_id,
+                    current_emotion=emotion,
+                    current_message=user_input
+                )
+                try:
+                    narrative_profile = self.memory.get_narrative_profile(user_id)
+                except Exception:
+                    pass
+
+            if use_memory or use_ocean:
+                current_profile = self.memory.get_user_profile(user_id)
 
         ocean_profile = current_profile if use_ocean else {}
         profile_str = ", ".join([f"{k}: {v}" for k, v in ocean_profile.items()])
@@ -140,20 +160,82 @@ class AgenticEmpathySystem:
             memory=history_context,
             rag_examples=rag_context,
             long_term_profile=full_long_term_profile,
+            safe_mode=safe_mode,
+            risk_type=risk_type,
+            safety_instruction=safety_instruction,
             **ocean_profile
         )
 
         if use_memory and self.memory and self.memory.driver:
+            stored_input = user_input
+            raw_stored = True
+
+            if safety_decision and not safety_decision.store_raw_turn:
+                stored_input = self.safety.sanitizer.build_safe_summary(
+                    user_input=user_input,
+                    emotion=emotion,
+                    risk_type=risk_type,
+                    ai_response=ai_response,
+                )
+                raw_stored = False
+
             if save_ai_response:
-                self.memory.add_turn(user_id, user_input, emotion, ai_response)
+                self.memory.add_turn(
+                    user_id,
+                    stored_input,
+                    emotion,
+                    ai_response,
+                    risk_level=safety_decision.risk_level if safety_decision else "low",
+                    risk_type=risk_type,
+                    raw_stored=raw_stored,
+                )
             else:
-                self.memory.add_turn(user_id, user_input, emotion, "")
+                self.memory.add_turn(
+                    user_id,
+                    stored_input,
+                    emotion,
+                    "",
+                    risk_level=safety_decision.risk_level if safety_decision else "low",
+                    risk_type=risk_type,
+                    raw_stored=raw_stored,
+                )
 
         return ai_response
 
     async def process_brain_agentic(self, user_input, user_id, emotion,
-                                     save_ai_response: bool = True):
+                                     save_ai_response: bool = True,
+                                     mode: str = "messaging"):
         """Agentic mode: RouterAgent decides which components to use."""
+        safety = self.safety.classifier.classify(user_input, emotion, mode)
+
+        if safety.risk_type == "self_harm_or_suicide":
+            response = self.safety.policy.immediate_response(safety.risk_type, user_input, emotion)
+            decisions = {
+                "use_memory": False,
+                "use_ocean": False,
+                "use_rag": False,
+                "reasoning": "safety override",
+            }
+
+            if self.memory and self.memory.driver:
+                safe_summary = self.safety.sanitizer.build_safe_summary(
+                    user_input=user_input,
+                    emotion=emotion,
+                    risk_type=safety.risk_type,
+                    ai_response=response,
+                )
+                self.memory.add_turn(
+                    user_id,
+                    safe_summary,
+                    emotion,
+                    response if save_ai_response else "",
+                    risk_level=safety.risk_level,
+                    risk_type=safety.risk_type,
+                    raw_stored=False,
+                )
+
+            return response, decisions, asdict(safety)
+
         has_history = False
         has_ocean = False
         narrative = ""
@@ -174,6 +256,20 @@ class AgenticEmpathySystem:
             narrative=narrative, ocean_profile=ocean_profile_str
         )
 
+        if safety.risk_type == "high_distress":
+            decisions["use_ocean"] = False
+            decisions["reasoning"] = self._append_safety_reason(
+                decisions.get("reasoning", ""),
+                "safety: OCEAN disabled for high distress",
+            )
+        elif safety.risk_type == "clinical_boundary":
+            decisions["use_ocean"] = False
+            decisions["use_rag"] = False
+            decisions["reasoning"] = self._append_safety_reason(
+                decisions.get("reasoning", ""),
+                "safety: RAG and OCEAN disabled for clinical boundary",
+            )
+
         print(f"  [Router] {decisions['reasoning']}")
         print(f"  [Router] RAG={decisions['use_rag']}, Memory={decisions['use_memory']}, OCEAN={decisions['use_ocean']}")
 
@@ -185,9 +281,13 @@ class AgenticEmpathySystem:
             use_ocean=decisions["use_ocean"],
             use_rag=decisions["use_rag"],
             save_ai_response=save_ai_response,
+            safe_mode=safety.safe_mode,
+            risk_type=safety.risk_type,
+            safety_instruction=self.safety.policy.safe_instruction(safety.risk_type),
+            safety_decision=safety,
         )
 
-        return response, decisions
+        return response, decisions, asdict(safety)
 
     def close(self):
         print("Cleaning up system resources...")

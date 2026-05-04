@@ -1,0 +1,21 @@
+scope,benchmark_mode,config_a,config_b,metric,test_name,p_value,statistic,n_pairs,n_nonzero_diffs,mean_a,mean_b,mean_diff
+overall,overall,Agentic,Baseline,ER,Wilcoxon signed-rank,2.492922674430368e-40,1596.0,500,232,1.25,1.668,-0.418
+overall,overall,Agentic,Baseline,IP,Wilcoxon signed-rank,9.968440833895423e-44,418.0,500,208,0.832,0.032,0.8
+overall,overall,Agentic,Baseline,EX,Wilcoxon signed-rank,0.43276758066778476,148.5,500,26,0.044,0.06,-0.016
+overall,overall,Agentic,Baseline,Total,Wilcoxon signed-rank,9.517633339009833e-13,14447.0,500,321,2.126,1.76,0.366
+overall,overall,Agentic,Full pipeline,ER,Wilcoxon signed-rank,1.0,540.5,500,46,1.25,1.25,0.0
+overall,overall,Agentic,Full pipeline,IP,Wilcoxon signed-rank,0.5023349543605021,1498.5,500,80,0.832,0.856,-0.024
+overall,overall,Agentic,Full pipeline,EX,Wilcoxon signed-rank,0.47950012218695337,13.5,500,8,0.044,0.052,-0.008
+overall,overall,Agentic,Full pipeline,Total,Wilcoxon signed-rank,0.48384865098180707,3258.5,500,118,2.126,2.158,-0.032
+overall,overall,RAG,Baseline,ER,Wilcoxon signed-rank,9.941161279141561e-42,1110.0,500,222,1.262,1.668,-0.406
+overall,overall,RAG,Baseline,IP,Wilcoxon signed-rank,3.0154425427408237e-48,109.0,500,217,0.892,0.032,0.86
+overall,overall,RAG,Baseline,EX,Wilcoxon signed-rank,0.12819017434510793,234.0,500,35,0.096,0.06,0.036
+overall,overall,RAG,Baseline,Total,Wilcoxon signed-rank,5.447736239724271e-20,12314.0,500,333,2.25,1.76,0.49
+overall,overall,Full pipeline,RAG,ER,Wilcoxon signed-rank,0.47328946538009,1136.0,500,70,1.25,1.262,-0.012
+overall,overall,Full pipeline,RAG,IP,Wilcoxon signed-rank,0.4245102891773691,3776.0,500,127,0.856,0.892,-0.036
+overall,overall,Full pipeline,RAG,EX,Wilcoxon signed-rank,0.048193488293190784,160.0,500,31,0.052,0.096,-0.044
+overall,overall,Full pipeline,RAG,Total,Wilcoxon signed-rank,0.08500745723631366,7138.5,500,182,2.158,2.25,-0.092
+overall,overall,Full pipeline,Agentic,ER,Wilcoxon signed-rank,1.0,540.5,500,46,1.25,1.25,0.0
+overall,overall,Full pipeline,Agentic,IP,Wilcoxon signed-rank,0.5023349543605021,1498.5,500,80,0.856,0.832,0.024
+overall,overall,Full pipeline,Agentic,EX,Wilcoxon signed-rank,0.47950012218695337,13.5,500,8,0.052,0.044,0.008
+overall,overall,Full pipeline,Agentic,Total,Wilcoxon signed-rank,0.48384865098180707,3258.5,500,118,2.158,2.126,0.032

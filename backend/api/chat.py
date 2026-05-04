@@ -8,14 +8,8 @@ from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Depends
 from core.dependencies import get_system
 from core.engine import AgenticEmpathySystem
 
-# Cuốn sổ tạm lưu bối cảnh Liệu pháp Ghế trống
 empty_chair_sessions = {}
-
-# Onboarding state tracking
 onboarding_sessions = {}
-# Structure: { user_id: { "step": 0, "answers": [] } }
-
-# ── ONBOARDING HELPERS ───────────────────────────────────────────────────
 
 ONBOARDING_QUESTIONS = [
     (
@@ -30,7 +24,7 @@ ONBOARDING_QUESTIONS = [
     ),
     (
         "That really helps me understand you better.\n\n"
-        "One last thing — what would feel most helpful right now? "
+        "One last thing - what would feel most helpful right now? "
         "Having someone listen and understand you, "
         "or helping you think through solutions and next steps?"
     ),
@@ -39,19 +33,18 @@ ONBOARDING_QUESTIONS = [
 ONBOARDING_COMPLETE_MSG = (
     "Thank you for letting me get to know you. "
     "I'll keep everything you've shared in mind as we talk. "
-    "I'm here for you — what would you like to talk about?"
+    "I'm here for you - what would you like to talk about?"
 )
 
 
 def _is_new_user(system: AgenticEmpathySystem, user_id: str) -> bool:
-    """Check if user has no meaningful OCEAN profile yet (all at default 0.5)."""
     if not system.memory or not system.memory.driver:
         return False
     try:
         profile = system.memory.get_user_profile(user_id)
         values = list(profile.values())
         return all(abs(v - 0.5) < 0.01 for v in values)
-    except:
+    except Exception:
         return False
 
 
@@ -61,7 +54,6 @@ def _warm_start_ocean_from_text(
     combined_text: str,
     emotion: str,
 ):
-    """Infer OCEAN from combined onboarding answers and save to Neo4j."""
     if not system.memory or not system.memory.driver:
         return
     try:
@@ -82,7 +74,6 @@ def _warm_start_ocean_from_text(
 
 
 async def _stream_tts_to_ws(websocket: WebSocket, voice_io, text: str):
-    """Run ElevenLabs streaming in a thread, forward MP3 chunks to WebSocket as they arrive."""
     loop = asyncio.get_event_loop()
     queue: asyncio.Queue = asyncio.Queue()
 
@@ -91,7 +82,7 @@ async def _stream_tts_to_ws(websocket: WebSocket, voice_io, text: str):
             for chunk in voice_io.stream_speech_chunks(text):
                 asyncio.run_coroutine_threadsafe(queue.put(chunk), loop)
         finally:
-            asyncio.run_coroutine_threadsafe(queue.put(None), loop)  # sentinel
+            asyncio.run_coroutine_threadsafe(queue.put(None), loop)
 
     threading.Thread(target=producer, daemon=True).start()
 
@@ -108,16 +99,16 @@ async def _stream_tts_to_ws(websocket: WebSocket, voice_io, text: str):
 
 router = APIRouter()
 
+
 @router.websocket("/ws/chat/{user_id}")
 async def websocket_chat(
-    websocket: WebSocket, 
-    user_id: str, 
+    websocket: WebSocket,
+    user_id: str,
     system: AgenticEmpathySystem = Depends(get_system)
 ):
     await websocket.accept()
-    print(f"🔌 Web Client [{user_id}] đã kết nối.")
+    print(f"Web Client [{user_id}] connected.")
 
-    # Send first onboarding question if new user
     if _is_new_user(system, user_id):
         onboarding_sessions[user_id] = {"step": 0, "answers": []}
         await websocket.send_json({
@@ -132,19 +123,14 @@ async def websocket_chat(
 
     try:
         while True:
-            # 1. Nhận dữ liệu từ Frontend
             data = await websocket.receive_text()
             payload = json.loads(data)
 
             action = payload.get("action", "send_text")
             mode = payload.get("mode", "messaging")
-            target_name = payload.get("target_name", "Hình bóng giả định")
-
             user_text = ""
 
-            # --- GIAI ĐOẠN 1: XỬ LÝ ĐẦU VÀO ---
             if action == "start_recording":
-                # Push-to-talk: start recording in background, wait for stop_recording
                 recording_stop_event = threading.Event()
                 recording_task = asyncio.create_task(
                     asyncio.to_thread(system.voice_io.record_audio_ptt, recording_stop_event)
@@ -152,8 +138,7 @@ async def websocket_chat(
                 await websocket.send_json({"type": "status", "content": "listening"})
                 continue
 
-            elif action == "stop_recording":
-                # Signal recording to stop, await the result, then transcribe
+            if action == "stop_recording":
                 if recording_stop_event:
                     recording_stop_event.set()
                 audio_file = await recording_task if recording_task else None
@@ -162,7 +147,6 @@ async def websocket_chat(
                 if audio_file:
                     user_text = await asyncio.to_thread(system.voice_io.transcribe, audio_file)
                 await websocket.send_json({"type": "user_speech", "content": user_text})
-
             else:
                 user_text = payload.get("text", "").strip()
 
@@ -170,68 +154,57 @@ async def websocket_chat(
                 await websocket.send_json({"type": "status", "content": "idle"})
                 continue
 
-            # ── ONBOARDING: 3-question flow for new users ────────────
             if mode == "messaging" and user_id in onboarding_sessions:
                 session = onboarding_sessions[user_id]
                 step = session["step"]
-
-                # Save current answer
                 session["answers"].append(user_text)
                 session["step"] += 1
 
                 if step < len(ONBOARDING_QUESTIONS) - 1:
-                    # Still have questions — send next one
-                    next_question = ONBOARDING_QUESTIONS[step + 1]
                     await websocket.send_json({
                         "type": "message",
-                        "content": next_question,
+                        "content": ONBOARDING_QUESTIONS[step + 1],
                         "mode": mode,
                     })
                     await websocket.send_json({"type": "status", "content": "idle"})
                     continue
-                else:
-                    # All 3 answers collected — warm-start OCEAN
-                    combined_text = " | ".join(session["answers"])
 
-                    percept = await asyncio.to_thread(
-                        system.perception.detect_emotion, combined_text
-                    )
-                    warmstart_emotion = percept.get("emotion", "neutral")
+                combined_text = " | ".join(session["answers"])
+                percept = await asyncio.to_thread(system.perception.detect_emotion, combined_text)
+                warmstart_emotion = percept.get("emotion", "neutral")
 
-                    await asyncio.to_thread(
-                        _warm_start_ocean_from_text,
-                        system, user_id, combined_text, warmstart_emotion
-                    )
+                await asyncio.to_thread(
+                    _warm_start_ocean_from_text,
+                    system,
+                    user_id,
+                    combined_text,
+                    warmstart_emotion,
+                )
 
-                    # Clean up onboarding session
-                    onboarding_sessions.pop(user_id, None)
+                onboarding_sessions.pop(user_id, None)
+                await websocket.send_json({
+                    "type": "message",
+                    "content": ONBOARDING_COMPLETE_MSG,
+                    "mode": mode,
+                })
+                await websocket.send_json({"type": "status", "content": "idle"})
+                continue
 
-                    await websocket.send_json({
-                        "type": "message",
-                        "content": ONBOARDING_COMPLETE_MSG,
-                        "mode": mode,
-                    })
-                    await websocket.send_json({"type": "status", "content": "idle"})
-                    continue
-            # ─────────────────────────────────────────────────────────
-
-            # --- GIAI ĐOẠN 2: PHÂN TÍCH CẢM XÚC (PERCEPTION) ---
             percept = await asyncio.to_thread(system.perception.detect_emotion, user_text)
-            emotion = percept.get('emotion', 'Bình thường')
-            
+            emotion = percept.get("emotion", "neutral")
+
             await websocket.send_json({
-                "type": "emotion_status", 
-                "emotion": emotion, 
-                "confidence": percept.get('confidence', 0.0)
+                "type": "emotion_status",
+                "emotion": emotion,
+                "confidence": percept.get("confidence", 0.0)
             })
 
-            # --- GIAI ĐOẠN 3: SUY NGHĨ (BRAIN) ---
-            print(f"🗣️ Người dùng nói: {user_text}") 
+            print(f"User said: {user_text}")
             ai_response = ""
+            skip_background_learning = False
 
             try:
                 if mode == "empty-chair":
-                    # Bóc tách thông tin từ Form
                     if user_text.startswith("[SYSTEM_INIT]"):
                         target_match = re.search(r"TARGET:\s*(.*?)\s*\|", user_text)
                         rel_match = re.search(r"RELATIONSHIP:\s*(.*?)\s*\|", user_text)
@@ -241,46 +214,70 @@ async def websocket_chat(
                         empty_chair_sessions[user_id] = {
                             "target_name": target_match.group(1).strip() if target_match else "Unknown",
                             "relationship": rel_match.group(1).strip() if rel_match else "",
-                            "unspoken_need": need_match.group(1).strip() if need_match else ""
+                            "unspoken_need": need_match.group(1).strip() if need_match else "",
                         }
                         user_text = msg_match.group(1).strip() if msg_match else user_text
 
-                    # Lấy bối cảnh ra
-                    session_data = empty_chair_sessions.get(user_id, {
-                        "target_name": "Người thương", 
-                        "relationship": "Một người rất quan trọng", 
-                        "unspoken_need": "Tôi muốn nói ra sự thật"
-                    })
-
-                    ai_response = await asyncio.to_thread(
-                        system.empty_chair.generate_response,
-                        user_id=user_id, 
-                        target_name=session_data["target_name"], 
-                        relationship=session_data["relationship"], 
-                        unspoken_need=session_data["unspoken_need"], 
-                        user_input=user_text, 
-                        emotion=emotion
-                    )
+                    safety = system.safety.classifier.classify(user_text, emotion, mode="empty-chair")
+                    if safety.risk_type == "self_harm_or_suicide":
+                        skip_background_learning = True
+                        ai_response = system.safety.policy.immediate_response(
+                            safety.risk_type, user_text, emotion
+                        )
+                        if system.memory and system.memory.driver:
+                            safe_summary = system.safety.sanitizer.build_safe_summary(
+                                user_input=user_text,
+                                emotion=emotion,
+                                risk_type=safety.risk_type,
+                                ai_response=ai_response,
+                            )
+                            system.memory.add_turn(
+                                user_id,
+                                safe_summary,
+                                emotion,
+                                ai_response,
+                                risk_level=safety.risk_level,
+                                risk_type=safety.risk_type,
+                                raw_stored=False,
+                            )
+                    else:
+                        session_data = empty_chair_sessions.get(user_id, {
+                            "target_name": "Người thương",
+                            "relationship": "Một người rất quan trọng",
+                            "unspoken_need": "Tôi muốn nói ra sự thật",
+                        })
+                        ai_response = await asyncio.to_thread(
+                            system.empty_chair.generate_response,
+                            user_id=user_id,
+                            target_name=session_data["target_name"],
+                            relationship=session_data["relationship"],
+                            unspoken_need=session_data["unspoken_need"],
+                            user_input=user_text,
+                            emotion=emotion
+                        )
                 else:
-                    # Dành cho mode Nhắn tin thấu cảm & Tâm sự giọng nói
-                    ai_response, _ = await system.process_brain_agentic(user_text, user_id, emotion)
-                    
-            except Exception as e:
-                print("\n❌ LỖI NGẦM TẠI LANGCHAIN/NEO4J:")
+                    ai_response, routing_info, safety_info = await system.process_brain_agentic(
+                        user_text,
+                        user_id,
+                        emotion,
+                        mode=mode,
+                    )
+                    skip_background_learning = safety_info.get("risk_type") == "self_harm_or_suicide"
+                    _ = routing_info, safety_info
+
+            except Exception:
+                print("\nUnexpected error during chat processing:")
                 traceback.print_exc()
                 ai_response = "Xin lỗi, đường truyền tâm trí của tôi đang bị nhiễu do lỗi hệ thống."
 
-            print(f"🤖 AI trả lời: '{ai_response}'")
+            print(f"AI replied: '{ai_response}'")
 
-            # --- GIAI ĐOẠN 4: HIỂN THỊ LÊN MÀN HÌNH CHAT (RẤT QUAN TRỌNG) ---
-            # Thiếu cái này thì Frontend sẽ không thấy chữ gì cả!
             await websocket.send_json({
-                "type": "message", 
-                "content": ai_response, 
+                "type": "message",
+                "content": ai_response,
                 "mode": mode
             })
 
-            # --- GIAI ĐOẠN 5: PHÁT GIỌNG NÓI (stream MP3 chunks to browser) ---
             use_voice = payload.get("use_voice", False) or (mode == "voice")
             if use_voice:
                 await websocket.send_json({"type": "status", "content": "speaking"})
@@ -288,12 +285,12 @@ async def websocket_chat(
 
             await websocket.send_json({"type": "status", "content": "idle"})
 
-            # --- GIAI ĐOẠN 6: BACKGROUND TASKS ---
-            asyncio.create_task(system.background_learning(user_text, user_id, emotion))
+            if not skip_background_learning:
+                asyncio.create_task(system.background_learning(user_text, user_id, emotion))
             asyncio.create_task(system.manage_reflection(user_id))
 
     except WebSocketDisconnect:
-        print(f"🔌 Web Client [{user_id}] ngắt kết nối.")
+        print(f"Web Client [{user_id}] disconnected.")
     except Exception as e:
-        print(f"❌ WebSocket Error: {e}")
+        print(f"WebSocket Error: {e}")
         await websocket.send_json({"type": "status", "content": "idle"})

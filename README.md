@@ -1,223 +1,289 @@
-# SoulMate – Agentic AI Companion 🤖💙
+# SoulMate: Agentic Empathy AI Companion
 
-> Một người bạn đồng hành AI thấu cảm, được xây dựng trên kiến trúc Multi-Agent với trí nhớ đồ thị, định tuyến thông minh và giao tiếp đa phương thức.
+SoulMate is a multi-agent conversational companion focused on emotionally supportive dialogue. It combines emotion detection, retrieval-augmented prompting, graph memory, personality adaptation, safety guardrails, and multimodal interfaces across web chat, voice, and empty-chair style interactions.
 
-Phát triển bởi **Lê Quốc Bảo** — Sinh viên Trường Đại học Công nghệ Thông tin (UIT).
+## Overview
 
----
+SoulMate is built around a small set of specialized agents coordinated by a central engine:
 
-## ✨ Tính Năng Nổi Bật
+- `PerceptionAgent` detects the user's emotion from the current message.
+- `RouterAgent` decides whether the turn should use `RAG only`, `RAG + Memory`, or `RAG + OCEAN`.
+- `GraphMemory` stores conversation turns, an OCEAN-style personality profile, and a narrative summary in Neo4j.
+- `KnowledgeAgent` retrieves supportive examples from ChromaDB.
+- `DialogueAgent` generates the final response.
+- `InferenceAgent` updates the user profile over time with EMA-smoothed trait estimates.
+- `SafetyGuardrail` constrains routing, retrieval, memory writes, and response style for elevated-risk cases.
+- `EmptyChairAgent` supports a separate roleplay-based empty-chair flow.
 
-| Tính năng                       | Mô tả                                                                |
-| ------------------------------- | -------------------------------------------------------------------- |
-| 🧠 **Multi-Agent Architecture** | 6 agent chuyên biệt phối hợp để nhận thức, định tuyến, suy luận và phản hồi |
-| 🔀 **Agentic Router**          | RouterAgent tự động chọn pipeline tối ưu cho từng tin nhắn (RAG ± Memory/OCEAN) |
-| 🗂️ **Graph Memory**             | Neo4j lưu hồ sơ tâm lý OCEAN (EMA smoothing) & lịch sử hội thoại theo thời gian thực |
-| 📚 **RAG Knowledge Base**       | ChromaDB + EPITOME/ESConv dataset cung cấp ví dụ thấu cảm cho Dialogue Agent |
-| ⚡ **Real-time WebSocket**      | Chat liên tục, độ trễ thấp qua 3 chế độ: nhắn tin, giọng nói, ghế trống |
-| 🎙️ **Voice I/O**                | Giao tiếp bằng giọng nói (OpenAI Whisper STT + ElevenLabs streaming TTS, push-to-talk) |
-| 🛋️ **Empty Chair Therapy**      | Agent mô phỏng liệu pháp Gestalt "Chiếc ghế trống"                  |
-| 🌡️ **Warm-start Onboarding**   | 3 câu hỏi khởi đầu để xây dựng hồ sơ OCEAN ban đầu cho user mới    |
-| 🔌 **Physical Companion**       | Standalone script + ESP32 speaker qua USB serial — SoulMate có thể có thân xác vật lý |
+RAG is always the base layer in routed production mode. The router may add at most one secondary component:
 
----
+- `Memory`
+- `OCEAN`
 
-## 🏗️ Kiến Trúc Hệ Thống
+## Core Features
 
-```
-                        ┌─────────────────────┐
-                        │     User Message     │
-                        └──────────┬──────────┘
-                                   │
-                    ┌──────────────▼────────────────┐
-                    │       Perception Agent        │
-                    │       perception.py           │
-                    │                               │
-                    │  1. Keyword matching          │
-                    │  2. RoBERTa inference         │
-                    │     (roberta-base-go_emotions)│
-                    │                               │
-                    │  Output: emotion_label,       │
-                    │          emotion_score        │
-                    └──────────────┬────────────────┘
-                                   │
-                    ┌──────────────▼────────────────┐
-                    │         Router Agent          │
-                    │         router.py             │
-                    │                               │
-                    │  GPT-4o-mini (temperature=0)  │
-                    │                               │
-                    │  Rules:                       │
-                    │  • RAG always ON              │
-                    │  • At most ONE secondary:     │
-                    │    Memory OR OCEAN            │
-                    │  • Memory > OCEAN priority    │
-                    │                               │
-                    │  Output: routing decision     │
-                    │  (use_rag, use_memory,        │
-                    │   use_ocean)                  │
-                    └──────────────┬────────────────┘
-                                   │
-                    ┌──────────────▼──────────────┐
-                    │        Graph Memory         │
-                    │        memory.py            │
-                    │                             │
-                    │  Reads from Neo4j:          │
-                    │  • conversation history     │
-                    │    (relevance-filtered)     │
-                    │  • user OCEAN profile       │
-                    │  • narrative summary        │
-                    │                             │
-                    │  Output: memory_context     │
-                    └──────────┬──────────┬───────┘
-                               │          │
-               ┌───────────────┘          └──────────────────┐
-               │  Realtime                                   │  Background async
-               ▼                                             ▼
-┌──────────────────────────┐               ┌──────────────────────────────┐
-│     Knowledge Agent       │              │       Inference Agent        │
-│     knowledge.py          │              │       inference.py           │
-│                           │              │                              │
-│  ChromaDB vector search   │              │  Reads from Neo4j:           │
-│  embed: text-embedding    │              │  • OCEAN current scores      │
-│         -3-small          │              │  • conversation history      │
-│                           │              │                              │
-│  Output: rag_examples     │              │  GPT-4o-mini analyzes        │
-│          (top-k chunks)   │              │  → updates scores via EMA    │
-└──────────┬────────────────┘              │    O C E A N (α=0.15)       │
-           │                               │                              │
-           │                               │  Writes back → Neo4j         │
-           │                               └──────────────────────────────┘
-           │                                             │
-           │                               ┌────────────▼─────────────────┐
-           │                               │    Narrative Reflection      │
-           │                               │    (triggers every 10 turns) │
-           │                               │                              │
-           │                               │  Summarizes conversation     │
-           │                               │  → generates reflection note │
-           │                               │  → saves to Neo4j            │
-           │                               └──────────────────────────────┘
-           │
-           │         ┌─────────────────────────────────────┐
-           │         │           prompts.py                │
-           │         │   (system prompts for all agents)   │
-           │         └──────────────────┬──────────────────┘
-           │                            │
-           ▼                            ▼
-┌──────────────────────────────────────────────────────────┐
-│                    Dialogue Agent                        │
-│                    dialogue.py                           │
-│                                                          │
-│  Combined input:                                         │
-│  ┌─────────────┐  ┌──────────────┐  ┌─────────────────┐  │
-│  │   emotion   │  │    memory    │  │   rag_examples  │  │
-│  │   label +   │  │   context    │  │   (ChromaDB)    │  │
-│  │   score     │  │   (Neo4j)    │  │                 │  │
-│  └─────────────┘  └──────────────┘  └─────────────────┘  │
-│            ↓               ↓                  ↓          │
-│  ┌──────────────────────────────────────────────────────┐ │
-│  │              GPT-4o-mini (temperature=0)              │ │
-│  │   system prompt (from prompts.py)                     │ │
-│  │   + OCEAN profile (from Inference Agent)              │ │
-│  └──────────────────────────────────────────────────────┘ │
-└──────────────────────────┬───────────────────────────────┘
-                           │
-              ┌────────────▼────────────┐
-              │      Final Response     │
-              └────────────┬────────────┘
-                           │
-            ┌──────────────┴──────────────┐
-            │                             │
-            ▼                             ▼
-┌───────────────────┐         ┌───────────────────────┐
-│  mode: messaging  │         │     mode: voice       │
-│                   │         │                       │
-│  Text response    │         │  User audio           │
-│  → send directly  │         │  → Whisper STT        │
-│    via WebSocket  │         │  → Text (processed    │
-│                   │         │    normally as above) │
-│                   │         │  → ElevenLabs TTS     │
-│                   │         │  → Audio response     │
-│                   │         │    via WebSocket      │
-└───────────────────┘         └───────────────────────┘
+- Multi-agent backend with explicit routing and component-level control
+- Neo4j graph memory for turns, OCEAN profile, and narrative summary
+- ChromaDB RAG grounded in empathy-oriented support examples
+- Real-time chat over FastAPI WebSockets
+- Voice input/output with Whisper STT and ElevenLabs TTS
+- Empty-chair interaction mode
+- Benchmark suite covering empathy quality, long-context memory QA, and routing accuracy
+- Optional physical companion flow via ESP32 speaker output
 
+## Repository Structure
 
-╔══════════════════════════════════════════════════════════╗
-║         Empty Chair Agent  (runs independently)          ║
-║         emptychair_agent.py                              ║
-║                                                          ║
-║  Trigger: mode = empty-chair                             ║
-║  Does NOT go through Router → Dialogue pipeline          ║
-║                                                          ║
-║  Input:                                                  ║
-║  • relationship_context (provided by user)               ║
-║  • target_person_profile                                 ║
-║  • conflict_history (from Graph Memory)                  ║
-║  • dedicated system prompt (Gestalt therapy)             ║
-║                                                          ║
-║  GPT-4o-mini (temperature=0.7) role-plays as target      ║
-║  → Simulates that person's responses                     ║
-║  → Supports empty chair therapy technique                ║
-║                                                          ║
-║  Output → WebSocket → Frontend (empty-chair/page.tsx)    ║
-╚══════════════════════════════════════════════════════════╝
+```text
+agentic-empathy-ai/
+├── backend/
+│   ├── agent/
+│   │   ├── dialogue.py
+│   │   ├── emptychair_agent.py
+│   │   ├── inference.py
+│   │   ├── knowledge.py
+│   │   ├── memory.py
+│   │   ├── perception.py
+│   │   ├── prompts.py
+│   │   ├── router.py
+│   │   ├── safety.py
+│   │   └── voice_io.py
+│   ├── api/
+│   ├── core/
+│   │   └── engine.py
+│   ├── data/
+│   ├── evaluate/
+│   │   └── benchmark/
+│   ├── scripts/
+│   └── main.py
+├── frontend/
+│   ├── app/
+│   ├── components/
+│   ├── context/
+│   └── hooks/
+├── esp32/
+└── README.md
 ```
 
-### Các Agent
+## Architecture
 
-| Agent | File | Vai trò |
-|-------|------|---------|
-| **Perception Agent** | `perception.py` | Phân tích cảm xúc (keyword + RoBERTa) |
-| **Router Agent** | `router.py` | Định tuyến pipeline: chọn RAG ± Memory/OCEAN cho mỗi tin nhắn |
-| **Inference Agent** | `inference.py` | Suy luận tính cách OCEAN, cập nhật qua EMA smoothing |
-| **Knowledge Agent** | `knowledge.py` | Truy xuất ví dụ thấu cảm qua RAG (ChromaDB) |
-| **Dialogue Agent** | `dialogue.py` | Tổng hợp context & sinh phản hồi thấu cảm |
-| **Empty Chair Agent** | `emptychair_agent.py` | Đóng vai đối tượng trong liệu pháp Gestalt |
+High-level request flow:
 
----
+1. User message arrives through chat or voice.
+2. `PerceptionAgent` detects an emotion label.
+3. `SafetyGuardrail` classifies the turn for risk.
+4. In routed mode, `RouterAgent` decides which secondary capability to use on top of RAG.
+5. `GraphMemory` optionally provides relevant conversation context and/or the user profile.
+6. `KnowledgeAgent` retrieves empathy-support examples from ChromaDB.
+7. `DialogueAgent` generates the response with the combined context.
+8. `GraphMemory` stores the turn, subject to safety restrictions.
+9. Background profile learning and periodic narrative reflection update the long-term user model.
 
-## 🛠️ Tech Stack
+## Safety Guardrails
 
-| Thành phần       | Công nghệ                                        |
-| ---------------- | ------------------------------------------------- |
-| Backend          | Python 3.12+, FastAPI (REST + WebSocket)          |
-| Frontend         | Next.js 16, React 19, TypeScript, Tailwind CSS 4  |
-| Package Manager  | `uv` (backend), `npm` (frontend)                  |
-| LLM              | GPT-4o-mini (dialogue, inference, routing)         |
-| Emotion Detection| RoBERTa (`SamLowe/roberta-base-go_emotions`)      |
-| Graph DB         | Neo4j (Memory, OCEAN Profile, Narrative)           |
-| Vector DB        | ChromaDB (RAG — ESConv + EPITOME dataset)          |
-| Voice STT        | OpenAI Whisper                                     |
-| Voice TTS        | ElevenLabs                                         |
-| UI               | Framer Motion, Recharts (OCEAN radar chart)        |
+Safety behavior is implemented in [`backend/agent/safety.py`](/D:/GitHub/agentic-empathy-ai/backend/agent/safety.py) and enforced from [`backend/core/engine.py`](/D:/GitHub/agentic-empathy-ai/backend/core/engine.py).
 
----
+### Safety classifier outputs
 
-## ⚙️ Cài Đặt & Khởi Chạy
+Each turn is classified into one of four risk categories:
 
-### Yêu cầu
+- `normal_support`
+- `high_distress`
+- `clinical_boundary`
+- `self_harm_or_suicide`
 
-- [Python 3.12+](https://www.python.org/downloads/)
-- [Node.js 18+](https://nodejs.org/)
-- [uv](https://docs.astral.sh/uv/)
-- Neo4j server (Local hoặc [AuraDB](https://neo4j.com/cloud/platform/aura-graph-database/))
+Each decision includes:
 
-### 1. Clone & cài đặt dependencies
+- `risk_type`
+- `risk_level`
+- whether routing is allowed
+- whether memory is allowed
+- whether OCEAN is allowed
+- whether RAG is allowed
+- whether safe mode should be enabled
+- whether the raw turn may be stored
+- a short reason string
+
+### Risk categories
+
+#### `normal_support`
+
+Default case when no elevated safety concern is detected.
+
+- Memory allowed
+- OCEAN allowed
+- RAG allowed
+- Raw turn storage allowed
+- Normal response generation
+
+#### `high_distress`
+
+Triggered by strong distress wording or distress-heavy emotion labels. Current rules include phrases such as:
+
+- `hopeless`
+- `can't take this anymore`
+- `falling apart`
+- `panic`
+- `empty inside`
+- `worthless`
+
+It also triggers on emotions in:
+
+- `depressed`
+- `fearful`
+- `anxious`
+- `ashamed`
+
+Guardrail behavior:
+
+- Router still runs
+- Memory remains allowed
+- OCEAN is disabled
+- RAG remains allowed
+- Safe mode is enabled
+- Raw turn storage is still allowed
+- The response is instructed to stay gentle, calm, grounding, and low-intensity
+
+This matters because personality adaptation can be helpful in normal support, but under acute distress the system prioritizes steadiness over style personalization.
+
+#### `clinical_boundary`
+
+Triggered by requests that push the system into diagnostic or treatment territory, for example:
+
+- `diagnose me`
+- `do i have depression`
+- `what disorder do i have`
+- `am i bipolar`
+- `prescribe`
+- `treatment plan`
+- `am i mentally ill`
+
+Guardrail behavior:
+
+- Router still runs
+- Memory remains allowed
+- OCEAN is disabled
+- RAG is disabled
+- Safe mode is enabled
+- Raw turn storage is allowed
+- The response is instructed to stay supportive without diagnosing or claiming clinical authority
+
+The design goal is to preserve supportive conversation while preventing the model from acting like a clinician.
+
+#### `self_harm_or_suicide`
+
+Triggered by explicit self-harm or suicide language, including phrases such as:
+
+- `kill myself`
+- `want to die`
+- `end my life`
+- `suicide`
+- `self harm`
+- `hurt myself`
+- `cut myself`
+- `overdose`
+
+Guardrail behavior:
+
+- Router is bypassed
+- Memory is disabled
+- OCEAN is disabled
+- RAG is disabled
+- Safe mode is enabled
+- Raw turn storage is not allowed
+- The system returns an immediate crisis-oriented supportive response
+- The stored memory entry is replaced with a safety-preserving summary rather than the raw message
+
+This is the strictest path in the system.
+
+### Memory sanitization
+
+The memory sanitizer converts elevated-risk turns into safer summaries before storage when raw text should not be retained. Current summary styles include:
+
+- severe distress needing immediate safety guidance
+- clinical interpretation requests beyond the assistant's role
+- elevated emotional distress requiring grounding support
+
+This keeps memory useful for future continuity while reducing the risk of replaying dangerous or overly sensitive raw content.
+
+### Safety interaction with routing
+
+Production safety does not replace routing; it constrains routing.
+
+- `self_harm_or_suicide`: bypasses routed generation entirely
+- `high_distress`: disables OCEAN after routing
+- `clinical_boundary`: disables OCEAN and RAG after routing
+
+That means the router remains architecturally simple, while the engine enforces final policy.
+
+## Routing Logic
+
+The production router lives in [`backend/agent/router.py`](/D:/GitHub/agentic-empathy-ai/backend/agent/router.py).
+
+Current invariants:
+
+- `use_rag` is always forced to `True`
+- at most one secondary is allowed
+- no memory without history
+- no OCEAN without a non-default profile
+
+The router prompt is designed to separate three cases:
+
+- `RAG only` for self-contained turns
+- `RAG + Memory` when referent resolution or continuity from prior turns is needed
+- `RAG + OCEAN` when the turn is self-contained but tone or framing should adapt to a meaningfully non-default profile
+
+The router also receives a lightweight profile significance hint derived from the maximum absolute trait deviation from `0.5`.
+
+## OCEAN Profile and Narrative Memory
+
+Production profile updates live in [`backend/agent/memory.py`](/D:/GitHub/agentic-empathy-ai/backend/agent/memory.py).
+
+Important behavior:
+
+- The current OCEAN profile is stored in Neo4j.
+- Profile updates use EMA smoothing with `alpha = 0.15`.
+- Narrative reflection runs periodically and stores a free-text summary in the profile node.
+- Dialogue can consume both the structured OCEAN scores and the narrative summary.
+
+The benchmark suite deliberately does not modify this production behavior unless a benchmark-specific helper is explicitly isolated from the core system.
+
+## Tech Stack
+
+- Backend: Python, FastAPI, WebSockets
+- Frontend: Next.js 16, React 19, TypeScript, Tailwind CSS 4
+- Package managers: `uv` for backend, `npm` for frontend
+- LLM backbone: `gpt-4o-mini`
+- Emotion model: `SamLowe/roberta-base-go_emotions`
+- Graph database: Neo4j
+- Vector database: ChromaDB
+- Speech-to-text: Whisper
+- Text-to-speech: ElevenLabs
+
+## Setup
+
+### Prerequisites
+
+- Python 3.12+
+- Node.js 18+
+- `uv`
+- Neo4j
+
+### Install
 
 ```bash
 git clone https://github.com/BaoWhiteHat/agentic-empathy-ai.git
 cd agentic-empathy-ai
 
-# Backend
-cd backend && uv sync
+cd backend
+uv sync
 
-# Frontend
-cd ../frontend && npm install
+cd ../frontend
+npm install
 ```
 
-### 2. Cấu hình môi trường
+### Environment
 
-Tạo file `backend/.env`:
+Create `backend/.env`:
 
 ```env
 OPENAI_API_KEY=your_openai_api_key_here
@@ -227,207 +293,207 @@ NEO4J_PASSWORD=your_neo4j_password
 ELEVEN_API_KEY=your_elevenlabs_api_key
 ```
 
-> ⚠️ **Không commit file `.env`** — đã được thêm vào `.gitignore`.
-
-### 3. Build RAG Knowledge Base
-
-ChromaDB phải được build trước khi chạy app. KnowledgeAgent yêu cầu `chroma_db/` đã có dữ liệu.
+### Build the RAG database
 
 ```bash
 cd backend
-
-# Option A: ESConv dataset only (80% train split)
-uv run python scripts/build_rag_from_esconv.py
-
-# Option B: ESConv 100% + EPITOME level=2 (khuyến nghị)
 uv run python scripts/build_rag_combined.py
 ```
 
-### 4. Khởi động
+### Run locally
+
+Backend:
 
 ```bash
-# Terminal 1 — Backend (port 8000)
 cd backend
 uv run uvicorn main:app --reload --host 0.0.0.0 --port 8000
+```
 
-# Terminal 2 — Frontend (port 3000)
+Frontend:
+
+```bash
 cd frontend
 npm run dev
 ```
 
-### 5. Kiểm tra hệ thống
-
-```bash
-cd backend && uv run python audit_pipeline.py
-```
-
-Validates: env vars, agent connectivity, Neo4j, ChromaDB, prompts.
-
----
-
-## 📡 API Reference
-
-| Endpoint                          | Mô tả                              |
-| --------------------------------- | ---------------------------------- |
-| `GET /docs`                       | Swagger UI – tài liệu REST API     |
-| `WS /ws/chat/{user_id}`          | WebSocket – kết nối chat real-time  |
-| `GET /profile/ocean/{user_id}`   | OCEAN personality scores (JSON)     |
-
-### WebSocket Message Protocol
-
-**Client → Server:**
-```json
-{"action": "send_text", "mode": "messaging|voice|empty-chair", "text": "...", "use_voice": false}
-{"action": "start_recording", "mode": "voice"}
-```
-
-**Server → Client:**
-```json
-{"type": "message", "content": "...", "mode": "..."}
-{"type": "emotion_status", "emotion": "...", "confidence": 0.85}
-{"type": "status", "content": "listening|speaking|idle"}
-{"type": "user_speech", "content": "..."}
-```
-
-Empty-chair sessions khởi tạo bằng format đặc biệt:
-```
-[SYSTEM_INIT] TARGET: {name} | RELATIONSHIP: {relation} | UNSPOKEN_NEED: {need} | MESSAGE: {message}
-```
-
----
-
-## 📁 Cấu Trúc Thư Mục
-
-```
-agentic-empathy-ai/
-├── backend/
-│   ├── agent/              # Các agent chuyên biệt
-│   │   ├── perception.py   #   Emotion detection (RoBERTa + keywords)
-│   │   ├── router.py       #   Agentic pipeline routing
-│   │   ├── memory.py       #   Neo4j graph memory (EMA + narrative)
-│   │   ├── knowledge.py    #   RAG retrieval (ChromaDB)
-│   │   ├── dialogue.py     #   Response generation
-│   │   ├── inference.py    #   OCEAN personality inference
-│   │   ├── emptychair_agent.py  # Empty chair therapy
-│   │   ├── voice_io.py     #   STT/TTS interface
-│   │   └── prompts.py      #   All system prompts (centralized)
-│   ├── api/                # REST & WebSocket endpoints
-│   ├── core/               # Engine orchestrator & DI
-│   ├── data/               # Emotion keywords, datasets
-│   ├── evaluate/           # Benchmark & evaluation scripts
-│   ├── scripts/            # RAG build scripts
-│   └── main.py             # Entry point
-├── frontend/
-│   ├── app/                # Next.js App Router pages
-│   │   ├── messaging/      #   Text chat
-│   │   ├── voice/          #   Voice orb UI
-│   │   └── empty-chair/    #   Therapy setup + chat
-│   ├── components/         # Sidebar, OceanChart, etc.
-│   ├── hooks/useChat.ts    # WebSocket connection hook
-│   └── context/            # UserContext, ThemeContext
-├── pyproject.toml
-└── uv.lock
-```
-
----
-
-## 📊 Evaluation (EPITOME Benchmark)
-
-Ablation study đánh giá chất lượng thấu cảm của từng cấu hình pipeline, sử dụng framework EPITOME từ `behavioral-data/Empathy-Mental-Health`. Đo trên 3 chiều thấu cảm (mỗi chiều 0–2):
-
-| Chiều | Ý nghĩa |
-|-------|---------|
-| **ER** (Emotional Reactions) | Phản hồi cảm xúc — thể hiện sự đồng cảm với cảm xúc người dùng |
-| **IP** (Interpretations) | Diễn giải — nhận diện và diễn đạt lại vấn đề của người dùng |
-| **EX** (Explorations) | Khám phá — đặt câu hỏi để hiểu sâu hơn tình huống |
-
-### Kết quả benchmark (1,000 posts × 5 configs = 5,000 responses)
-
-| Cấu hình | ER | IP | EX | Total |
-|-----------|------|------|------|-------|
-| Human (Reddit) | 0.39 | 0.91 | 0.28 | 1.57 |
-| Baseline (GPT-4o-mini) | 1.69 | 0.07 | 0.09 | 1.85 |
-| RAG | 1.04 | 0.59 | 0.76 | 2.39 |
-| RAG+Memory | 1.05 | 0.62 | 0.72 | 2.39 |
-| RAG+OCEAN | 1.03 | 0.59 | 0.77 | 2.39 |
-| **Agentic (SoulMate)** | **1.04** | **0.60** | **0.76** | **2.40** |
-
-> **Kiểm định thống kê** (Wilcoxon signed-rank test, N=1,000):
-> - Agentic vs Baseline: **p = 2.33×10⁻³⁷** (có ý nghĩa thống kê)
-> - RAG vs Baseline: **p = 3.95×10⁻³⁶** (có ý nghĩa thống kê)
-> - Agentic vs RAG/RAG+Memory/RAG+OCEAN: p > 0.7 (không có ý nghĩa — RAG là yếu tố chi phối)
-
-### Phân tích kết quả
-
-- **Agentic SoulMate đạt điểm cao nhất** (Total: 2.40), vượt trội so với Baseline (+30%, p < 10⁻³⁷)
-- **RAG là component quan trọng nhất** — riêng RAG đã nâng Total từ 1.85 lên 2.39 (+29%)
-- **Baseline có ER cao** (1.69) nhưng IP/EX gần bằng 0 — phản hồi cảm xúc mạnh nhưng không diễn giải hay khám phá
-- **RouterAgent** chọn RAG-only cho 100% benchmark posts (user mới, không có lịch sử) — Memory/OCEAN sẽ phát huy trong hội thoại đa lượt với user quen
-
-### Chạy benchmark
+Smoke test:
 
 ```bash
 cd backend
-
-# Quick ablation (5 configs × 50 posts = 250 responses)
-uv run python evaluate/benchmark/run_benchmark_v5.py
-
-# Full dataset (5 configs × 1,000 posts = 5,000 responses, ~3-6 giờ)
-uv run python evaluate/benchmark/run_benchmark_full.py
-
-# Score & visualize kết quả đã có (không tốn API)
-uv run python evaluate/benchmark/finalize_full.py
-
-# Stability test (3 lần chạy)
-uv run python evaluate/benchmark/run_stability_test.py
+uv run python audit_pipeline.py
 ```
 
----
+## API
 
-## 🔌 Physical Companion (ESP32)
+- `GET /docs`: Swagger UI
+- `WS /ws/chat/{user_id}`: realtime chat channel
+- `GET /profile/ocean/{user_id}`: current OCEAN profile as JSON
 
-SoulMate có thể chạy hoàn toàn không cần trình duyệt — giao tiếp qua mic laptop và phát âm thanh qua loa ESP32 kết nối USB.
+## Benchmark Suite
 
-```
-Laptop mic → Whisper STT → Pipeline → ElevenLabs TTS → USB Serial → ESP32 → Loa
-```
+The project now has three benchmark tracks under [`backend/evaluate/benchmark`](/D:/GitHub/agentic-empathy-ai/backend/evaluate/benchmark).
 
-### Chạy standalone
+### Benchmark 1: Empathy quality on EPITOME
+
+Purpose:
+
+- Evaluate response quality for empathy-style conversation generation
+- Compare pipeline variants on EPITOME-derived seeker posts
+
+Primary configs:
+
+- `Baseline`
+- `RAG`
+- `RAG+Memory`
+- `RAG+OCEAN`
+- `Agentic`
+- `Full pipeline`
+
+Main outputs:
+
+- generated responses
+- scored responses
+- summary results
+- statistical tests
+- router analysis
+- safety analysis
+- plot
+
+Run:
 
 ```bash
 cd backend
-uv run python voice_companion.py   # SPACE = bắt đầu/dừng thu âm, Q = thoát
+uv run python evaluate/benchmark/run_benchmark_b1_500.py
 ```
 
-Cấu hình trong `voice_companion.py`:
-```python
-USER_ID    = "Ghostman"   # ID user (dùng chung Neo4j với browser)
-ESP32_PORT = "COM4"       # Xem Device Manager → Ports
-USE_ESP32  = True         # False = phát qua loa laptop
+Finalize only:
+
+```bash
+cd backend
+uv run python evaluate/benchmark/finalize_b1_500.py
 ```
 
-### Hardware
+### Benchmark 2: LongMemEval memory-effectiveness QA
 
-| Linh kiện | Kết nối |
-|---|---|
-| MAX98357A DIN | GPIO 22 |
-| MAX98357A BCLK | GPIO 26 |
-| MAX98357A LRC | GPIO 25 |
-| MAX98357A VDD | 5V |
+Purpose:
 
-Firmware: `esp32/soulmate_speaker/soulmate_speaker.ino`
-Library cần cài: **ESP32-audioI2S** (schreibfaul1) qua Arduino Library Manager.
+- Evaluate whether memory improves long-context factual QA accuracy
+- Measure the effect of replay-based history on answer correctness
+- Keep router evaluation out of this benchmark
 
-### Thứ tự setup ESP32
+Dataset:
 
-1. Wire MAX98357A theo bảng trên
-2. Flash firmware qua Arduino IDE (board: ESP32 Dev Module)
-3. Tìm COM port trong Device Manager
-4. Cập nhật `ESP32_PORT` và `USE_ESP32 = True`
-5. Chạy `voice_companion.py`
+- `backend/data/LongMemEval/longmemeval_s_cleaned.json`
 
----
+Current fixed configs:
 
-## 📄 License
+- `Baseline`
+- `RAG`
+- `RAG+Memory`
+- `Full pipeline`
 
-MIT © 2025 Lê Quốc Bảo – UIT
+Design notes:
+
+- Uses a saved 200-case sample with `seed=42`
+- Replays LongMemEval history into Neo4j for memory-enabled configs
+- Scores answers deterministically with binary correctness
+- Agentic/router outputs are intentionally excluded from B2
+
+Main outputs:
+
+- `test_cases_b2_200.csv`
+- `generated_responses_b2_200.csv`
+- `scored_responses_b2_200.csv`
+- `summary_results_b2_200.csv`
+- `statistical_tests_b2_200.csv`
+- `results_b2_200.png`
+
+Run:
+
+```bash
+cd backend
+uv run python evaluate/benchmark/run_benchmark_b2_200.py
+```
+
+Finalize only:
+
+```bash
+cd backend
+uv run python evaluate/benchmark/finalize_b2_200.py
+```
+
+### Benchmark 3: Controlled routing benchmark
+
+Purpose:
+
+- Evaluate whether the production router chooses the correct route
+- Separate routing evaluation from generation quality and long-memory QA
+
+Routes:
+
+- `rag_only`
+- `memory`
+- `ocean`
+
+Dataset:
+
+- `backend/data/benchmark3/b3_cases.json`
+
+Benchmark shape:
+
+- 60 total cases
+- 20 `rag_only`
+- 20 `memory`
+- 20 `ocean`
+
+Design notes:
+
+- Uses isolated `bench_b3_<case_id>` users
+- Replays history into Neo4j for memory cases
+- Seeds exact OCEAN profiles into Neo4j with a benchmark-local helper for ocean cases
+- Calls the real production router decision path
+- Computes route accuracy, macro-F1, confusion matrix, and per-class metrics
+
+Main outputs:
+
+- `loaded_cases_b3.csv`
+- `router_predictions_b3.csv`
+- `summary_results_b3.csv`
+- `confusion_matrix_b3.csv`
+- `classification_report_b3.csv`
+- `error_analysis_b3.csv`
+- `confusion_matrix_b3.png`
+- `per_class_accuracy_b3.png`
+
+Run:
+
+```bash
+cd backend
+uv run python evaluate/benchmark/run_benchmark_b3.py
+```
+
+Finalize only:
+
+```bash
+cd backend
+uv run python evaluate/benchmark/finalize_b3.py
+```
+
+## Voice and Physical Companion
+
+The repository also supports a voice-first companion path and an ESP32 speaker setup.
+
+Standalone voice companion:
+
+```bash
+cd backend
+uv run python voice_companion.py
+```
+
+ESP32 firmware:
+
+- [`esp32/soulmate_speaker/soulmate_speaker.ino`](/D:/GitHub/agentic-empathy-ai/esp32/soulmate_speaker/soulmate_speaker.ino)
+
+## License
+
+MIT

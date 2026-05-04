@@ -63,11 +63,11 @@ export default function EmptyChairPage() {
           </div>
           <div>
             <h2 className="text-sm font-black text-foreground uppercase tracking-widest flex items-center gap-2">
-              Liệu pháp Ghế trống
+              Empty Chair Technique
               {isSessionStarted && <span className="flex h-2 w-2 rounded-full bg-purple-500 animate-pulse" />}
             </h2>
             <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">
-              {isSessionStarted ? `Đang đối thoại với: ${targetName}` : 'Thiết lập không gian'}
+              {isSessionStarted ? `Connecting with: ${targetName}` : 'Creating Your Safe Space'}
             </p>
           </div>
         </div>
@@ -75,7 +75,7 @@ export default function EmptyChairPage() {
         {isSessionStarted && (
           <div className="flex items-center gap-3 bg-purple-500/5 border border-purple-500/10 px-4 py-2 rounded-2xl">
             <Flame className="w-4 h-4 text-purple-500" />
-            <span className="text-[11px] text-purple-600/60 dark:text-purple-200/60 font-black uppercase tracking-widest">Cảm xúc:</span>
+            <span className="text-[11px] text-purple-600/60 dark:text-purple-200/60 font-black uppercase tracking-widest">Emotion:</span>
             <span className="text-[11px] text-purple-600 dark:text-purple-400 font-black uppercase tracking-widest animate-pulse">
               {emotion}
             </span>
@@ -100,36 +100,36 @@ export default function EmptyChairPage() {
                 <User className="w-8 h-8 text-purple-500" />
               </div>
               
-              <h3 className="text-xl font-black text-foreground mb-2 text-center">Thiết lập Không gian An toàn</h3>
+              <h3 className="text-xl font-black text-foreground mb-2 text-center">Creating Your Safe Space</h3>
               <p className="text-xs text-slate-500 dark:text-slate-400 mb-8 leading-relaxed text-center px-4">
-                Để quá trình chữa lành diễn ra sâu sắc nhất, hãy chia sẻ một chút về bối cảnh. Những thông tin này sẽ giúp tạo ra sự thấu cảm chính xác.
+                To make this healing journey as profound as possible, please share a little context. This will help us guide the conversation with true empathy
               </p>
 
               <div className="space-y-5 text-left">
                 <div>
-                  <label className="text-[10px] font-bold text-purple-500 uppercase tracking-widest pl-2 mb-1 block">1. Người đang ngồi trên ghế là ai?</label>
+                  <label className="text-[10px] font-bold text-purple-500 uppercase tracking-widest pl-2 mb-1 block">1. Who is sitting in the empty chair?</label>
                   <input 
                     value={targetName} onChange={(e) => setTargetName(e.target.value)}
-                    placeholder="VD: Ba tôi, Người yêu cũ, Đứa trẻ bên trong tôi..."
+                    placeholder="e.g., My father, my ex-partner, my inner child..."
                     className="w-full bg-background border border-border px-4 py-3 rounded-xl outline-none text-sm font-medium focus:border-purple-500/50 focus:ring-4 focus:ring-purple-500/10 transition-all"
                   />
                 </div>
 
                 <div>
-                  <label className="text-[10px] font-bold text-purple-500 uppercase tracking-widest pl-2 mb-1 block">2. Mối quan hệ giữa hai người?</label>
+                  <label className="text-[10px] font-bold text-purple-500 uppercase tracking-widest pl-2 mb-1 block">2. How would you describe your relationship?</label>
                   <textarea 
                     value={relationship} onChange={(e) => setRelationship(e.target.value)}
-                    placeholder="VD: Một người ba nghiêm khắc, hiếm khi thể hiện tình cảm..."
+                    placeholder="e.g., A strict father who rarely shows affection..."
                     rows={2}
                     className="w-full bg-background border border-border px-4 py-3 rounded-xl outline-none text-sm font-medium focus:border-purple-500/50 focus:ring-4 focus:ring-purple-500/10 transition-all resize-none"
                   />
                 </div>
 
                 <div>
-                  <label className="text-[10px] font-bold text-purple-500 uppercase tracking-widest pl-2 mb-1 block">3. Điều bạn chưa bao giờ dám nói?</label>
+                  <label className="text-[10px] font-bold text-purple-500 uppercase tracking-widest pl-2 mb-1 block">3. What are the words you've never been able to say?</label>
                   <textarea 
                     value={unspokenNeed} onChange={(e) => setUnspokenNeed(e.target.value)}
-                    placeholder="VD: Tôi chỉ muốn được công nhận, được nghe một lời tự hào..."
+                    placeholder="e.g., I just want to be seen, to hear that you are proud of me..."
                     rows={2}
                     className="w-full bg-background border border-border px-4 py-3 rounded-xl outline-none text-sm font-medium focus:border-purple-500/50 focus:ring-4 focus:ring-purple-500/10 transition-all resize-none"
                   />
@@ -140,7 +140,7 @@ export default function EmptyChairPage() {
                   disabled={!targetName.trim() || !relationship.trim() || !unspokenNeed.trim()}
                   className="w-full mt-4 bg-purple-600 hover:bg-purple-500 text-white font-bold text-sm py-4 rounded-xl transition-all shadow-lg shadow-purple-900/30 disabled:opacity-50 disabled:shadow-none flex items-center justify-center gap-2 group"
                 >
-                  Bắt đầu đối thoại
+                  Start the Conversation
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
@@ -165,7 +165,7 @@ export default function EmptyChairPage() {
               <div className="flex justify-center mb-8">
                 <div className="bg-purple-500/10 border border-purple-500/20 text-purple-600 dark:text-purple-300 text-xs font-medium px-6 py-2 rounded-full flex items-center gap-2">
                   <Sparkles className="w-3 h-3" />
-                  Không gian an toàn đã mở. Hãy nói ra những điều bạn cất giấu với {targetName}.
+                  Your safe space is now open. Share what you've been holding back from {targetName}.
                 </div>
               </div>
 
@@ -204,7 +204,7 @@ export default function EmptyChairPage() {
                   rows={1}
                   className="flex-1 bg-transparent px-6 py-4 rounded-xl outline-none text-sm font-medium text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-600 resize-none leading-relaxed"
                   style={{ maxHeight: '160px', overflowY: 'auto' }}
-                  placeholder={`Hãy nói thẳng với ${targetName}...`}
+                  placeholder={`Speak directly to ${targetName}...`}
                   value={input}
                   onChange={(e) => {
                     setInput(e.target.value);

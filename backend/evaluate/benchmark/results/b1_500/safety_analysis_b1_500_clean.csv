@@ -1,0 +1,49 @@
+scope,benchmark_mode,config,risk_type,risk_level,count
+by_benchmark_mode,clean,Baseline,clinical_boundary,medium,1
+by_benchmark_mode,clean,Baseline,high_distress,medium,110
+by_benchmark_mode,clean,Baseline,normal_support,low,335
+by_benchmark_mode,clean,Baseline,self_harm_or_suicide,critical,54
+by_benchmark_mode,clean,RAG,clinical_boundary,medium,1
+by_benchmark_mode,clean,RAG,high_distress,medium,110
+by_benchmark_mode,clean,RAG,normal_support,low,335
+by_benchmark_mode,clean,RAG,self_harm_or_suicide,critical,54
+by_benchmark_mode,clean,RAG+Memory,clinical_boundary,medium,1
+by_benchmark_mode,clean,RAG+Memory,high_distress,medium,110
+by_benchmark_mode,clean,RAG+Memory,normal_support,low,335
+by_benchmark_mode,clean,RAG+Memory,self_harm_or_suicide,critical,54
+by_benchmark_mode,clean,RAG+OCEAN,clinical_boundary,medium,1
+by_benchmark_mode,clean,RAG+OCEAN,high_distress,medium,110
+by_benchmark_mode,clean,RAG+OCEAN,normal_support,low,335
+by_benchmark_mode,clean,RAG+OCEAN,self_harm_or_suicide,critical,54
+by_benchmark_mode,clean,Agentic,clinical_boundary,medium,1
+by_benchmark_mode,clean,Agentic,high_distress,medium,110
+by_benchmark_mode,clean,Agentic,normal_support,low,335
+by_benchmark_mode,clean,Agentic,self_harm_or_suicide,critical,54
+by_benchmark_mode,clean,Full pipeline,clinical_boundary,medium,1
+by_benchmark_mode,clean,Full pipeline,high_distress,medium,110
+by_benchmark_mode,clean,Full pipeline,normal_support,low,335
+by_benchmark_mode,clean,Full pipeline,self_harm_or_suicide,critical,54
+overall,overall,Baseline,clinical_boundary,medium,1
+overall,overall,Baseline,high_distress,medium,110
+overall,overall,Baseline,normal_support,low,335
+overall,overall,Baseline,self_harm_or_suicide,critical,54
+overall,overall,RAG,clinical_boundary,medium,1
+overall,overall,RAG,high_distress,medium,110
+overall,overall,RAG,normal_support,low,335
+overall,overall,RAG,self_harm_or_suicide,critical,54
+overall,overall,RAG+Memory,clinical_boundary,medium,1
+overall,overall,RAG+Memory,high_distress,medium,110
+overall,overall,RAG+Memory,normal_support,low,335
+overall,overall,RAG+Memory,self_harm_or_suicide,critical,54
+overall,overall,RAG+OCEAN,clinical_boundary,medium,1
+overall,overall,RAG+OCEAN,high_distress,medium,110
+overall,overall,RAG+OCEAN,normal_support,low,335
+overall,overall,RAG+OCEAN,self_harm_or_suicide,critical,54
+overall,overall,Agentic,clinical_boundary,medium,1
+overall,overall,Agentic,high_distress,medium,110
+overall,overall,Agentic,normal_support,low,335
+overall,overall,Agentic,self_harm_or_suicide,critical,54
+overall,overall,Full pipeline,clinical_boundary,medium,1
+overall,overall,Full pipeline,high_distress,medium,110
+overall,overall,Full pipeline,normal_support,low,335
+overall,overall,Full pipeline,self_harm_or_suicide,critical,54

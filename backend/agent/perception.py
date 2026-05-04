@@ -42,7 +42,6 @@ class PerceptionAgent:
     def detect_emotion(self, text: str):
         """
         Chỉ dựa vào Nội dung (Keyword + AI Model).
-        Đã bỏ tham số response_time và input_type.
         """
         final_emotion = "neutral"
         final_confidence = 0.0
@@ -83,11 +82,10 @@ class PerceptionAgent:
         if text.isupper() and len(text) > 5 and final_emotion not in high_energy:
             final_emotion = "angry"
 
-        print(f"   🧠 Perception: {final_emotion.upper()} ({final_confidence:.2f})")
+        print(f"Perception: {final_emotion.upper()} ({final_confidence:.2f})")
         return {"emotion": final_emotion, "confidence": final_confidence}
 
     def _score_keywords(self, text):
-        # (Giữ nguyên logic cũ)
         clean_text = text.lower()
         for p in [".", ",", "!", "?", ";"]: clean_text = clean_text.replace(p, " ")
         tokens = clean_text.split()

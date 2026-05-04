@@ -1,0 +1,29 @@
+scope,question_type,config,n_cases,accuracy
+by_question_type,knowledge-update,Baseline,31,0.0
+by_question_type,knowledge-update,RAG,31,0.0
+by_question_type,knowledge-update,RAG+Memory,31,0.2903225806451613
+by_question_type,knowledge-update,Full pipeline,31,0.25806451612903225
+by_question_type,multi-session,Baseline,53,0.0
+by_question_type,multi-session,RAG,53,0.03773584905660377
+by_question_type,multi-session,RAG+Memory,53,0.07547169811320754
+by_question_type,multi-session,Full pipeline,53,0.07547169811320754
+by_question_type,single-session-assistant,Baseline,24,0.041666666666666664
+by_question_type,single-session-assistant,RAG,24,0.20833333333333334
+by_question_type,single-session-assistant,RAG+Memory,24,0.16666666666666666
+by_question_type,single-session-assistant,Full pipeline,24,0.16666666666666666
+by_question_type,single-session-preference,Baseline,12,0.0
+by_question_type,single-session-preference,RAG,12,0.0
+by_question_type,single-session-preference,RAG+Memory,12,0.0
+by_question_type,single-session-preference,Full pipeline,12,0.0
+by_question_type,single-session-user,Baseline,35,0.0
+by_question_type,single-session-user,RAG,35,0.05714285714285714
+by_question_type,single-session-user,RAG+Memory,35,0.42857142857142855
+by_question_type,single-session-user,Full pipeline,35,0.42857142857142855
+by_question_type,temporal-reasoning,Baseline,45,0.0
+by_question_type,temporal-reasoning,RAG,45,0.17777777777777778
+by_question_type,temporal-reasoning,RAG+Memory,45,0.2222222222222222
+by_question_type,temporal-reasoning,Full pipeline,45,0.2222222222222222
+overall,,Baseline,200,0.005
+overall,,RAG,200,0.085
+overall,,RAG+Memory,200,0.21
+overall,,Full pipeline,200,0.205

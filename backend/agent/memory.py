@@ -31,7 +31,16 @@ class GraphMemory:
 
     # --- PHẦN 1: QUẢN LÝ HỘI THOẠI ---
 
-    def add_turn(self, user_id: str, user_input: str, emotion: str, ai_response: str):
+    def add_turn(
+        self,
+        user_id: str,
+        user_input: str,
+        emotion: str,
+        ai_response: str,
+        risk_level: str = "low",
+        risk_type: str = "normal_support",
+        raw_stored: bool = True,
+    ):
         """
         Lưu một lượt hội thoại (Turn) vào Graph
         """
@@ -43,18 +52,24 @@ class GraphMemory:
             user_input: $user_input,
             ai_response: $ai_response,
             emotion: $emotion,
-            timestamp: $timestamp
+            timestamp: $timestamp,
+            risk_level: $risk_level,
+            risk_type: $risk_type,
+            raw_stored: $raw_stored
         })
         CREATE (u)-[:HAS_TURN]->(t)
         """
         try:
             with self.driver.session() as session:
-                session.run(query, 
-                            user_id=user_id, 
-                            user_input=user_input, 
-                            ai_response=ai_response, 
-                            emotion=emotion, 
-                            timestamp=time.time())
+                session.run(query,
+                            user_id=user_id,
+                            user_input=user_input,
+                            ai_response=ai_response,
+                            emotion=emotion,
+                            timestamp=time.time(),
+                            risk_level=risk_level,
+                            risk_type=risk_type,
+                            raw_stored=raw_stored)
         except Exception as e:
             print(f"⚠️ Memory Write Error: {e}")
 
@@ -307,7 +322,7 @@ class GraphMemory:
                             n=smoothed_traits['neuroticism']
                             )
                 
-                print(f"🧠 [Memory] Updated OCEAN (EMA): {smoothed_traits}")
+                print(f"[Memory] Updated OCEAN (EMA): {smoothed_traits}")
                 
                 # --- [QUAN TRỌNG NHẤT] TRẢ VỀ KẾT QUẢ CHO MAIN.PY ---
                 return smoothed_traits, deltas

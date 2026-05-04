@@ -1,0 +1,6 @@
+scope,label,metric,value
+overall,all,accuracy,1.0
+overall,all,macro_f1,1.0
+by_case_type,memory,accuracy,1.0
+by_case_type,ocean,accuracy,1.0
+by_case_type,rag_only,accuracy,1.0

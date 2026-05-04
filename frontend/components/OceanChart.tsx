@@ -24,11 +24,11 @@ export default function OceanChart({ userId }: OceanChartProps) {
           const data = await res.json();
           // Chuyển đổi dữ liệu từ Backend (thang 0-1) sang Recharts (thang 0-100)
           setOceanData([
-            { subject: 'Sẵn sàng trải nghiệm', A: data.openness * 100 },
-            { subject: 'Tận tâm', A: data.conscientiousness * 100 },
-            { subject: 'Hướng ngoại', A: data.extraversion * 100 },
-            { subject: 'Dễ chịu', A: data.agreeableness * 100 },
-            { subject: 'Nhạy cảm', A: data.neuroticism * 100 },
+            { subject: 'Openness', A: data.openness * 100 },
+            { subject: 'Conscientiousness', A: data.conscientiousness * 100 },
+            { subject: 'Extraversion', A: data.extraversion * 100 },
+            { subject: 'Agreeableness', A: data.agreeableness * 100 },
+            { subject: 'Neuroticism', A: data.neuroticism * 100 },
           ]);
         }
       } catch (e) {
@@ -54,7 +54,7 @@ export default function OceanChart({ userId }: OceanChartProps) {
 
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <RadarChart cx="50%" cy="50%" outerRadius="65%" data={oceanData}>
+      <RadarChart cx="50%" cy="50%" outerRadius="35%" data={oceanData}>
         {/* Lưới mạng nhện: Đổi màu theo Sáng/Tối */}
         <PolarGrid stroke={theme === 'dark' ? '#334155' : '#e2e8f0'} />
         

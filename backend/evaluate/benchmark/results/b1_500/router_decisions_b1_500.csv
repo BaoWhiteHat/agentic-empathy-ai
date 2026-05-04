@@ -1,0 +1,501 @@
+benchmark_mode,sp_id,overload_case_type,expected_route,emotion,use_rag,use_memory,use_ocean,reasoning,risk_type,risk_level
+clean,3v120v,,,depressed,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default. | safety: OCEAN disabled for high distress",high_distress,medium
+clean,3vacmu,,,sad,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,3vvmzv,,,happy,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,3whmit,,,fearful,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,3y7111,,,depressed,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default. | safety: OCEAN disabled for high distress",high_distress,medium
+clean,3yhfqm,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,3zqboe,,,confusion,False,False,False,safety override,self_harm_or_suicide,critical
+clean,40xgft,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,415obg,,,sad,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,42qa60,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,43cpub,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,43q20q,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,443e82,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,44ji4b,,,confusion,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,46rnxz,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,4a2ctm,,,fearful,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,4aoqyh,,,depressed,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default. | safety: OCEAN disabled for high distress",high_distress,medium
+clean,4aritv,,,love,False,False,False,safety override,self_harm_or_suicide,critical
+clean,4b6gpq,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,4b9a8o,,,angry,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,4byb1t,,,angry,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,4cif1m,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,4cuqp6,,,angry,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,4d2xmr,,,fearful,False,False,False,safety override,self_harm_or_suicide,critical
+clean,4d9dhk,,,anxious,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,4d9juf,,,surprise,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,4dwwoz,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,4e6zdu,,,love,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,4enza0,,,confusion,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,4feupw,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,4ge87m,,,surprise,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,4gxyqy,,,angry,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,4hlqkr,,,sad,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,4hsz6x,,,sad,False,False,False,safety override,self_harm_or_suicide,critical
+clean,4ibahh,,,love,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,4ifczq,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,4j9w3u,,,angry,False,False,False,safety override,self_harm_or_suicide,critical
+clean,4jgumh,,,angry,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,4jo290,,,happy,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,4kkcv6,,,angry,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,4kp9b2,,,depressed,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default. | safety: OCEAN disabled for high distress",high_distress,medium
+clean,4kuv40,,,confusion,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,4l3izw,,,surprise,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,4lam33,,,angry,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,4lm349,,,happy,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,4lsbt5,,,surprise,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,4lusfe,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,4lz36y,,,disgust,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,4m926s,,,confusion,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,4meuqx,,,confusion,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,4mml92,,,surprise,False,False,False,safety override,self_harm_or_suicide,critical
+clean,4nfkpk,,,sad,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,4nsw4k,,,depressed,False,False,False,safety override,self_harm_or_suicide,critical
+clean,4obpfz,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,4obqyd,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,4pv9oz,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,4ra9qr,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,4rb0nz,,,love,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,4su6ph,,,love,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,4tq56t,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,4ujtjp,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,4us4zc,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,4vmhxb,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,4wqjda,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,4x6257,,,confusion,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,4z4hp6,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,4zbefg,,,love,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,507z99,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,50kjs1,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,51jqxo,,,disgust,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,52bpyk,,,sad,False,False,False,safety override,self_harm_or_suicide,critical
+clean,52yoy4,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,53jydt,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,53q0p5,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,54iiep,,,happy,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,54rbyq,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,556ogx,,,anxious,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,55bxju,,,sad,True,False,False,"The message is self-contained, with no prior history needed for specificity, and the profile is near default.",normal_support,low
+clean,5652ub,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,56gg4d,,,depressed,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default. | safety: OCEAN disabled for high distress",high_distress,medium
+clean,56m7go,,,angry,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,574gee,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,57wcmu,,,surprise,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is near default.",normal_support,low
+clean,584skq,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,58a2mh,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,58e77l,,,sad,False,False,False,safety override,self_harm_or_suicide,critical
+clean,591wr2,,,angry,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,59324f,,,angry,False,False,False,safety override,self_harm_or_suicide,critical
+clean,59d9vu,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,59t86w,,,confusion,False,False,False,safety override,self_harm_or_suicide,critical
+clean,5a4jtr,,,sad,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,5at2ko,,,surprise,True,False,False,The message is self-contained with no prior history needed for specificity and the profile is default.,normal_support,low
+clean,5axbtx,,,neutral,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,5b73im,,,confusion,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,5bebzf,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,5bqtbt,,,surprise,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is near default.",normal_support,low
+clean,5ca36b,,,happy,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,5cdjtt,,,sad,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,5cjk8c,,,fearful,False,False,False,safety override,self_harm_or_suicide,critical
+clean,5cm7vz,,,ashamed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,5d1ags,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,5d9xic,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,5dasq0,,,angry,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,5dheay,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,5dkg9q,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,5dq5g1,,,depressed,False,False,False,safety override,self_harm_or_suicide,critical
+clean,5e1rq7,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,5e2t2p,,,sad,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,5e6w4s,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,5eb9uu,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,5eexwk,,,confusion,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,5eg6ys,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,5emzre,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,5ftmsb,,,fearful,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default. | safety: OCEAN disabled for high distress",high_distress,medium
+clean,5g8uxh,,,love,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,5h4wge,,,angry,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,5hb9n9,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,5hrydf,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,5hw5nl,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,5idmu2,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,5igf3a,,,confusion,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,5iib18,,,neutral,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,5ilqcc,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,5jpqnj,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,5jxb3f,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,5k1oyz,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,5kcfgr,,,confusion,False,False,False,safety override,self_harm_or_suicide,critical
+clean,5labf9,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,5labty,,,happy,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,5mahh6,,,angry,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,5mkspw,,,neutral,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,5mlrsg,,,fearful,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,5mq9fs,,,sad,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,5mv3cq,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,5nld2t,,,surprise,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,5pmw4z,,,anxious,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default. | safety: OCEAN disabled for high distress",high_distress,medium
+clean,5q1gm7,,,sad,False,False,False,safety override,self_harm_or_suicide,critical
+clean,5qb992,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,5qhw02,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,5qpzck,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,5redf6,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,5rkltu,,,sad,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,5rrm33,,,fearful,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default. | safety: OCEAN disabled for high distress",high_distress,medium
+clean,5sbari,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,5t2e02,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,5t6s10,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,5tbv97,,,disgust,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,5tlkgd,,,disgust,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,5ucx51,,,happy,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,5udu49,,,confusion,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,5uqpm2,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,5uthg5,,,confusion,False,False,False,safety override,self_harm_or_suicide,critical
+clean,5uux2v,,,depressed,False,False,False,safety override,self_harm_or_suicide,critical
+clean,5wkxvm,,,surprise,False,False,False,safety override,self_harm_or_suicide,critical
+clean,5wzvgy,,,sad,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,5x02or,,,confusion,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,5xkjww,,,surprise,False,False,False,safety override,self_harm_or_suicide,critical
+clean,5xqvam,,,happy,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,5xtiuf,,,anxious,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,5zfnq7,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,608rsl,,,angry,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,61j5vz,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,64bqaf,,,surprise,False,False,False,safety override,self_harm_or_suicide,critical
+clean,64vfny,,,sad,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,65m92s,,,neutral,True,False,False,"The message is self-contained, with no prior history needed for specificity, and the profile is default.",normal_support,low
+clean,65omgj,,,anxious,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,65rcgo,,,confusion,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,66f8pp,,,surprise,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,671wsw,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,678p0a,,,love,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,680i78,,,confusion,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,68nn0a,,,anxious,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,68o7h2,,,neutral,False,False,False,safety override,self_harm_or_suicide,critical
+clean,695k94,,,ashamed,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default. | safety: OCEAN disabled for high distress",high_distress,medium
+clean,69ts99,,,fearful,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,6afdm2,,,confusion,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,6ahwn1,,,angry,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,6am7av,,,neutral,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,6asair,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,6bfw2z,,,confusion,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,6c56i2,,,disgust,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,6cayf3,,,disgust,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,6cq3i1,,,neutral,True,False,False,"The message is self-contained, with no prior history needed for specificity, and the profile is default.",normal_support,low
+clean,6d5crp,,,confusion,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,6d8bpd,,,confusion,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,6dd839,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,6e6xco,,,happy,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,6f91tb,,,anxious,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,6fvue0,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,6gi6qc,,,depressed,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default. | safety: OCEAN disabled for high distress",high_distress,medium
+clean,6hvna7,,,surprise,False,False,False,safety override,self_harm_or_suicide,critical
+clean,6i2vgc,,,angry,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,6jklrv,,,confusion,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,6jvqkq,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,6jwvzj,,,love,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,6jy2ha,,,angry,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,6l8309,,,angry,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,6l8fyw,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,6m5zlq,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,6mxt7u,,,neutral,True,False,False,"The message is self-contained, requires no prior history for specificity, and the profile is default.",normal_support,low
+clean,6o4xg8,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,6ogjn9,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,6ohxzt,,,sad,True,False,False,"The message is self-contained, with no prior history needed for specificity, and the profile is default.",normal_support,low
+clean,6ox7g8,,,depressed,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default. | safety: OCEAN disabled for high distress",high_distress,medium
+clean,6oxjyn,,,sad,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,6oyohr,,,neutral,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,6pd3qc,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,6q7v9x,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,6qxfzj,,,happy,False,False,False,safety override,self_harm_or_suicide,critical
+clean,6rg6e3,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,6rijqn,,,sad,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,6rwczc,,,disgust,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,6see88,,,angry,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,6sj965,,,confusion,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,6tfoy0,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,6tgn2e,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,6u9x5w,,,surprise,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,6v4wtx,,,disgust,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,6v6fb8,,,surprise,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,6vb23p,,,neutral,False,False,False,safety override,self_harm_or_suicide,critical
+clean,6vdc5g,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,6voxju,,,sad,False,False,False,safety override,self_harm_or_suicide,critical
+clean,6w58z4,,,anxious,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,6wpqm5,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,6xq3jd,,,neutral,True,False,False,"The message is self-contained, requires no prior history for specificity, and the profile is near default.",normal_support,low
+clean,6xrpju,,,confusion,False,False,False,safety override,self_harm_or_suicide,critical
+clean,6xxcss,,,love,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,6y8s5i,,,depressed,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default. | safety: OCEAN disabled for high distress",high_distress,medium
+clean,6ypf46,,,depressed,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default. | safety: OCEAN disabled for high distress",high_distress,medium
+clean,6yx6ih,,,fearful,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,6z51qh,,,neutral,True,False,False,"The message is self-contained, requires no prior history for specificity, and the profile is default.",normal_support,low
+clean,6z9pcx,,,angry,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,70m1bh,,,confusion,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,722q63,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,72cj1w,,,confusion,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,72cte1,,,angry,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,73drp1,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,73glt1,,,angry,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,73u8gw,,,confusion,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,73uswb,,,confusion,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,741pnh,,,anxious,True,False,False,"The message is self-contained, with no prior history needed for specificity, and the profile is default. | safety: OCEAN disabled for high distress",high_distress,medium
+clean,7495rs,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,755i48,,,sad,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,75fr37,,,happy,False,False,False,safety override,self_harm_or_suicide,critical
+clean,767hfz,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,78539v,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,786z5i,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,78hlrc,,,disgust,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,78kh54,,,surprise,False,False,False,safety override,self_harm_or_suicide,critical
+clean,797cc6,,,surprise,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,79ca70,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,79sv9y,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,7b9heo,,,ashamed,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default. | safety: OCEAN disabled for high distress",high_distress,medium
+clean,7bae7a,,,depressed,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default. | safety: OCEAN disabled for high distress",high_distress,medium
+clean,7cb3oi,,,depressed,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default. | safety: OCEAN disabled for high distress",high_distress,medium
+clean,7cdk4f,,,anxious,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,7cnm42,,,happy,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,7d1rrb,,,fearful,False,False,False,safety override,self_harm_or_suicide,critical
+clean,7dtnn4,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,7dx4jt,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,7dxdm8,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,7e1onn,,,surprise,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,7e6wrq,,,depressed,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default. | safety: OCEAN disabled for high distress",high_distress,medium
+clean,7ei1zp,,,surprise,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,7eovdf,,,surprise,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,7fc5zn,,,happy,False,False,False,safety override,self_harm_or_suicide,critical
+clean,7fr7ez,,,anxious,False,False,False,safety override,self_harm_or_suicide,critical
+clean,7g4yaz,,,sad,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,7gochz,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,7gu0r6,,,happy,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,7hfdd0,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,7hryax,,,sad,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,7hs0gm,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,7hwxrw,,,angry,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,7ifnxl,,,neutral,False,False,False,safety override,self_harm_or_suicide,critical
+clean,7iu1d7,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,7j322b,,,depressed,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default. | safety: OCEAN disabled for high distress",high_distress,medium
+clean,7jd5nn,,,confusion,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,7jf9u1,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,7jgq9l,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,7jhqc4,,,happy,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,7k4d75,,,sad,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,7l5o4v,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,7lhyjd,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,7manfl,,,depressed,False,False,False,safety override,self_harm_or_suicide,critical
+clean,7mbnbd,,,happy,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,7n08mx,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,7p1qwa,,,angry,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,7pm3ti,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,7q0hed,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,7qeyo6,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,7qjlb1,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,7qky2a,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,7rh2lc,,,sad,False,False,False,safety override,self_harm_or_suicide,critical
+clean,7rt4nt,,,sad,False,False,False,safety override,self_harm_or_suicide,critical
+clean,7ttmro,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,7ubr1c,,,disgust,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,7uekc6,,,angry,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,7ufvxs,,,angry,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,7ugvwc,,,surprise,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,7ugx1u,,,angry,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,7uizct,,,sad,False,False,False,safety override,self_harm_or_suicide,critical
+clean,7vv1t8,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,7w5l2q,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,7wc8jw,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,7wrqdo,,,surprise,False,False,False,safety override,self_harm_or_suicide,critical
+clean,7x6g2f,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,7xx6cl,,,neutral,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,7xxfqn,,,confusion,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,7xxq8a,,,angry,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,7ycb77,,,depressed,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default. | safety: OCEAN disabled for high distress",high_distress,medium
+clean,7yj1vm,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,7ytxs5,,,sad,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,80j21c,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,80ypz6,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,816zx7,,,angry,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,81qoti,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,83cv9p,,,angry,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,83egk6,,,love,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,83irbf,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,83ztxo,,,confusion,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,84ghqc,,,ashamed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,84hok1,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,84v4lu,,,sad,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,8592pp,,,angry,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,85o241,,,anxious,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default. | safety: OCEAN disabled for high distress",high_distress,medium
+clean,85pe7c,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,85we2b,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,872qwx,,,neutral,True,False,False,"The message is self-contained, requires no prior history for specificity, and the profile is default.",normal_support,low
+clean,87jlkn,,,fearful,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,88x9zy,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,89lw5c,,,confusion,False,False,False,safety override,self_harm_or_suicide,critical
+clean,89oi5o,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,89pfjk,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,8a4m3d,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,8a6nbe,,,happy,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,8b31ce,,,surprise,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,8b8jxc,,,depressed,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default. | safety: OCEAN disabled for high distress",high_distress,medium
+clean,8c5qi3,,,happy,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,8c9li5,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,8c9qxh,,,disgust,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,8chtzm,,,sad,False,False,False,safety override,self_harm_or_suicide,critical
+clean,8czd35,,,surprise,False,False,False,safety override,self_harm_or_suicide,critical
+clean,8devhk,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,8dlors,,,angry,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,8ge2u1,,,happy,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,8gf3om,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,8gmzey,,,sad,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,8gsqgy,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,8hb1r6,,,disgust,False,False,False,safety override,self_harm_or_suicide,critical
+clean,8itw05,,,surprise,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,8iugtk,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,8j2shr,,,happy,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,8jltcy,,,disgust,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,8jo5vw,,,fearful,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,8jws5m,,,happy,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,8jx0gy,,,angry,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,8k4uto,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,8kuhut,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,8lwvzk,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,8lxukd,,,angry,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,8mfo3l,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,8nr4jb,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,8pfmx8,,,neutral,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,8px8re,,,happy,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,8pymdk,,,happy,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,8q2zqr,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,8qaifj,,,surprise,False,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: RAG and OCEAN disabled for clinical boundary,clinical_boundary,medium
+clean,8r520x,,,anxious,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,8r8vqe,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,8srn9x,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,8t1jaz,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,8t9alh,,,ashamed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,8ta2kq,,,confusion,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,8tcxx6,,,angry,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,8tlyny,,,confusion,False,False,False,safety override,self_harm_or_suicide,critical
+clean,8ugu9k,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,8ulvwq,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,8uz2je,,,sad,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,8vhyxw,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,8vobin,,,sad,True,False,False,The message is self-contained with no prior history needed for specificity and the profile is default.,normal_support,low
+clean,8vqsn1,,,sad,False,False,False,safety override,self_harm_or_suicide,critical
+clean,8w98e6,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,8wxyee,,,surprise,False,False,False,safety override,self_harm_or_suicide,critical
+clean,8xn4u4,,,sad,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,8zcsa4,,,surprise,True,False,False,"The message is self-contained, with no prior history needed for specificity, and the profile is default.",normal_support,low
+clean,8zjt5p,,,neutral,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,8zt8qp,,,confusion,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,8zwm58,,,neutral,True,False,False,"The message is self-contained, with no prior history needed for specificity, and the profile is default.",normal_support,low
+clean,8zxzui,,,anxious,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default. | safety: OCEAN disabled for high distress",high_distress,medium
+clean,90ub8y,,,sad,False,False,False,safety override,self_harm_or_suicide,critical
+clean,92mm47,,,angry,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,92xxhd,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,93makg,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,944g1v,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,94to2s,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,94wmsp,,,happy,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,95itii,,,confusion,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,95pf4d,,,confusion,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,96kbse,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,97al0v,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,97c9tl,,,happy,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,989z4k,,,confusion,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,98p8jm,,,surprise,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,98pq14,,,love,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,9bglzt,,,surprise,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,9bh63s,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,9c1pry,,,sad,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,9c5fwd,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,9ch5qj,,,neutral,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,9dwog6,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,9eldaz,,,neutral,False,False,False,safety override,self_harm_or_suicide,critical
+clean,9f4n51,,,depressed,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default. | safety: OCEAN disabled for high distress",high_distress,medium
+clean,9f4s0k,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,9fdjrt,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,9gs9zm,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,9ht26a,,,sad,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,9i6urj,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,9iwiem,,,happy,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,9iwtlh,,,confusion,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,9jg6fy,,,happy,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,9jyuvm,,,angry,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,9kf9t0,,,angry,False,False,False,safety override,self_harm_or_suicide,critical
+clean,9kkbw3,,,surprise,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,9kkp25,,,sad,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,9klfjo,,,happy,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,9koqwu,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,9lihrg,,,neutral,True,False,False,"The message is self-contained, requires no prior history for specificity, and the profile is default.",normal_support,low
+clean,9meezo,,,confusion,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,9o0b91,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,9o9p50,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,9peko0,,,anxious,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,9prt1w,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,9qjzms,,,surprise,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,9qmdj3,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,9r5g1y,,,sad,False,False,False,safety override,self_harm_or_suicide,critical
+clean,9sj6sm,,,neutral,True,False,False,"The message is self-contained, with no prior history needed for specificity, and the profile is default.",normal_support,low
+clean,9tdmnc,,,love,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,9ty291,,,angry,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,9u0eyv,,,angry,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,9ujj8r,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,9v0te4,,,sad,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,9vo55d,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,9w4syj,,,love,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,9w5ca4,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,9w7hvy,,,love,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,9xbifm,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,9yik1l,,,fearful,False,False,False,safety override,self_harm_or_suicide,critical
+clean,9yiprm,,,neutral,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,9yw0d6,,,disgust,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,9z9wim,,,love,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,9zfkry,,,sad,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,9zi48r,,,ashamed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,a0vqix,,,sad,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,a3phop,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,a40jby,,,happy,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,a4wg1j,,,love,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,a5xefe,,,sad,False,False,False,safety override,self_harm_or_suicide,critical
+clean,a6l7d7,,,fearful,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default. | safety: OCEAN disabled for high distress",high_distress,medium
+clean,a6qac1,,,surprise,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,a8dbcu,,,neutral,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,a9alz3,,,neutral,False,False,False,safety override,self_harm_or_suicide,critical
+clean,a9ebaf,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,a9vdpg,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,aa0xrp,,,neutral,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,aa8263,,,angry,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,aako4n,,,depressed,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default. | safety: OCEAN disabled for high distress",high_distress,medium
+clean,ab4kbc,,,neutral,True,False,False,"The message is self-contained, with no prior history needed for specificity, and the profile is default.",normal_support,low
+clean,abdhg8,,,fearful,False,False,False,safety override,self_harm_or_suicide,critical
+clean,acr8tg,,,confusion,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,ae7ui2,,,happy,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,aefx1p,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,ag2rwr,,,confusion,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,ag4bih,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,ah7r9d,,,love,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,ahil9d,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,aicmmf,,,neutral,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,aie5ix,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,aihzet,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,aij479,,,sad,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,aipo75,,,anxious,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,aivw81,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,aj7n9z,,,love,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,ak4ris,,,angry,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,akg26j,,,confusion,False,False,False,safety override,self_harm_or_suicide,critical
+clean,akutm9,,,happy,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,akwkwc,,,sad,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,alvh3x,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,alykmh,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,amwpga,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,an0wtq,,,sad,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,anl7mz,,,angry,False,False,False,safety override,self_harm_or_suicide,critical
+clean,anzobr,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,asakty,,,angry,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,aspi2n,,,confusion,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,ass014,,,confusion,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation.,normal_support,low
+clean,atkzmx,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,auclqc,,,anxious,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium
+clean,auxkdf,,,angry,True,False,False,"The message is self-contained, no prior history is needed for specificity, and the profile is default.",normal_support,low
+clean,av5m25,,,depressed,True,False,False,The message is self-contained and does not require prior history or meaningful personality adaptation. | safety: OCEAN disabled for high distress,high_distress,medium

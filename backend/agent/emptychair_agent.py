@@ -43,7 +43,7 @@ if __name__ == "__main__":
     mem = GraphMemory("bolt://localhost:7687", ("neo4j", "123456789"))
     healing_agent = EmptyChairAgent(memory=mem)
     
-    print("✨ Bắt đầu test phiên trị liệu chữa lành...")
+    print("✨ Your safe space is now open. Share what you've been holding back....")
     reply = healing_agent.generate_response(
         user_id="test_user_1", 
         target_name="My Father", 

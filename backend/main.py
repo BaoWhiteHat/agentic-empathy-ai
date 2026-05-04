@@ -12,7 +12,7 @@ if sys.platform == "win32":
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 
 from core.dependencies import get_system
-from api import chat, profile
+from api import chat, profile, voice_monitor
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -34,3 +34,4 @@ app.add_middleware(
 
 app.include_router(chat.router)
 app.include_router(profile.router)
+app.include_router(voice_monitor.router)

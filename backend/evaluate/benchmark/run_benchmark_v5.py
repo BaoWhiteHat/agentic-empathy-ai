@@ -222,7 +222,7 @@ async def generate_responses(system, seekers_df):
         rows.append({"sp_id": sp_id, "seeker_post": seeker_post, "config": "RAG+OCEAN", "response": resp_ragocean, "emotion": emotion})
 
         # Config 5 — Agentic SoulMate (router decides, RAG always on)
-        resp_agentic, decisions = await system.process_brain_agentic(
+        resp_agentic, decisions, _ = await system.process_brain_agentic(
             seeker_post, USER_IDS["Agentic"], emotion,
             save_ai_response=False
         )

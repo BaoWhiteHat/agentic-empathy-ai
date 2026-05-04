@@ -71,7 +71,7 @@ class KnowledgeAgent:
             
             # Fallback
             if not results:
-                print(f"⚠️ Không có mẫu cho '{target_emotion}'. Đang tìm kiếm chung...")
+                # print(f"⚠️ Không có mẫu cho '{target_emotion}'. Đang tìm kiếm chung...")
                 results = self.vector_db.similarity_search(search_query, k=k)
 
             # --- [FIX 5] Output chi tiết hơn cho LLM ---
@@ -98,5 +98,5 @@ if __name__ == "__main__":
 
     print(f"🔎 Query: '{test_query}' (Emotion: {test_emotion})")
     examples = agent.retrieve_examples(test_query, test_emotion)
-    print("\n📝 KẾT QUẢ TÌM THẤY:")
+    # print("\n📝 KẾT QUẢ TÌM THẤY:")
     print(examples)

@@ -1,0 +1,4 @@
+class_label,precision,recall,f1,support
+rag_only,1.0,1.0,1.0,20
+memory,1.0,1.0,1.0,20
+ocean,1.0,1.0,1.0,20
