@@ -41,3 +41,6 @@ frontend/.env*.local
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+# Large local benchmark/data files
+backend/data/LongMemEval/longmemeval_s_cleaned.json
+backend/evaluate/benchmark/results/
