@@ -22,12 +22,13 @@ import asyncio
 import threading
 import struct
 import time
+import math
 
 # ── Config ────────────────────────────────────────────────────────────────────
 USER_ID   = os.getenv("COMPANION_USER_ID", "Ghostman")
-ESP32_PORT = os.getenv("ESP32_PORT", "COM3")          # Change to your port
+ESP32_PORT = os.getenv("ESP32_PORT", "COM5")          # Change to your port
 BAUD_RATE  = 921600
-USE_ESP32  = False  # Set False to play audio on laptop speakers instead
+USE_ESP32  = True  # Set False to play audio on laptop speakers instead
 # ─────────────────────────────────────────────────────────────────────────────
 
 from dotenv import load_dotenv
@@ -57,14 +58,40 @@ if not USE_ESP32:
         print(f"⚠️  pygame not available: {e}")
 
 
-def send_audio_to_esp32(mp3_bytes: bytes):
-    """Send MP3 bytes to ESP32 over serial with a 4-byte length header."""
+def _wait_for_esp32_ack(timeout_s: float = 3.0) -> bool:
+    deadline = time.time() + timeout_s
+    while time.time() < deadline:
+        if serial_conn and serial_conn.in_waiting:
+            if serial_conn.read(1) == b"K":
+                return True
+        time.sleep(0.005)
+    return False
+
+
+def send_audio_to_esp32(pcm_bytes: bytes):
+    """Send raw PCM bytes to ESP32 using the SOUL sliding-window protocol."""
     if not serial_conn or not serial_conn.is_open:
         return
-    header = struct.pack("<I", len(mp3_bytes))  # uint32 little-endian
-    serial_conn.write(header + mp3_bytes)
+    serial_conn.reset_input_buffer()
+    serial_conn.write(b"SOUL" + struct.pack("<I", len(pcm_bytes)))
     serial_conn.flush()
-    print(f"   → Sent {len(mp3_bytes):,} bytes to ESP32")
+    if not _wait_for_esp32_ack():
+        print("ESP32 did not acknowledge audio header.")
+        return
+
+    chunk_size = 2048
+    sent = 0
+    while sent < len(pcm_bytes):
+        chunk = pcm_bytes[sent:sent + chunk_size]
+        serial_conn.write(chunk)
+        serial_conn.flush()
+        sent += len(chunk)
+
+        if sent < len(pcm_bytes) and not _wait_for_esp32_ack():
+            print(f"ESP32 stopped acknowledging after {sent:,} bytes.")
+            return
+
+    print(f"   -> Sent {sent:,} PCM bytes to ESP32")
 
 
 def play_on_laptop(mp3_bytes: bytes):
@@ -81,11 +108,25 @@ def play_on_laptop(mp3_bytes: bytes):
         print(f"❌ Playback error: {e}")
 
 
-def play_audio(mp3_bytes: bytes):
+def play_audio(audio_bytes: bytes):
     if USE_ESP32:
-        send_audio_to_esp32(mp3_bytes)
+        send_audio_to_esp32(audio_bytes)
     else:
-        play_on_laptop(mp3_bytes)
+        play_on_laptop(audio_bytes)
+
+
+def generate_test_tone_pcm(duration_s: float = 3.0, frequency_hz: float = 440.0) -> bytes:
+    """Generate a loud 16 kHz signed 16-bit stereo PCM sine wave."""
+    sample_rate = 16000
+    amplitude = int(32767 * 0.65)
+    sample_count = int(sample_rate * duration_s)
+    frames = bytearray(sample_count * 4)
+
+    for i in range(sample_count):
+        sample = int(amplitude * math.sin(2 * math.pi * frequency_hz * i / sample_rate))
+        struct.pack_into("<hh", frames, i * 4, sample, sample)
+
+    return bytes(frames)
 
 
 async def run_companion():
@@ -154,20 +195,32 @@ async def run_companion():
 
                 # Pipeline
                 print("   🧠 Thinking...")
-                ai_response, _ = await system.process_brain_agentic(user_text, USER_ID, emotion)
+                ai_response, _routing_info, safety_info = await system.process_brain_agentic(
+                    user_text,
+                    USER_ID,
+                    emotion,
+                    mode="voice",
+                )
                 print(f"   🤖 SoulMate: {ai_response}")
 
                 # TTS
                 print("   🔊 Generating speech...")
-                mp3_bytes = await asyncio.to_thread(system.voice_io.generate_speech_bytes, ai_response)
+                if USE_ESP32:
+                    audio_bytes = await asyncio.to_thread(
+                        system.voice_io.generate_speech_pcm16_stereo_bytes,
+                        ai_response,
+                    )
+                else:
+                    audio_bytes = await asyncio.to_thread(system.voice_io.generate_speech_bytes, ai_response)
 
-                if mp3_bytes:
-                    play_audio(mp3_bytes)
+                if audio_bytes:
+                    play_audio(audio_bytes)
                 else:
                     print("❌ TTS failed.")
 
                 # Background learning (fire and forget)
-                asyncio.create_task(system.background_learning(user_text, USER_ID, emotion))
+                if safety_info.get("risk_type") != "self_harm_or_suicide":
+                    asyncio.create_task(system.background_learning(user_text, USER_ID, emotion))
                 asyncio.create_task(system.manage_reflection(USER_ID))
                 print()
 
@@ -199,4 +252,12 @@ def _wait_for_key() -> str:
 
 
 if __name__ == "__main__":
+    if "--test-tone" in sys.argv:
+        if not USE_ESP32:
+            print("ESP32 is disabled or not connected; cannot send test tone.")
+            raise SystemExit(1)
+        print("Sending 3-second ESP32 test tone...")
+        send_audio_to_esp32(generate_test_tone_pcm())
+        raise SystemExit(0)
+
     asyncio.run(run_companion())

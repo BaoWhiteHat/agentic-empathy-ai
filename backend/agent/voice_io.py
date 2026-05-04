@@ -21,7 +21,7 @@ class VoiceInterface:
         """Record until stop_event is set (push-to-talk). No silence threshold needed."""
         chunk_samples = int(fs * chunk_ms / 1000)
         chunks = []
-        print("   (PTT: đang ghi âm...)")
+        print("   (PTT: Recording...)")
         try:
             with sd.InputStream(samplerate=fs, channels=1, dtype='float32') as stream:
                 while not stop_event.is_set():
@@ -64,6 +64,29 @@ class VoiceInterface:
             return b"".join(chunk for chunk in audio_data if chunk)
         except Exception as e:
             print(f"❌ TTS error: {e}")
+            return None
+
+    def generate_speech_pcm16_stereo_bytes(self, text) -> bytes | None:
+        """Generate raw 16 kHz signed 16-bit stereo PCM bytes for ESP32 I2S playback."""
+        if not text:
+            return None
+        try:
+            print("Generating PCM speech...")
+            audio_data = self.eleven_client.text_to_speech.convert(
+                text=text,
+                voice_id=self.voice_id,
+                model_id="eleven_turbo_v2_5",
+                output_format="pcm_16000"
+            )
+            mono_pcm = b"".join(chunk for chunk in audio_data if chunk)
+            if not mono_pcm:
+                return None
+
+            samples = np.frombuffer(mono_pcm, dtype="<i2")
+            stereo = np.column_stack((samples, samples)).astype("<i2", copy=False)
+            return stereo.tobytes()
+        except Exception as e:
+            print(f"TTS PCM error: {e}")
             return None
 
     def stream_speech_chunks(self, text):
