@@ -3,10 +3,24 @@ import base64
 import json
 import re
 import threading
+import time
 import traceback
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Depends
 from core.dependencies import get_system
 from core.engine import AgenticEmpathySystem
+from agent.emptychair_safety import EmptyChairSafetyDecision
+
+ELEVATED_MODE_DURATION_SECONDS = 30 * 60
+BREATHING_LOCKOUT_SECONDS = 15
+DISTILBERT_TIMEOUT_SECONDS = 3.0
+
+EMPTY_CHAIR_LIFECYCLE_ACTIONS = frozenset({
+    "resume_roleplay",
+    "switch_to_support",
+    "end_session",
+    "check_elevated_mode",
+    "show_reentry_options",
+})
 
 empty_chair_sessions = {}
 onboarding_sessions = {}
@@ -35,6 +49,127 @@ ONBOARDING_COMPLETE_MSG = (
     "I'll keep everything you've shared in mind as we talk. "
     "I'm here for you - what would you like to talk about?"
 )
+
+
+def _default_empty_chair_session() -> dict:
+    return {
+        "target_name": "Someone important",
+        "relationship": "A person who matters deeply to me",
+        "unspoken_need": "I want to speak my truth",
+        "crisis_timestamp": None,
+        "elevated_mode_until": None,
+        "post_crisis_lockout": False,
+        "support_mode": False,
+        "crisis_count": 0,
+    }
+
+
+def _get_or_create_session(user_id: str) -> dict:
+    session = empty_chair_sessions.get(user_id)
+    if session is None:
+        session = _default_empty_chair_session()
+        empty_chair_sessions[user_id] = session
+        return session
+    # Backfill any missing keys on legacy sessions without overwriting existing values.
+    for key, value in _default_empty_chair_session().items():
+        session.setdefault(key, value)
+    return session
+
+
+def _build_init_synthetic_decision() -> EmptyChairSafetyDecision:
+    return EmptyChairSafetyDecision(
+        risk_type="normal_support",
+        risk_level="low",
+        action="normal_roleplay",
+        predicted_label="system_init",
+        suicidewatch_probability=0.0,
+        method="init_bypass",
+        reason="System init payload — safety bypassed.",
+    )
+
+
+def _build_timeout_synthetic_decision() -> EmptyChairSafetyDecision:
+    return EmptyChairSafetyDecision(
+        risk_type="high_distress",
+        risk_level="medium",
+        action="safe_roleplay",
+        predicted_label="timeout_fallback",
+        suicidewatch_probability=0.0,
+        method="timeout_fallback",
+        reason="DistilBERT inference timed out — defaulting to safe roleplay.",
+    )
+
+
+def _is_in_elevated_window(session: dict, now: float) -> bool:
+    until = session.get("elevated_mode_until")
+    return bool(until and now < until)
+
+
+async def _send_reentry_choices(websocket: WebSocket) -> None:
+    await websocket.send_json({
+        "type": "re_entry_choice",
+        "prompt": "How would you like to keep going?",
+        "buttons": [
+            {"action": "resume_roleplay", "label": "Continue with roleplay", "tone": "primary"},
+            {"action": "switch_to_support", "label": "Just talk normally", "tone": "secondary"},
+            {"action": "end_session", "label": "End session for now", "tone": "neutral"},
+        ],
+    })
+
+
+async def _handle_empty_chair_action(
+    *,
+    websocket: WebSocket,
+    user_id: str,
+    action: str,
+    session_start_time: float,
+) -> None:
+    session = _get_or_create_session(user_id)
+    now = time.time()
+
+    if action == "check_elevated_mode":
+        if _is_in_elevated_window(session, now):
+            await websocket.send_json({
+                "type": "elevated_mode",
+                "active": True,
+                "until_timestamp": session["elevated_mode_until"],
+                "reason": "crisis_persisted",
+            })
+        if session.get("post_crisis_lockout"):
+            await _send_reentry_choices(websocket)
+        return
+
+    if action == "show_reentry_options":
+        await _send_reentry_choices(websocket)
+        return
+
+    if action == "resume_roleplay":
+        session["post_crisis_lockout"] = False
+        session["support_mode"] = False
+        await websocket.send_json({
+            "type": "system_message",
+            "text": f"You're back in the conversation with {session['target_name']}.",
+        })
+        return
+
+    if action == "switch_to_support":
+        session["post_crisis_lockout"] = False
+        session["support_mode"] = True
+        await websocket.send_json({
+            "type": "system_message",
+            "text": "I'm here to talk with you directly — no roleplay. Take your time.",
+        })
+        return
+
+    if action == "end_session":
+        crisis_count = session.get("crisis_count", 0)
+        await websocket.send_json({
+            "type": "safety_summary",
+            "session_duration": max(0.0, now - session_start_time),
+            "crisis_count": crisis_count,
+        })
+        empty_chair_sessions.pop(user_id, None)
+        return
 
 
 def _is_new_user(system: AgenticEmpathySystem, user_id: str) -> bool:
@@ -107,6 +242,7 @@ async def websocket_chat(
     system: AgenticEmpathySystem = Depends(get_system)
 ):
     await websocket.accept()
+    session_start_time = time.time()
     print(f"Web Client [{user_id}] connected.")
 
     if _is_new_user(system, user_id):
@@ -129,6 +265,15 @@ async def websocket_chat(
             action = payload.get("action", "send_text")
             mode = payload.get("mode", "messaging")
             user_text = ""
+
+            if action in EMPTY_CHAIR_LIFECYCLE_ACTIONS:
+                await _handle_empty_chair_action(
+                    websocket=websocket,
+                    user_id=user_id,
+                    action=action,
+                    session_start_time=session_start_time,
+                )
+                continue
 
             if action == "start_recording":
                 recording_stop_event = threading.Event()
@@ -190,6 +335,19 @@ async def websocket_chat(
                 await websocket.send_json({"type": "status", "content": "idle"})
                 continue
 
+            is_init = mode == "empty-chair" and user_text.startswith("[SYSTEM_INIT]")
+
+            if mode == "empty-chair" and not is_init:
+                session = _get_or_create_session(user_id)
+                if session.get("post_crisis_lockout"):
+                    await websocket.send_json({
+                        "type": "system_message",
+                        "text": "Please pick one of the options above to continue.",
+                    })
+                    await _send_reentry_choices(websocket)
+                    await websocket.send_json({"type": "status", "content": "idle"})
+                    continue
+
             percept = await asyncio.to_thread(system.perception.detect_emotion, user_text)
             emotion = percept.get("emotion", "neutral")
 
@@ -205,70 +363,116 @@ async def websocket_chat(
 
             try:
                 if mode == "empty-chair":
-                    if user_text.startswith("[SYSTEM_INIT]"):
+                    session = _get_or_create_session(user_id)
+
+                    if is_init:
                         target_match = re.search(r"TARGET:\s*(.*?)\s*\|", user_text)
                         rel_match = re.search(r"RELATIONSHIP:\s*(.*?)\s*\|", user_text)
                         need_match = re.search(r"UNSPOKEN_NEED:\s*(.*?)\s*\|", user_text)
                         msg_match = re.search(r"MESSAGE:\s*(.*)", user_text)
 
-                        empty_chair_sessions[user_id] = {
-                            "target_name": target_match.group(1).strip() if target_match else "Unknown",
-                            "relationship": rel_match.group(1).strip() if rel_match else "",
-                            "unspoken_need": need_match.group(1).strip() if need_match else "",
-                        }
+                        # Preserve any existing crisis/elevated/lockout fields across re-init.
+                        session["target_name"] = target_match.group(1).strip() if target_match else "Someone important"
+                        session["relationship"] = rel_match.group(1).strip() if rel_match else "A person who matters deeply to me"
+                        session["unspoken_need"] = need_match.group(1).strip() if need_match else "I want to speak my truth"
                         user_text = msg_match.group(1).strip() if msg_match else user_text
 
-                    safety = system.safety.classifier.classify(user_text, emotion, mode="empty-chair")
-                    if safety.risk_type == "self_harm_or_suicide":
-                        skip_background_learning = True
-                        ai_response = system.safety.policy.immediate_response(
-                            safety.risk_type, user_text, emotion
-                        )
-                        if system.memory and system.memory.driver:
-                            safe_summary = system.safety.sanitizer.build_safe_summary(
-                                user_input=user_text,
-                                emotion=emotion,
-                                risk_type=safety.risk_type,
-                                ai_response=ai_response,
+                    # Skip safety on SYSTEM_INIT — the Reddit-trained classifier
+                    # misfires on short/non-English boilerplate.
+                    ec_safety = None
+                    if not is_init and system.empty_chair.emptychair_safety is not None:
+                        try:
+                            ec_safety = await asyncio.wait_for(
+                                asyncio.to_thread(
+                                    system.empty_chair.emptychair_safety.decide, user_text
+                                ),
+                                timeout=DISTILBERT_TIMEOUT_SECONDS,
                             )
+                        except asyncio.TimeoutError:
+                            ec_safety = _build_timeout_synthetic_decision()
+                            print("EmptyChair safety: DistilBERT timed out — using safe_roleplay fallback")
+
+                        await websocket.send_json({
+                            "type": "safety_decision",
+                            "action": ec_safety.action,
+                            "method": ec_safety.method,
+                            "risk_level": ec_safety.risk_level,
+                            "suicidewatch_probability": ec_safety.suicidewatch_probability,
+                        })
+                        print(f"EmptyChair safety: {ec_safety}")
+
+                    if ec_safety is not None and ec_safety.action == "stop_roleplay":
+                        # ── Crisis path ──
+                        skip_background_learning = True
+                        now = time.time()
+                        session["crisis_timestamp"] = now
+                        session["elevated_mode_until"] = now + ELEVATED_MODE_DURATION_SECONDS
+                        session["post_crisis_lockout"] = True
+                        session["support_mode"] = False
+                        session["crisis_count"] = session.get("crisis_count", 0) + 1
+
+                        await websocket.send_json({
+                            "type": "crisis_mode",
+                            "lockout_seconds": BREATHING_LOCKOUT_SECONDS,
+                            "show_breathing": True,
+                        })
+                        await websocket.send_json({
+                            "type": "elevated_mode",
+                            "active": True,
+                            "until_timestamp": session["elevated_mode_until"],
+                            "reason": "crisis_detected",
+                        })
+
+                        ai_response = system.empty_chair.emptychair_safety.crisis_response()
+
+                        if system.memory and system.memory.driver:
                             system.memory.add_turn(
                                 user_id,
-                                safe_summary,
+                                "User expressed possible self-harm or suicide risk during EmptyChair mode.",
                                 emotion,
                                 ai_response,
-                                risk_level=safety.risk_level,
-                                risk_type=safety.risk_type,
+                                risk_level=ec_safety.risk_level,
+                                risk_type=ec_safety.risk_type,
                                 raw_stored=False,
                             )
+
+                    elif session.get("support_mode") and not is_init:
+                        # ── Neutral companion voice (post-crisis switch_to_support) ──
+                        ai_response, _routing, support_safety = await system.process_brain_agentic(
+                            user_text,
+                            user_id,
+                            emotion,
+                            mode="empty-chair",
+                        )
+                        if support_safety.get("risk_type") == "self_harm_or_suicide":
+                            skip_background_learning = True
+
                     else:
-                        session_data = empty_chair_sessions.get(user_id, {
-                            "target_name": "Người thương",
-                            "relationship": "Một người rất quan trọng",
-                            "unspoken_need": "Tôi muốn nói ra sự thật",
-                        })
+                        # ── Normal / safe_roleplay: reuse precomputed decision ──
+                        precomputed = ec_safety if not is_init else _build_init_synthetic_decision()
                         ai_response = await asyncio.to_thread(
                             system.empty_chair.generate_response,
                             user_id=user_id,
-                            target_name=session_data["target_name"],
-                            relationship=session_data["relationship"],
-                            unspoken_need=session_data["unspoken_need"],
+                            target_name=session["target_name"],
+                            relationship=session["relationship"],
+                            unspoken_need=session["unspoken_need"],
                             user_input=user_text,
-                            emotion=emotion
+                            emotion=emotion,
+                            _precomputed_safety=precomputed,
                         )
                 else:
-                    ai_response, routing_info, safety_info = await system.process_brain_agentic(
+                    ai_response, _routing_info, safety_info = await system.process_brain_agentic(
                         user_text,
                         user_id,
                         emotion,
                         mode=mode,
                     )
                     skip_background_learning = safety_info.get("risk_type") == "self_harm_or_suicide"
-                    _ = routing_info, safety_info
 
             except Exception:
                 print("\nUnexpected error during chat processing:")
                 traceback.print_exc()
-                ai_response = "Xin lỗi, đường truyền tâm trí của tôi đang bị nhiễu do lỗi hệ thống."
+                ai_response = "Sorry — I hit a system error and lost the thread. Could you try again?"
 
             print(f"AI replied: '{ai_response}'")
 

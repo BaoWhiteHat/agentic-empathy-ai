@@ -77,7 +77,13 @@ System prompts for all agents are centralized in `backend/agent/prompts.py`. Emp
 **New-user onboarding**: When OCEAN scores are all 0.5 (default), the engine runs a 3-question warm-start flow before main chat begins, then infers initial OCEAN scores from the combined answers.
 
 ### Special Agents
-- **EmptyChairAgent** (`emptychair_agent.py`) — Simulates empty chair psychotherapy; role-plays as a target person given relationship context
+- **EmptyChairAgent** (`emptychair_agent.py`) — Simulates empty chair psychotherapy; role-plays as a target person given relationship context. Accepts `emptychair_safety` via constructor injection; the safety check runs before every LLM call and can stop roleplay entirely or inject a softening instruction into the prompt.
+- **EmptyChairHybridSafety** (`emptychair_safety.py`) — Three-stage safety pipeline specific to EmptyChair mode (does not touch global `safety.py`):
+  1. **Keyword override** — 15 explicit self-harm phrases instantly return `stop_roleplay` (action taken before any model call)
+  2. **DistilBERT classifier** — fine-tuned on Reddit mental health subreddits; 5 classes: `Anxiety`, `SuicideWatch`, `Bipolar`, `Depression`, `OffMyChest`
+  3. **Threshold rule** — if `suicidewatch_probability ≥ 0.2`, stops roleplay with a scripted crisis response
+  - Medium-distress labels (Anxiety/Bipolar/Depression) → `safe_roleplay`: prepends a de-escalation instruction without stopping the session
+  - Model weights: `backend/models/emptychair_distilbert/` (~267 MB, gitignored — must be placed manually; see Platform Notes)
 - **VoiceInterface** (`voice_io.py`) — STT via OpenAI Whisper (push-to-talk recording with `record_audio_ptt`), TTS via ElevenLabs streaming (`stream_speech_chunks`) or full bytes (`generate_speech_bytes` for serial/local playback). Pygame removed — audio delivered to browser via WebSocket base64 or to ESP32 via serial.
 
 ### API Layer
@@ -136,7 +142,7 @@ Empty-chair sessions initialize with a special text format:
 ### Key Tech
 - **Backend**: Python 3.12+, FastAPI, LangChain (OpenAI + Chroma), Neo4j driver, Transformers (PyTorch)
 - **Frontend**: Next.js 16, React 19, TypeScript 5, Tailwind CSS 4, Recharts, Framer Motion
-- **LLM**: GPT-4o-mini (dialogue, inference), RoBERTa (emotion detection)
+- **LLM**: GPT-4o-mini (dialogue, inference), RoBERTa (emotion detection), DistilBERT (EmptyChair safety classification)
 - **Databases**: Neo4j (graph memory/profiles), ChromaDB (vector store for RAG)
 
 ## Evaluation / Benchmarks
@@ -208,3 +214,4 @@ Output files in `backend/evaluate/benchmark/`:
 - ElevenLabs voice: uses `EXAVITQu4vr4xnSDxMaL` (Sarah, free premade). The original voice ID `2EiwWnXFnvU5JabPnv8n` required a paid plan — do not revert.
 - Voice recording uses push-to-talk (`record_audio_ptt` with `threading.Event`) — VAD-based recording was removed due to unreliable silence detection across different mic levels.
 - Dialogue prompt (`prompts.py`) has a SELF-REFERENCE rule: when user asks about something SoulMate previously said, the AI must look up its own last response in memory context and clarify it directly — not give a generic empathy response.
+- EmptyChair DistilBERT model (`backend/models/emptychair_distilbert/`) is gitignored because of size (~267 MB). EmptyChairHybridSafety raises `OSError` on startup if the directory is missing or empty. Copy the model files there before running `empty-chair` mode.

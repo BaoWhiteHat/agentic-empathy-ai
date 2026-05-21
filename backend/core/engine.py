@@ -16,6 +16,7 @@ from agent.knowledge import KnowledgeAgent
 from agent.memory import GraphMemory
 from agent.voice_io import VoiceInterface
 from agent.emptychair_agent import EmptyChairAgent
+from agent.emptychair_safety import EmptyChairHybridSafety
 from agent.router import RouterAgent
 from agent.safety import SafetyGuardrail
 
@@ -48,7 +49,23 @@ class AgenticEmpathySystem:
             self.memory = None
             print(f"Memory Disconnected: {e}")
 
-        self.empty_chair = EmptyChairAgent(memory=self.memory)
+        # ── EmptyChair Hybrid Safety (DistilBERT + threshold + keyword) ──
+        try:
+            self.emptychair_safety = EmptyChairHybridSafety(
+                suicide_threshold=0.2,
+                max_length=256,
+            )
+            print("EmptyChair Hybrid Safety Loaded (DistilBERT ready)")
+        except Exception as e:
+            self.emptychair_safety = None
+            print(f"EmptyChair Hybrid Safety Failed to Load: {e}")
+            print("→ EmptyChair will run without DistilBERT-based safety routing.")
+
+        # Truyền emptychair_safety vào agent
+        self.empty_chair = EmptyChairAgent(
+            memory=self.memory,
+            emptychair_safety=self.emptychair_safety,
+        )
 
     async def background_learning(self, user_input, user_id, emotion):
         """Task 1: Update OCEAN personality scores (runs in background)"""
