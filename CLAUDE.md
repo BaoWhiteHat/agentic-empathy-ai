@@ -123,6 +123,15 @@ Empty-chair sessions initialize with a special text format:
 [SYSTEM_INIT] TARGET: {name} | RELATIONSHIP: {relation} | UNSPOKEN_NEED: {need} | MESSAGE: {message}
 ```
 
+**Empty-chair lifecycle actions (Client → Server, no `mode` needed):**
+```json
+{"action": "resume_roleplay"}
+{"action": "switch_to_support"}
+{"action": "end_session"}
+{"action": "show_reentry_options"}
+{"action": "check_elevated_mode"}
+```
+
 **Server → Client message types:**
 - `{"type": "message", "content": "...", "mode": "..."}` — AI response
 - `{"type": "emotion_status", "emotion": "...", "confidence": 0.0-1.0}` — Emotion detection result
@@ -130,12 +139,22 @@ Empty-chair sessions initialize with a special text format:
 - `{"type": "user_speech", "content": "..."}` — Transcribed speech (voice mode)
 - `{"type": "audio_chunk", "data": "<base64>"}` — Streaming MP3 chunk (voice mode TTS)
 - `{"type": "audio_end"}` — End of TTS stream; browser assembles chunks and plays via Web Audio API
+- `{"type": "safety_decision", "action": "normal_roleplay|safe_roleplay|stop_roleplay", "method": "...", "risk_level": "...", "suicidewatch_probability": 0.0}` — EmptyChair DistilBERT result per turn
+- `{"type": "crisis_mode", "lockout_seconds": 15, "show_breathing": true}` — Triggers BreathingModal lockout
+- `{"type": "elevated_mode", "active": true, "until_timestamp": 1234567890.0, "reason": "crisis_detected"}` — 30-min enhanced support window
+- `{"type": "re_entry_choice", "prompt": "...", "buttons": [...]}` — Post-crisis options sheet
+- `{"type": "system_message", "text": "..."}` — Inline session notification (auto-dismissed after 5s)
+- `{"type": "safety_summary", "session_duration": 0.0, "crisis_count": 0}` — Session end summary
 
 ### Frontend (Next.js App Router)
 
-- **Pages**: `app/messaging/page.tsx` (text chat), `app/voice/page.tsx` (physical companion monitor — shows live transcript), `app/empty-chair/page.tsx` (therapy setup + chat)
+- **Pages**: `app/messaging/page.tsx` (text chat), `app/voice/page.tsx` (physical companion monitor — shows live transcript), `app/empty-chair/page.tsx` (therapy setup + chat with full crisis lifecycle)
 - **Shared hook**: `hooks/useChat.ts` — WebSocket connection management, multi-mode chat history, emotion state, streaming audio playback via Web Audio API (`AudioContext` unlocked on user gesture)
 - **Components**: `Sidebar.tsx` (nav + OCEAN radar chart), `OceanChart.tsx` (Recharts radar, polls `/profile/ocean/{user_id}` every 5s)
+- **EmptyChair crisis components** (`components/empty-chair/`):
+  - `BreathingModal.tsx` — full-screen lockout overlay with guided inhale/hold/exhale animation and crisis lines
+  - `ReliefOptionsSheet.tsx` — bottom sheet with post-crisis re-entry options (resume / support mode / end)
+  - `ElevatedModeBanner.tsx` — dismissible amber banner during the 30-min elevated support window
 - **Context**: `UserContext.tsx` (user ID, localStorage-backed), `ThemeContext.tsx` (dark/light mode)
 - **Styling**: Tailwind CSS 4 + Framer Motion animations; color-coded by mode (blue=messaging, indigo=voice, purple=empty-chair)
 
