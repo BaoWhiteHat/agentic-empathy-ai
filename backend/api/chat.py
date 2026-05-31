@@ -2,6 +2,7 @@ import asyncio
 import base64
 import json
 import re
+import sys
 import threading
 import time
 import traceback
@@ -70,7 +71,6 @@ def _get_or_create_session(user_id: str) -> dict:
         session = _default_empty_chair_session()
         empty_chair_sessions[user_id] = session
         return session
-    # Backfill any missing keys on legacy sessions without overwriting existing values.
     for key, value in _default_empty_chair_session().items():
         session.setdefault(key, value)
     return session
@@ -110,9 +110,11 @@ async def _send_reentry_choices(websocket: WebSocket) -> None:
         "type": "re_entry_choice",
         "prompt": "How would you like to keep going?",
         "buttons": [
-            {"action": "resume_roleplay", "label": "Continue with roleplay", "tone": "primary"},
-            {"action": "switch_to_support", "label": "Just talk normally", "tone": "secondary"},
-            {"action": "end_session", "label": "End session for now", "tone": "neutral"},
+            {"action": "play_sounds",       "label": "🎵 Play calming sounds",      "tone": "neutral"},
+            {"action": "try_grounding",     "label": "🌊 Try 5-4-3-2-1 grounding", "tone": "neutral"},
+            {"action": "resume_roleplay",   "label": "Continue with roleplay",       "tone": "primary"},
+            {"action": "switch_to_support", "label": "Just talk normally",           "tone": "secondary"},
+            {"action": "end_session",       "label": "End session for now",          "tone": "neutral"},
         ],
     })
 
@@ -357,7 +359,7 @@ async def websocket_chat(
                 "confidence": percept.get("confidence", 0.0)
             })
 
-            print(f"User said: {user_text}")
+            print(f"User said: {user_text}", flush=True)
             ai_response = ""
             skip_background_learning = False
 
@@ -371,14 +373,11 @@ async def websocket_chat(
                         need_match = re.search(r"UNSPOKEN_NEED:\s*(.*?)\s*\|", user_text)
                         msg_match = re.search(r"MESSAGE:\s*(.*)", user_text)
 
-                        # Preserve any existing crisis/elevated/lockout fields across re-init.
                         session["target_name"] = target_match.group(1).strip() if target_match else "Someone important"
                         session["relationship"] = rel_match.group(1).strip() if rel_match else "A person who matters deeply to me"
                         session["unspoken_need"] = need_match.group(1).strip() if need_match else "I want to speak my truth"
                         user_text = msg_match.group(1).strip() if msg_match else user_text
 
-                    # Skip safety on SYSTEM_INIT — the Reddit-trained classifier
-                    # misfires on short/non-English boilerplate.
                     ec_safety = None
                     if not is_init and system.empty_chair.emptychair_safety is not None:
                         try:
@@ -390,7 +389,7 @@ async def websocket_chat(
                             )
                         except asyncio.TimeoutError:
                             ec_safety = _build_timeout_synthetic_decision()
-                            print("EmptyChair safety: DistilBERT timed out — using safe_roleplay fallback")
+                            print("EmptyChair safety: DistilBERT timed out — using safe_roleplay fallback", flush=True)
 
                         await websocket.send_json({
                             "type": "safety_decision",
@@ -399,10 +398,9 @@ async def websocket_chat(
                             "risk_level": ec_safety.risk_level,
                             "suicidewatch_probability": ec_safety.suicidewatch_probability,
                         })
-                        print(f"EmptyChair safety: {ec_safety}")
+                        print(f"EmptyChair safety: {ec_safety}", flush=True)
 
                     if ec_safety is not None and ec_safety.action == "stop_roleplay":
-                        # ── Crisis path ──
                         skip_background_learning = True
                         now = time.time()
                         session["crisis_timestamp"] = now
@@ -423,7 +421,10 @@ async def websocket_chat(
                             "reason": "crisis_detected",
                         })
 
-                        ai_response = system.empty_chair.emptychair_safety.crisis_response()
+                        if system.empty_chair.emptychair_safety is not None:
+                            ai_response = system.empty_chair.emptychair_safety.crisis_response()
+                        else:
+                            ai_response = "I need to pause this conversation for your safety. Please reach out for support."
 
                         if system.memory and system.memory.driver:
                             system.memory.add_turn(
@@ -437,7 +438,6 @@ async def websocket_chat(
                             )
 
                     elif session.get("support_mode") and not is_init:
-                        # ── Neutral companion voice (post-crisis switch_to_support) ──
                         ai_response, _routing, support_safety = await system.process_brain_agentic(
                             user_text,
                             user_id,
@@ -448,7 +448,6 @@ async def websocket_chat(
                             skip_background_learning = True
 
                     else:
-                        # ── Normal / safe_roleplay: reuse precomputed decision ──
                         precomputed = ec_safety if not is_init else _build_init_synthetic_decision()
                         ai_response = await asyncio.to_thread(
                             system.empty_chair.generate_response,
@@ -460,6 +459,7 @@ async def websocket_chat(
                             emotion=emotion,
                             _precomputed_safety=precomputed,
                         )
+
                 else:
                     ai_response, _routing_info, safety_info = await system.process_brain_agentic(
                         user_text,
@@ -469,12 +469,13 @@ async def websocket_chat(
                     )
                     skip_background_learning = safety_info.get("risk_type") == "self_harm_or_suicide"
 
-            except Exception:
-                print("\nUnexpected error during chat processing:")
-                traceback.print_exc()
+            except Exception as e:
+                print(f"\nERROR TYPE: {type(e).__name__}", flush=True, file=sys.stderr)
+                print(f"ERROR MSG: {e}", flush=True, file=sys.stderr)
+                traceback.print_exc(file=sys.stderr)
                 ai_response = "Sorry — I hit a system error and lost the thread. Could you try again?"
 
-            print(f"AI replied: '{ai_response}'")
+            print(f"AI replied: '{ai_response}'", flush=True)
 
             await websocket.send_json({
                 "type": "message",
@@ -494,7 +495,7 @@ async def websocket_chat(
             asyncio.create_task(system.manage_reflection(user_id))
 
     except WebSocketDisconnect:
-        print(f"Web Client [{user_id}] disconnected.")
+        print(f"Web Client [{user_id}] disconnected.", flush=True)
     except Exception as e:
-        print(f"WebSocket Error: {e}")
+        print(f"WebSocket Error: {e}", flush=True, file=sys.stderr)
         await websocket.send_json({"type": "status", "content": "idle"})

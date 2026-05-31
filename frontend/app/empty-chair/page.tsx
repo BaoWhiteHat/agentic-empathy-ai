@@ -8,6 +8,9 @@ import { Send, Sparkles, User, ArrowRight, Flame, ShieldCheck, ShieldAlert, Shie
 import { BreathingModal } from '../../components/empty-chair/BreathingModal';
 import { ReliefOptionsSheet, type ReEntryButton } from '../../components/empty-chair/ReliefOptionsSheet';
 import { ElevatedModeBanner } from '../../components/empty-chair/ElevatedModeBanner';
+import { AudioPlayer } from '@/components/empty-chair/AudioPlayer';
+import { GroundingExercise } from '@/components/empty-chair/GroundingExercise';
+import { CrisisFooter } from '@/components/empty-chair/CrisisFooter';
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 interface SafetyDecision {
@@ -94,6 +97,9 @@ export default function EmptyChairPage() {
   const [reEntryOptions, setReEntryOptions] = useState<{ prompt: string; buttons: ReEntryButton[] } | null>(null);
   const [inputLocked, setInputLocked] = useState(false);
   const [systemNotification, setSystemNotification] = useState<string | null>(null);
+  const [audioPlayerOpen, setAudioPlayerOpen] = useState(false);
+  const [groundingOpen, setGroundingOpen] = useState(false);
+  const [sessionHadCrisis, setSessionHadCrisis] = useState(false);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -120,6 +126,7 @@ export default function EmptyChairPage() {
           setBreathingActive(true);
           setInputLocked(true);
           setReEntryOptions(null);
+          setSessionHadCrisis(true);
         }
 
         if (data.type === 'elevated_mode' && data.active) {
@@ -181,7 +188,18 @@ export default function EmptyChairPage() {
     socket?.send(JSON.stringify({ action: 'show_reentry_options' }));
   }, [socket]);
 
+  const handleGroundingComplete = useCallback(() => setGroundingOpen(false), []);
+  const handleGroundingSkip     = useCallback(() => setGroundingOpen(false), []);
+
   const handleReEntryChoice = useCallback((action: string) => {
+    if (action === 'play_sounds') {
+      setAudioPlayerOpen(true);
+      return;
+    }
+    if (action === 'try_grounding') {
+      setGroundingOpen(true);
+      return;
+    }
     setReEntryOptions(null);
     socket?.send(JSON.stringify({ action }));
     if (action !== 'end_session') {
@@ -211,6 +229,29 @@ export default function EmptyChairPage() {
             prompt={reEntryOptions.prompt}
             buttons={reEntryOptions.buttons}
             onChoice={handleReEntryChoice}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* ── Ambient audio player (independent of session state) ── */}
+      <AnimatePresence>
+        {audioPlayerOpen && (
+          <AudioPlayer
+            key="audio-player"
+            isOpen={audioPlayerOpen}
+            onClose={() => setAudioPlayerOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* ── Grounding exercise overlay (coexists with AudioPlayer) ── */}
+      <AnimatePresence>
+        {groundingOpen && (
+          <GroundingExercise
+            key="grounding"
+            isOpen={groundingOpen}
+            onComplete={handleGroundingComplete}
+            onSkip={handleGroundingSkip}
           />
         )}
       </AnimatePresence>
@@ -347,6 +388,9 @@ export default function EmptyChairPage() {
                 )}
               </AnimatePresence>
             </div>
+
+            {/* Crisis support footer — persistent after first crisis, never dismissible */}
+            <CrisisFooter isVisible={sessionHadCrisis} />
 
             <footer className="p-8 pt-0 shrink-0">
               <div className={`max-w-4xl mx-auto flex gap-3 items-end p-2 rounded-[2rem] bg-card border transition-all duration-300 shadow-2xl ${inputLocked ? 'border-border opacity-50 pointer-events-none' : 'border-border focus-within:border-purple-500/40 focus-within:ring-4 focus-within:ring-purple-500/5'}`}>

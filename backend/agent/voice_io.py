@@ -38,7 +38,8 @@ class VoiceInterface:
             return None
 
     def transcribe(self, audio_filename):
-        if not audio_filename or not os.path.exists(audio_filename): return ""
+        if not audio_filename or not os.path.exists(audio_filename):
+            return ""
         try:
             with open(audio_filename, "rb") as audio_file:
                 transcript = self.openai_client.audio.transcriptions.create(
@@ -67,7 +68,12 @@ class VoiceInterface:
             return None
 
     def generate_speech_pcm16_stereo_bytes(self, text) -> bytes | None:
-        """Generate raw 16 kHz signed 16-bit stereo PCM bytes for ESP32 I2S playback."""
+        """Generate raw 16 kHz signed 16-bit MONO PCM bytes for ESP32 I2S playback.
+
+        NOTE: Tên hàm giữ '..._stereo_...' để không phải sửa chỗ gọi, nhưng output
+        thực tế là MONO. Chỉ có 1 con MAX98357A (mono). Mono giảm tiêu thụ I2S
+        còn 32KB/s, cho phép ACK flow control hoạt động êm với margin lớn.
+        """
         if not text:
             return None
         try:
@@ -82,9 +88,32 @@ class VoiceInterface:
             if not mono_pcm:
                 return None
 
-            samples = np.frombuffer(mono_pcm, dtype="<i2")
-            stereo = np.column_stack((samples, samples)).astype("<i2", copy=False)
-            return stereo.tobytes()
+            samples = np.frombuffer(mono_pcm, dtype="<i2").astype(np.float32)
+
+            # 1) Trim trailing silence — cắt im lặng cuối
+            threshold = 200
+            abs_samples = np.abs(samples)
+            nonzero = np.where(abs_samples > threshold)[0]
+            if len(nonzero) > 0:
+                last_nonzero = nonzero[-1]
+                cut_at = min(last_nonzero + 480, len(samples))  # giữ 30ms đuôi
+                samples = samples[:cut_at]
+
+            # 2) Fade-IN 5ms đầu — chống pop khi bắt đầu
+            fade_in = min(80, len(samples))   # 5ms × 16kHz = 80 samples
+            if fade_in > 0:
+                ramp = np.linspace(0.0, 1.0, fade_in)
+                samples[:fade_in] *= ramp
+
+            # 3) Fade-OUT 30ms cuối — chống pop khi kết thúc
+            fade_out = min(480, len(samples))  # 30ms × 16kHz = 480 samples
+            if fade_out > 0:
+                ramp = np.linspace(1.0, 0.0, fade_out)
+                samples[-fade_out:] *= ramp
+
+            # 4) Clip về int16 — TRẢ MONO (không column_stack thành stereo)
+            samples = np.clip(samples, -32768, 32767).astype("<i2")
+            return samples.tobytes()
         except Exception as e:
             print(f"TTS PCM error: {e}")
             return None
