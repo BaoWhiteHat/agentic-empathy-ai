@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SoulMate — The Modular Friend (Direction 4)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<template id="__bundler_thumbnail">
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+<rect width="100" height="100" rx="22" fill="#2E9E6E"/>
+<rect x="33" y="13" width="11" height="26" rx="5.5" fill="#FDFEFA"/>
+<rect x="56" y="13" width="11" height="26" rx="5.5" fill="#FDFEFA"/>
+<rect x="26" y="34" width="48" height="44" rx="13" fill="#FDFEFA"/>
+<circle cx="42" cy="56" r="3.4" fill="#1F2A24"/><circle cx="58" cy="56" r="3.4" fill="#1F2A24"/>
+<path d="M44 64 Q50 69 56 64" stroke="#1F2A24" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+</svg>
+</template>
+<style>
+:root{
+  --font-display:'Newsreader',Georgia,serif; --font-body:'Hanken Grotesk',system-ui,sans-serif;
+  --bg:#F3F7EE; --bg-deep:#E8F1E0; --surface:#FDFEFA; --surface-2:#EDF3E7; --surface-3:#E2EAD9;
+  --ink:#2A2F26; --ink-soft:#5A6353; --ink-faint:#8F9A87; --line:#E2E8DA; --line-strong:#D2DBC8;
+  --sage:#2E9E6E; --sage-deep:#1C7A52; --sage-soft:#D8EFE4; --sage-tint:#ECF8F1;
+  --clay:#C77B5E; --clay-deep:#A85C40; --clay-soft:#F6E2D7;
+  --gold:#CCA24F; --gold-soft:#F4E8C9; --teal:#3F8FA8; --teal-soft:#D9EAF0; --amber:#D98A3D;
+  --screen:#1F2A24; --screen-glow:#BFEFD6;
+  --ivory:#FBFBF3; --ivory-shade:#ECEEE1; --ivory-deep:#DFE3D3; --edge:#BCC4B0;
+  --shadow-soft:0 2px 10px rgba(42,47,38,.05); --shadow-card:0 12px 40px rgba(42,47,38,.08);
+  --r-sm:12px; --r-md:18px; --r-lg:26px; --r-xl:34px;
+}
+*{box-sizing:border-box;} html,body{margin:0;padding:0;}
+body{font-family:var(--font-body);color:var(--ink);line-height:1.6;letter-spacing:.004em;-webkit-font-smoothing:antialiased;
+  background:radial-gradient(120% 80% at 100% -5%,var(--bg-deep),transparent 60%),radial-gradient(100% 70% at -10% 0%,#EFF4E9,transparent 55%),var(--bg);}
+.serif{font-family:var(--font-display);font-weight:500;letter-spacing:-.01em;}
+.label{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);}
+h1,h2,h3,h4{margin:0;} p{margin:0;text-wrap:pretty;}
+
+.topbar{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:color-mix(in oklab,var(--bg) 82%,transparent);border-bottom:1px solid var(--line);}
+.topbar-in{max-width:1180px;margin:0 auto;padding:13px 40px;display:flex;align-items:center;gap:16px;}
+.brand{display:flex;align-items:center;gap:11px;}
+.brand-mark{width:36px;height:36px;border-radius:11px;background:var(--sage);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px color-mix(in oklab,var(--sage) 38%,transparent);}
+.brand-name{font-family:var(--font-display);font-size:18px;font-weight:600;line-height:1;}
+.brand-sub{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-top:3px;}
+.navlinks{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap;}
+.navlinks a{font-size:13px;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:7px 12px;border-radius:99px;white-space:nowrap;transition:.15s;}
+.navlinks a:hover{background:var(--sage-tint);color:var(--sage-deep);}
+
+.wrap{max-width:1180px;margin:0 auto;padding:0 40px;} section{scroll-margin-top:80px;}
+.sec-head{padding:46px 0 8px;}
+.sec-head .num{font-family:var(--font-display);font-size:15px;color:var(--sage-deep);font-weight:600;}
+.sec-head h2{font-size:33px;line-height:1.1;letter-spacing:-.01em;margin:6px 0 10px;}
+.sec-head p{font-size:16px;color:var(--ink-soft);max-width:720px;}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow-card);}
+
+/* hero */
+.hero{padding:60px 0 28px;display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;}
+.hero h1{font-size:50px;line-height:1.04;letter-spacing:-.02em;margin:14px 0 18px;}
+.hero .lede{font-size:17px;color:var(--ink-soft);max-width:520px;}
+.chiprow{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px;}
+.chip{display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border-radius:99px;background:var(--surface);border:1px solid var(--line);font-size:12.5px;font-weight:600;color:var(--ink-soft);box-shadow:var(--shadow-soft);}
+.chip .dot{width:8px;height:8px;border-radius:50%;background:var(--sage);}
+.hero-art{position:relative;display:flex;align-items:center;justify-content:center;}
+.hero-art::before{content:"";position:absolute;width:62%;height:62%;border-radius:50%;background:radial-gradient(circle,color-mix(in oklab,var(--sage) 26%,transparent),transparent 70%);filter:blur(20px);animation:halo 5s ease-in-out infinite;}
+@keyframes halo{0%,100%{opacity:.5;transform:scale(.95)}50%{opacity:.9;transform:scale(1.05)}}
+.hero-art .device{position:relative;width:100%;max-width:300px;filter:drop-shadow(0 24px 40px rgba(42,47,38,.16));}
+
+/* expression strip */
+.exprstrip{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px;margin-top:26px;}
+.expr{padding:16px 12px 16px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;--glow:var(--sage);min-width:0;}
+.expr svg{width:100%;height:auto;max-width:132px;}
+.expr .mini{margin-top:2px;}
+.expr h4{font-size:14px;display:flex;align-items:center;gap:7px;}
+.expr .gdot{width:9px;height:9px;border-radius:50%;background:var(--glow);}
+.expr p{font-size:12px;color:var(--ink-soft);line-height:1.4;}
+@media (max-width:1180px){.exprstrip{grid-template-columns:repeat(3,minmax(0,1fr));}}
+@media (max-width:620px){.exprstrip{grid-template-columns:repeat(2,minmax(0,1fr));}}
+
+/* views */
+.views{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:26px;border-radius:var(--r-xl);overflow:hidden;border:1px solid var(--line);background:var(--surface);box-shadow:var(--shadow-card);}
+.view{padding:26px 22px 22px;border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;}
+.view:last-child{border-right:none;}
+.view .vlabel{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--ink-faint);margin-bottom:6px;align-self:flex-start;}
+.view svg{width:100%;height:auto;max-width:270px;}
+@media (max-width:900px){.views{grid-template-columns:1fr;}.view{border-right:none;border-bottom:1px solid var(--line);}}
+
+/* two-col generic */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:26px;align-items:start;}
+@media (max-width:900px){.duo{grid-template-columns:1fr;}}
+.panel{padding:24px 26px;}
+.panel .label{margin-bottom:12px;}
+.panel p{font-size:14px;color:var(--ink-soft);}
+.panel svg{width:100%;height:auto;}
+
+/* specs table */
+.specs{width:100%;border-collapse:separate;border-spacing:0;font-size:14px;}
+.specs td{padding:11px 4px;border-bottom:1px solid var(--line);vertical-align:top;}
+.specs tr:last-child td{border-bottom:none;}
+.specs td:first-child{color:var(--ink-soft);width:46%;}
+.specs td:last-child{font-weight:600;color:var(--ink);text-align:right;}
+
+/* zoning legend */
+.zlegend{display:flex;flex-direction:column;gap:9px;margin-top:6px;}
+.zrow{display:flex;gap:11px;align-items:flex-start;font-size:13.5px;color:var(--ink-soft);}
+.zrow .sw{width:16px;height:16px;border-radius:5px;flex-shrink:0;margin-top:2px;border:1px solid rgba(0,0,0,.06);}
+.zrow b{color:var(--ink);font-weight:600;}
+
+/* assembly */
+.asm-steps{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:11px;counter-reset:s;}
+.asm-steps li{display:flex;gap:12px;align-items:flex-start;font-size:13.5px;color:var(--ink-soft);}
+.asm-steps li::before{counter-increment:s;content:counter(s);width:24px;height:24px;border-radius:50%;background:var(--sage-soft);color:var(--sage-deep);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.asm-steps b{color:var(--ink);font-weight:600;}
+
+/* palette + materials */
+.swatches{display:flex;flex-wrap:wrap;gap:12px;}
+.sw2{display:flex;flex-direction:column;gap:6px;align-items:flex-start;font-size:11.5px;font-weight:600;color:var(--ink-soft);}
+.sw2 .c{width:56px;height:40px;border-radius:10px;border:1px solid var(--line-strong);}
+.matlist{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;}
+.matlist li{display:flex;gap:10px;font-size:13.5px;color:var(--ink-soft);align-items:flex-start;}
+.matlist li svg{flex-shrink:0;color:var(--sage-deep);margin-top:2px;}
+.matlist b{color:var(--ink);font-weight:600;}
+
+/* balance cards */
+.balance{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:26px;}
+.bcard{padding:24px 26px;}
+.bcard .ic{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+.bcard.warm .ic{background:var(--clay-soft);color:var(--clay-deep);}
+.bcard.build .ic{background:var(--sage-soft);color:var(--sage-deep);}
+.bcard h4{font-size:17px;margin-bottom:10px;}
+.bcard ul{margin:0;padding-left:18px;color:var(--ink-soft);font-size:13.5px;}
+.bcard li{margin-bottom:6px;}
+.bridge{margin-top:18px;padding:22px 26px;border-radius:var(--r-lg);background:linear-gradient(180deg,var(--sage-tint),var(--surface));border:1px solid var(--sage-soft);font-size:14.5px;color:var(--ink);}
+.bridge b{color:var(--sage-deep);}
+@media (max-width:900px){.balance{grid-template-columns:1fr;}}
+
+footer{padding:40px 0 60px;color:var(--ink-faint);font-size:12.5px;border-top:1px solid var(--line);margin-top:50px;}
+@media (max-width:900px){.hero{grid-template-columns:1fr;}.hero h1{font-size:38px;}.wrap,.topbar-in{padding-left:22px;padding-right:22px;}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;}}
+@media print{.topbar{position:static;}body{background:#fff;}}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="topbar-in">
+  <div class="brand">
+    <div class="brand-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M20.8 7.6a5 5 0 0 0-8.8-2.3A5 5 0 0 0 3.2 7.6c0 4 5.5 8 8.8 10.4 3.3-2.4 8.8-6.4 8.8-10.4z"/></svg></div>
+    <div><div class="brand-name">SoulMate</div><div class="brand-sub">Direction 4 · The Modular Friend</div></div>
+  </div>
+  <nav class="navlinks">
+    <a href="#face">The face</a>
+    <a href="#views">Views</a>
+    <a href="#dimensions">Dimensions</a>
+    <a href="#hardware">Hardware</a>
+    <a href="#assembly">Assembly</a>
+    <a href="#balance">Comfort &amp; build</a>
+  </nav>
+</div></div>
+
+<div class="wrap">
+  <section class="hero">
+    <div>
+      <div class="label">Direction 4 · Modular ESP32 shell, humanised</div>
+      <h1 class="serif">Not an enclosure.<br/>A little friend.</h1>
+      <p class="lede">A believable, 3D‑printable ESP32 shell — removable back panel, real ports, honest internal zones — softened into a warm ivory desk companion with rabbit‑ear status lights and a gentle, lovable face. Engineered to build; designed to befriend.</p>
+      <div class="chiprow">
+        <span class="chip"><span class="dot"></span>Rounded modular body</span>
+        <span class="chip"><span class="dot"></span>Light‑up rabbit ears</span>
+        <span class="chip"><span class="dot"></span>Lovable minimal face</span>
+        <span class="chip"><span class="dot"></span>Prints &amp; assembles in an afternoon</span>
+      </div>
+    </div>
+    <div class="hero-art"><div class="device" id="hero-art"></div></div>
+  </section>
+
+  <section id="face">
+    <div class="sec-head"><div class="num">01</div><h2 class="serif">A face you want to talk to</h2>
+      <p>The personality lives in three calm, glance‑able signals — a <b>minimal face</b>, the <b>light‑up ears</b>, and an optional <b>front status glow</b>. Expressions are gentle and never cartoonishly exaggerated; the changes are subtle enough to feel alive, clear enough to read at a glance, and always backed by the app's status text.</p></div>
+    <div class="exprstrip" id="exprstrip"></div>
+  </section>
+
+  <section id="views">
+    <div class="sec-head"><div class="num">02</div><h2 class="serif">Front · Side · Back</h2>
+      <p>One soft, rounded cube body with two upright ears and a friendly face window. Clear body seams, stable feet, and every port and opening accounted for.</p></div>
+    <div class="views" id="views"></div>
+  </section>
+
+  <section id="dimensions">
+    <div class="sec-head"><div class="num">03</div><h2 class="serif">Approximate dimensions</h2>
+      <p>Compact enough to share desk space with a mug, generous enough inside for real student hardware. Numbers are target dimensions for the first printed prototype.</p></div>
+    <div class="duo">
+      <div class="card panel" id="dim-art"></div>
+      <div class="card panel"><div class="label">Target specification</div>
+        <table class="specs" id="specs"></table>
+      </div>
+    </div>
+  </section>
+
+  <section id="hardware">
+    <div class="sec-head"><div class="num">04</div><h2 class="serif">Inside — honest hardware zones</h2>
+      <p>The body is sized around the parts, not the other way around. Each zone has breathing room for wiring and airflow, with the heaviest items (board + battery) kept low for a stable, tip‑resistant stance.</p></div>
+    <div class="duo">
+      <div class="card panel" id="zone-art"></div>
+      <div class="card panel"><div class="label">Internal zoning</div>
+        <div class="zlegend" id="zlegend"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="assembly">
+    <div class="sec-head"><div class="num">05</div><h2 class="serif">Assembly logic</h2>
+      <p>Designed for a no‑glue, screw‑together build with friendly tolerances — the kind of thing you can take apart to debug and put back together for the demo.</p></div>
+    <div class="duo">
+      <div class="card panel" id="asm-art"></div>
+      <div class="card panel"><div class="label">Build order · ~30–40 min</div>
+        <ol class="asm-steps" id="asm-steps"></ol>
+      </div>
+    </div>
+  </section>
+
+  <section id="materials">
+    <div class="sec-head"><div class="num">06</div><h2 class="serif">Materials &amp; palette</h2>
+      <p>Warm, matte, and fingerprint‑friendly — the same ivory‑and‑sage language as the SoulMate app, in physical form.</p></div>
+    <div class="duo">
+      <div class="card panel"><div class="label">Colour palette</div><div class="swatches" id="palette" style="margin-bottom:18px;"></div>
+        <div class="label" style="margin-top:6px;">Status accents</div><div class="swatches" id="palette-status"></div></div>
+      <div class="card panel"><div class="label">Material &amp; finish</div><ul class="matlist" id="matlist"></ul></div>
+    </div>
+  </section>
+
+  <section id="balance">
+    <div class="sec-head"><div class="num">07</div><h2 class="serif">Emotional comfort, meets buildability</h2>
+      <p>The whole point of Direction 4 is that these two goals don't fight — the soft, friendly form is also the most honest and printable one.</p></div>
+    <div class="balance">
+      <div class="card bcard warm"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 7.6a5 5 0 0 0-8.8-2.3A5 5 0 0 0 3.2 7.6c0 4 5.5 8 8.8 10.4 3.3-2.4 8.8-6.4 8.8-10.4z"/></svg></div>
+        <h4 class="serif">Why it feels like a friend</h4>
+        <ul>
+          <li>Rounded everything and a low, slightly forward‑leaning stance read as approachable and attentive.</li>
+          <li>A minimal two‑eye‑and‑smile face is lovable without being childish — gentle micro‑expressions, never exaggerated.</li>
+          <li>Ears that breathe and glow give it a calm heartbeat, so it feels present even when idle.</li>
+          <li>Warm ivory + soft sage glow is comforting on a bedside table, not clinical.</li>
+        </ul>
+      </div>
+      <div class="card bcard build"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.2L4 16.8 7.2 20l5.3-5.3a4 4 0 0 0 5.2-5.4l-2.7 2.7-2.3-2.3z"/></svg></div>
+        <h4 class="serif">Why it's realistic to build</h4>
+        <ul>
+          <li>A true rounded cube is the most print‑friendly form: flat faces, no risky overhangs, thick 2.4–3 mm walls.</li>
+          <li>Removable back panel with M3 heat‑set inserts — open it any time to debug the ESP32.</li>
+          <li>No moving parts and no mechanical ears; the ears light up, they never actuate.</li>
+          <li>Real, accessible ports and openings sized to common student modules.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="bridge">The friendly choices <b>are</b> the buildable choices. Soft corners that feel huggable also print cleanly and resist cracking. Tall ears that read as a creature also happen to be the best diffusers for a glance‑able status LED. A roomy cube that looks calm and unintimidating is also the easiest place to fit a board, speaker and battery with airflow to spare — so the design is emotionally warm <b>and</b> academically defensible.</div>
+  </section>
+
+  <footer>
+    SoulMate — Direction 4: The Modular Friend · A detailed, buildable companion‑body concept for a final‑year HCI project.
+    This document specifies the physical device only; the SoulMate app prototype and the earlier three‑concept board are unchanged.
+  </footer>
+</div>
+
+<script src="companion-svg.js"></script>
+<script src="companion-friend.js"></script>
+</body>
+</html>

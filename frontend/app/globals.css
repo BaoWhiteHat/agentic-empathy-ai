@@ -1,125 +1,329 @@
-@import "tailwindcss";
+/* ============================================================
+   SoulMate — Fresh & Calm design tokens
+   Fresh sage/mint · cream paper · soft ivory cards · dark-olive ink
+   Ported from design-reference/styles.css + safety/safety.css
+   ============================================================ */
 
-@custom-variant dark (&:where(.dark, .dark *));
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Hanken+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
 
-@theme {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
+/* OpenDyslexic — dyslexia-friendly body font (Tweaks › Font › Dyslexic).
+   Place OpenDyslexic-Regular.otf in /public/fonts/ (open licence, opendyslexic.org).
+   Until present, the 'dyslexic' option falls back to Hanken Grotesk via --font-body. */
+@font-face {
+  font-family: 'OpenDyslexic';
+  src: url('/fonts/OpenDyslexic-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
-  --card: #ffffff;
-  --card-foreground: #0f172a;
-  --border: #e2e8f0;
-  --input: #ffffff;
-  --ring: #3b82f6;
+  /* ---- type families (overridable by Tweaks) ---- */
+  --font-display: 'Newsreader', Georgia, serif;
+  --font-body: 'Hanken Grotesk', system-ui, sans-serif;
+
+  /* ---- accessible personalisation (set by TweaksContext on :root) ---- */
+  --text-base: 1rem;
+  --line-height: 1.6;
+  --letter-spacing: normal;
+  --transition-speed: 200ms;
+  --accent: #2E9E6E;
+
+  /* ---- LIGHT (default): fresh cream paper ---- */
+  --bg: #F3F7EE;
+  --bg-tint: #E8F1E0;
+  --surface: #FDFEFA;
+  --surface-2: #EDF3E7;
+  --surface-3: #E2EAD9;
+  --ink: #2A2F26;
+  --ink-soft: #5A6353;
+  --ink-faint: #8F9A87;
+  --line: #E2E8DA;
+  --line-strong: #D2DBC8;
+
+  /* ---- accents ---- */
+  --sage: #2E9E6E;
+  --sage-deep: #1C7A52;
+  --sage-soft: #D8EFE4;
+  --sage-tint: #ECF8F1;
+
+  --clay: #C77B5E;
+  --clay-deep: #A85C40;
+  --clay-soft: #F6E2D7;
+  --clay-tint: #FAEEE6;
+
+  --lavender: #87859F;
+  --lavender-deep: #686183;
+  --lavender-soft: #E7E4EF;
+  --lavender-tint: #F0EEF5;
+
+  --gold: #CCA24F;
+  --gold-soft: #F4E8C9;
+
+  /* ---- mood / weather spectrum ---- */
+  --mood-radiant: #E0A93F;
+  --mood-calm: #2E9E6E;
+  --mood-cloudy: #9AA79A;
+  --mood-low: #6F93AE;
+  --mood-heavy: #7E7595;
+
+  /* ---- care (crisis-aware copy — warm, clear, not shrill) ---- */
+  --care: #C75B47;
+  --care-deep: #A2402E;
+  --care-soft: #F5DAD2;
+  --care-tint: #FBEDE8;
+
+  /* ---- voice / ESP32 status pipeline ---- */
+  --v-listen: #2E9E6E;
+  --v-transcribe: #3F8FA8;
+  --v-prepare: #CCA24F;
+  --v-speak: #C77B5E;
+  --v-connected: #2E9E6E;
+
+  /* ---- geometry ---- */
+  --r-xs: 10px;
+  --r-sm: 14px;
+  --r-md: 18px;
+  --r-lg: 24px;
+  --r-xl: 32px;
+  --r-pill: 999px;
+
+  --shadow-soft: 0 2px 8px rgba(42,47,38,.05);
+  --shadow-card: 0 8px 30px rgba(42,47,38,.07);
+  --shadow-lift: 0 20px 52px rgba(42,47,38,.14);
+
+  --ease: cubic-bezier(.22,.61,.36,1);
 }
 
 .dark {
-  --background: #020617;
-  --foreground: #f1f5f9;
-  --card: #0f172a;
-  --card-foreground: #f1f5f9;
-  --border: #1e293b;
-  --input: #020617;
-  --ring: #1d4ed8;
+  --bg: #181D17;
+  --bg-tint: #1E251C;
+  --surface: #222A20;
+  --surface-2: #2A3227;
+  --surface-3: #333C2F;
+  --ink: #ECF1E6;
+  --ink-soft: #A9B3A2;
+  --ink-faint: #7A8573;
+  --line: #323B2E;
+  --line-strong: #41492F;
+
+  --sage: #5BC196;
+  --sage-deep: #93DCB8;
+  --sage-soft: #23362A;
+  --sage-tint: #1E2B22;
+
+  --clay: #D89A7E;
+  --clay-deep: #E6B89F;
+  --clay-soft: #3A2B23;
+  --clay-tint: #2E251F;
+
+  --lavender: #ADA1C4;
+  --lavender-deep: #C7BEDA;
+  --lavender-soft: #2E2937;
+  --lavender-tint: #28232F;
+
+  --gold: #DCBA72;
+  --gold-soft: #38311D;
+
+  --mood-radiant: #E3BB60;
+  --mood-calm: #5BC196;
+  --mood-cloudy: #A6AEA3;
+  --mood-low: #87A6C0;
+  --mood-heavy: #9C90AE;
+
+  --care: #E08369;
+  --care-deep: #E8A48E;
+  --care-soft: #3A2620;
+  --care-tint: #2E211B;
+
+  --v-listen: #5BC196;
+  --v-transcribe: #62B2C9;
+  --v-prepare: #DCBA72;
+  --v-speak: #D89A7E;
+  --v-connected: #5BC196;
+
+  --shadow-soft: 0 2px 8px rgba(0,0,0,.24);
+  --shadow-card: 0 8px 30px rgba(0,0,0,.34);
+  --shadow-lift: 0 20px 52px rgba(0,0,0,.5);
 }
+
+* { box-sizing: border-box; }
+
+/* Personalisation honours the user's motion preference everywhere. Elements
+   without a transition-property are unaffected; this just lets reduce-motion
+   zero out durations globally. */
+* { transition-duration: var(--transition-speed, 200ms); }
+
+html, body { margin: 0; padding: 0; height: 100%; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  font-family: var(--font-body);
+  font-size: var(--text-base, 1rem);
+  line-height: var(--line-height, 1.6);
+  letter-spacing: var(--letter-spacing, .005em);
+  text-align: left; /* never text-justify — irregular gaps hurt dyslexic readers */
+  background: var(--bg);
+  color: var(--ink);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
+  transition: background-color .4s var(--ease), color .4s var(--ease);
 }
 
-/* Custom Scrollbar */
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
+#__next, body > div:first-child { height: 100%; }
+
+/* ---- type helpers ---- */
+.serif { font-family: var(--font-display); font-weight: 500; letter-spacing: -.01em; }
+.serif-i { font-family: var(--font-display); font-style: italic; font-weight: 400; }
+.label {
+  font-size: 11px; font-weight: 600; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--ink-faint);
 }
 
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+/* ---- focus: clearly visible (WCAG 2.2 — never fully hidden) ---- */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
+button { font-family: inherit; cursor: pointer; }
+button:disabled { cursor: default; }
+input, textarea { font-family: inherit; }
 
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
+/* ---- scrollbars: quiet ---- */
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 10px;
+  background: color-mix(in oklab, var(--ink-faint) 38%, transparent);
+  border-radius: 99px; border: 2px solid transparent; background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { background: color-mix(in oklab, var(--ink-faint) 60%, transparent); background-clip: padding-box; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+::selection { background: color-mix(in oklab, var(--sage) 28%, transparent); }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
 
-.dark ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+/* ---- ambient animations (gentle) ---- */
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: .55; }
+  50% { transform: scale(1.08); opacity: .9; }
+}
+@keyframes float-in {
+  from { transform: translateY(10px); }
+  to { transform: translateY(0); }
+}
+@keyframes soft-pulse {
+  0%, 100% { opacity: .4; }
+  50% { opacity: .85; }
+}
+@keyframes ripple {
+  from { transform: scale(.7); opacity: .5; }
+  to { transform: scale(2.4); opacity: 0; }
+}
+@keyframes shimmer-dot {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+@keyframes wave-bar {
+  0%, 100% { transform: scaleY(.3); }
+  50% { transform: scaleY(1); }
+}
+@keyframes conn-pulse {
+  0% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--v-connected) 55%, transparent); }
+  70% { box-shadow: 0 0 0 7px color-mix(in oklab, var(--v-connected) 0%, transparent); }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+@keyframes caret-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+/* ---- safety overlay entrances (transform-only so content is always visible) ---- */
+@keyframes so-fade-up { from { transform: translateY(10px); } to { transform: translateY(0); } }
+@keyframes so-fade-in { from { transform: translateY(0); } to { transform: translateY(0); } }
+@keyframes so-scale-in { from { transform: scale(.97); } to { transform: scale(1); } }
+@keyframes so-rise { from { transform: translateY(22px); } to { transform: translateY(0); } }
+@keyframes so-pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+
+.fade-up { animation: float-in .5s var(--ease) both; }
+.fade-in { animation: so-fade-in .4s var(--ease) both; }
+.scale-in { animation: so-scale-in .32s var(--ease) both; }
+.rise { animation: so-rise .42s var(--ease) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
 }
 
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+/* ---- generic surfaces ---- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card);
+}
+.hair { border: 1px solid var(--line); }
+
+/* range input used in calming sounds */
+.so-range { height: 4px; }
+
+/* ============================================================
+   Accessible personalisation — applied by TweaksContext
+   ============================================================ */
+
+/* Reduce motion via the in-app toggle (mirrors the OS-pref media query above,
+   so it works even when the OS setting isn't enabled). */
+.reduce-motion *, .reduce-motion *::before, .reduce-motion *::after {
+  animation-duration: .001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: .001ms !important;
+  scroll-behavior: auto !important;
 }
 
-/* Animations */
-@keyframes blob {
-  0% {
-    transform: translate(0px, 0px) scale(1);
-  }
-  33% {
-    transform: translate(30px, -50px) scale(1.1);
-  }
-  66% {
-    transform: translate(-20px, 20px) scale(0.9);
-  }
-  100% {
-    transform: translate(0px, 0px) scale(1);
-  }
+/* ---- Colour modes (data-color-mode on :root) ---- */
+/* calm = the baseline palette above (muted, default). vibrant = a touch more
+   depth. high-contrast = solid black/white, forced accessible accent. */
+:root[data-color-mode="vibrant"] {
+  --shadow-soft: 0 2px 10px rgba(42,47,38,.10);
+  --shadow-card: 0 10px 34px rgba(42,47,38,.12);
+  --shadow-lift: 0 22px 56px rgba(42,47,38,.20);
+}
+.dark[data-color-mode="vibrant"] {
+  --shadow-soft: 0 2px 10px rgba(0,0,0,.36);
+  --shadow-card: 0 10px 34px rgba(0,0,0,.46);
+  --shadow-lift: 0 22px 56px rgba(0,0,0,.6);
 }
 
-.animate-blob {
-  animation: blob 7s infinite;
+/* high-contrast overrides everything (placed last so it wins over .dark). */
+:root[data-color-mode="high-contrast"] {
+  --bg: #000000;
+  --bg-tint: #000000;
+  --surface: #000000;
+  --surface-2: #0c0c0c;
+  --surface-3: #1a1a1a;
+  --ink: #FFFFFF;
+  --ink-soft: #FFFFFF;
+  --ink-faint: #D8D8D8;
+  --line: #FFFFFF;
+  --line-strong: #FFFFFF;
+  /* Accent forced to a value that passes AA for white button text (~4.8:1)
+     and stands out on black — overrides the user's pick in HC mode only. */
+  --accent: #1C7A52;
+  --sage: #1C7A52;
+  --sage-deep: #14532D;
+  --sage-soft: #0c0c0c;
+  --sage-tint: #0c0c0c;
+  --shadow-soft: none;
+  --shadow-card: none;
+  --shadow-lift: 0 0 0 1px #FFFFFF;
 }
+:root[data-color-mode="high-contrast"] .card { box-shadow: none; border-color: #FFFFFF; }
+:root[data-color-mode="high-contrast"] :focus-visible { outline-color: #FFE066; }
 
-.animation-delay-2000 {
-  animation-delay: 2s;
-}
-
-.animation-delay-4000 {
-  animation-delay: 4s;
-}
-
-/* Selection */
-::selection {
-  background: rgba(59, 130, 246, 0.2);
-  color: #3b82f6;
-}
-
-/* Glassmorphism utility */
-.glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.dark .glass {
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
+/* ---- Focus mode (class on the app shell) — hides non-essential chrome ---- */
+.focus-mode .sidebar-label { display: none; }
+.focus-mode .emotion-badge { opacity: 0.3; }
+.focus-mode .status-chip { display: none; }

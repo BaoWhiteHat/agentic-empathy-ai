@@ -387,6 +387,52 @@ class GraphMemory:
         except Exception as e:
             return "No narrative yet."
 
+    # --- PHẦN: REFLECTIONS (Nhật ký) ---
+
+    def add_reflection(self, user_id: str, title: str, body: str, mood: str = "") -> dict:
+        if not self.driver: return {}
+        query = """
+        MERGE (u:User {id: $user_id})
+        CREATE (r:Reflection {
+            id: $id,
+            title: $title,
+            body: $body,
+            mood: $mood,
+            timestamp: $timestamp
+        })
+        CREATE (u)-[:HAS_REFLECTION]->(r)
+        RETURN r
+        """
+        import uuid
+        entry_id = str(uuid.uuid4())
+        ts = time.time()
+        try:
+            with self.driver.session() as session:
+                session.run(query, user_id=user_id, id=entry_id,
+                           title=title, body=body, mood=mood, timestamp=ts)
+            return {"id": entry_id, "title": title, "body": body,
+                    "mood": mood, "timestamp": ts}
+        except Exception as e:
+            print(f"⚠️ Reflection Write Error: {e}")
+            return {}
+
+    def get_reflections(self, user_id: str, limit: int = 20) -> list:
+        if not self.driver: return []
+        query = """
+        MATCH (u:User {id: $user_id})-[:HAS_REFLECTION]->(r:Reflection)
+        RETURN r.id AS id, r.title AS title, r.body AS body,
+               r.mood AS mood, r.timestamp AS timestamp
+        ORDER BY r.timestamp DESC
+        LIMIT $limit
+        """
+        try:
+            with self.driver.session() as session:
+                result = session.run(query, user_id=user_id, limit=limit)
+                return [dict(record) for record in result]
+        except Exception as e:
+            print(f"⚠️ Reflection Read Error: {e}")
+            return []
+
 # --- Code test nhanh ---
 if __name__ == "__main__":
     try:

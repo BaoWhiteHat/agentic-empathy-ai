@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SoulMate — UI/UX Case Study</title>
+<link rel="stylesheet" href="styles.css" />
+<style>
+  body { overflow-y: auto; }
+  .doc { max-width: 940px; margin: 0 auto; padding: 72px 40px 120px; }
+  .cover { min-height: 78vh; display: flex; flex-direction: column; justify-content: center; }
+  h2.sec { font-family: var(--font-display); font-weight: 600; font-size: 30px; margin: 0 0 6px; letter-spacing: -.01em; }
+  .sec-wrap { padding-top: 64px; margin-top: 56px; border-top: 1px solid var(--line); }
+  .sec-no { font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--sage-deep); margin-bottom: 14px; }
+  p.lede { font-size: 17px; line-height: 1.7; color: var(--ink-soft); max-width: 660px; }
+  p.body { font-size: 15.5px; line-height: 1.75; color: var(--ink); max-width: 680px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .grid3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 24px 26px; box-shadow: var(--shadow-soft); }
+  .panel h3 { font-family: var(--font-display); font-weight: 600; font-size: 18px; margin: 0 0 8px; }
+  .panel p { font-size: 14px; line-height: 1.6; color: var(--ink-soft); margin: 0; }
+  .swatch { height: 76px; border-radius: var(--r-md); border: 1px solid rgba(0,0,0,.06); display: flex; align-items: flex-end; padding: 10px; }
+  .sw-name { font-size: 11px; font-weight: 700; letter-spacing: .04em; }
+  .sw-hex { font-size: 10.5px; font-family: var(--font-body); opacity: .8; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th { text-align: left; font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint); font-weight: 700; padding: 0 14px 12px; border-bottom: 1px solid var(--line-strong); vertical-align: bottom; }
+  td { padding: 16px 14px; border-bottom: 1px solid var(--line); vertical-align: top; line-height: 1.55; color: var(--ink); }
+  td b { color: var(--ink); }
+  .hci-screen { font-family: var(--font-display); font-size: 15px; font-weight: 600; white-space: nowrap; }
+  .tag { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; background: var(--sage-soft); color: var(--sage-deep); margin: 2px 3px 2px 0; }
+  .copy-row { display: grid; grid-template-columns: 150px 1fr; gap: 16px; padding: 13px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+  .copy-label { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); }
+  .copy-eg { font-size: 15px; color: var(--ink); line-height: 1.5; }
+  .copy-eg em { color: var(--ink-soft); font-style: italic; }
+  .check { display: flex; gap: 11px; align-items: flex-start; padding: 11px 0; border-bottom: 1px solid var(--line); font-size: 14.5px; line-height: 1.5; }
+  .check svg { flex-shrink: 0; margin-top: 2px; }
+  .pillrow { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pill2 { font-size: 12.5px; font-weight: 600; padding: 6px 13px; border-radius: 99px; background: var(--surface-2); color: var(--ink-soft); border: 1px solid var(--line); }
+  .report { background: var(--sage-tint); border: 1px solid var(--sage-soft); border-radius: var(--r-xl); padding: 34px 38px; }
+  .report p { font-family: var(--font-display); font-size: 18.5px; line-height: 1.75; color: var(--ink); margin: 0; }
+  a.back { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--sage-deep); text-decoration: none; }
+  @media print { .sec-wrap { break-inside: avoid; } body { background: #fff; } }
+  @media (max-width: 720px){ .grid2,.grid3{grid-template-columns:1fr;} .copy-row{grid-template-columns:1fr;gap:4px;} }
+</style>
+</head>
+<body>
+<div class="doc">
+
+  <!-- COVER -->
+  <header class="cover">
+    <div style="display:flex;align-items:center;gap:13px;margin-bottom:34px;">
+      <div style="width:46px;height:46px;border-radius:14px;background:var(--sage);display:flex;align-items:center;justify-content:center;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff"><path d="M20.8 7.6a5 5 0 0 0-8.8-2.3A5 5 0 0 0 3.2 7.6c0 4 5.5 8 8.8 10.4 3.3-2.4 8.8-6.4 8.8-10.4z"/></svg>
+      </div>
+      <div>
+        <div style="font-family:var(--font-display);font-size:21px;font-weight:600;line-height:1;">SoulMate</div>
+        <div class="label" style="font-size:10px;margin-top:3px;">a calm companion</div>
+      </div>
+    </div>
+    <p class="sec-no">UI / UX Case Study · HCI Design Rationale</p>
+    <h1 class="serif" style="font-size:54px;line-height:1.08;margin:0 0 22px;max-width:760px;">A warm, non-clinical space for everyday emotional reflection</h1>
+    <p class="lede">A human–computer interaction redesign of SoulMate — an agentic AI companion. The brief: reduce cognitive load, make emotional check-ins low-friction, give users real control over memory and personalisation, keep the AI explainable, support without fostering dependency, stay clearly non-clinical, and route gently toward human help when it matters.</p>
+    <div style="margin-top:32px;display:flex;gap:12px;flex-wrap:wrap;">
+      <a class="back" href="SoulMate.html" style="padding:12px 22px;background:var(--sage);color:#fff;border-radius:99px;">Open the interactive prototype →</a>
+      <span class="pill2" style="padding:12px 18px;">Desktop web · light & dark · 7 sections · A / B / C labelled</span>
+    </div>
+  </header>
+
+  <!-- 1. DESIGN DIRECTION -->
+  <section class="sec-wrap">
+    <p class="sec-no">01 — Design direction</p>
+    <h2 class="sec">From a clinical demo to a quiet, trustworthy room</h2>
+    <p class="lede" style="margin-bottom:26px;">The previous build exposed model internals (DistilBERT scores, thresholds, hardware setup) and used a cool, high-contrast “tech” blue. The redesign trades that for a space that feels like a calm room you can exhale in.</p>
+    <div class="grid2">
+      <div class="panel"><h3>Visual style</h3><p>“Warm stillness.” Soft paper backgrounds, generous whitespace, gentle 24px radii, near-invisible shadows, and a single quiet breathing motif. No gamification, no clinical white, no dashboards-of-numbers. Color is used as a feeling, not a signal.</p></div>
+      <div class="panel"><h3>Typography</h3><p><b>Newsreader</b> — a soft literary serif — for headings and the companion’s voice, lending warmth and a journaling, human quality. <b>Hanken Grotesk</b> for UI and body: clean, friendly, highly legible. Body never below 15.5px.</p></div>
+      <div class="panel"><h3>Tone &amp; microcopy</h3><p>Calm, grounded, and permission-giving. Short sentences. Always offers an out (“Maybe later”, “nothing at all”). Never diagnoses, never pressures, never performs urgency. Speaks <em>with</em> the user, not <em>at</em> them.</p></div>
+      <div class="panel"><h3>Layout principles</h3><p>One primary action per screen. A persistent, calm left rail for orientation. Content centered in comfortable measure (≤720px reading width). Emotionally heavy moments get more space, fewer choices.</p></div>
+    </div>
+  </section>
+
+  <!-- 2. INFORMATION ARCHITECTURE -->
+  <section class="sec-wrap">
+    <p class="sec-no">02 — Information architecture</p>
+    <h2 class="sec">Six calm places, one safety net</h2>
+    <p class="lede" style="margin-bottom:26px;">A flat, predictable structure — every destination is one click from anywhere, reducing the cognitive load of navigation.</p>
+    <table>
+      <thead><tr><th style="width:150px;">Section</th><th>What it is</th><th>Why it exists</th></tr></thead>
+      <tbody>
+        <tr><td class="hci-screen">Today</td><td>A gentle home: greeting, daily mood check-in, week-at-a-glance, soft suggestions.</td><td>A single, low-pressure landing place so users always know where to start.</td></tr>
+        <tr><td class="hci-screen">Companion</td><td>Chat, Voice, and the Empty Chair technique — three ways to talk.</td><td>Different emotional needs want different modes; one home keeps it simple.</td></tr>
+        <tr><td class="hci-screen">Reflections</td><td>A private journal of check-ins, chats, and free writing.</td><td>Turns fleeting feelings into a record the user owns and can revisit.</td></tr>
+        <tr><td class="hci-screen">Insights</td><td>The OCEAN personality reading, in plain language.</td><td>Makes personalisation visible and explainable — never a score to fix.</td></tr>
+        <tr><td class="hci-screen">Memory</td><td>Everything SoulMate remembers, editable and switch-off-able.</td><td>Hands data control directly to the user — the core trust mechanism.</td></tr>
+        <tr><td class="hci-screen" style="color:var(--care);">Safety</td><td>An always-reachable support screen + in-context escalation.</td><td>Human help is one tap away, calmly, from every screen.</td></tr>
+        <tr><td class="hci-screen">Settings</td><td>Privacy &amp; memory controls, appearance, and proposed future controls.</td><td>Consent is ongoing, not a one-time gate.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- IMPLEMENTATION SCOPE -->
+  <section class="sec-wrap">
+    <p class="sec-no">Scope — honest about what's built</p>
+    <h2 class="sec">What is real, prototyped, and proposed</h2>
+    <p class="lede" style="margin-bottom:22px;">As a final-year project, SoulMate is honest about its boundaries. Every screen carries one of three labels — also shown as a live badge in the top-right of the prototype.</p>
+    <div class="grid3" style="margin-bottom:22px;">
+      <div class="panel" style="border-color:var(--sage);"><h3 style="color:var(--sage-deep);">A · Implemented core</h3><p>Working in the actual codebase (FastAPI + WebSocket backend, React frontend): the AI companion chat, emotion &amp; OCEAN inference, the Empty Chair technique, and safety-aware crisis routing.</p></div>
+      <div class="panel" style="border-color:var(--gold);"><h3 style="color:var(--gold);">B · High-fidelity prototype</h3><p>Designed and clickable here to demonstrate the intended experience, but not yet wired to the backend: Today, mood check-in, reflection journal, the memory-control surface, and the dedicated safety screen.</p></div>
+      <div class="panel" style="border-color:var(--lavender);"><h3 style="color:var(--lavender-deep);">C · Future work</h3><p>Shown only as clearly-labelled proposals: data export, account deletion, anonymised model improvement, notification reminders, and any habit/goal tracking (deliberately out of scope).</p></div>
+    </div>
+    <table>
+      <thead><tr><th style="width:130px;">Screen</th><th style="width:120px;">Status</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td class="hci-screen">Companion</td><td><span class="tag">A · Core</span></td><td>Chat &amp; Empty Chair are implemented; the in-app Voice mode is a prototype reframing of the existing hardware companion.</td></tr>
+        <tr><td class="hci-screen">Insights</td><td><span class="tag">A · Core</span></td><td>OCEAN inference is real; the plain-language interpretation and viz options are prototype layers on top.</td></tr>
+        <tr><td class="hci-screen" style="color:var(--care);">Safety</td><td><span class="tag">A · Core</span></td><td>Crisis detection &amp; routing exist in the backend; the dedicated resource screen is a prototype surface.</td></tr>
+        <tr><td class="hci-screen">Today</td><td><span class="tag" style="background:var(--gold-soft);color:var(--gold);">B · Prototype</span></td><td>A designed home that aggregates the above — not a backend feature.</td></tr>
+        <tr><td class="hci-screen">Reflections</td><td><span class="tag" style="background:var(--gold-soft);color:var(--gold);">B · Prototype</span></td><td>Journal UI; persistence is mocked in-session.</td></tr>
+        <tr><td class="hci-screen">Memory</td><td><span class="tag" style="background:var(--gold-soft);color:var(--gold);">B · Prototype</span></td><td>Backend stores memory; this user-facing control surface is proposed and prototyped.</td></tr>
+        <tr><td class="hci-screen">Settings</td><td><span class="tag" style="background:var(--gold-soft);color:var(--gold);">B · Prototype</span></td><td>Core memory/appearance toggles; data &amp; reminder controls are marked <span class="tag" style="background:var(--lavender-soft);color:var(--lavender-deep);">C · Future</span>.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 3. USER FLOWS -->
+  <section class="sec-wrap">
+    <p class="sec-no">03 — Key user flows</p>
+    <h2 class="sec">How people move through it</h2>
+    <div class="grid2" style="margin-top:8px;">
+      <div class="panel"><h3>First-time onboarding</h3><p>Welcome → <b>what SoulMate is &amp; isn’t</b> (non-clinical disclaimer) → consent &amp; memory choices → name → what brings you here → presence &amp; boundaries → step in. (A conversational variant tells the same story as a chat.)</p></div>
+      <div class="panel"><h3>Daily mood check-in</h3><p>One tap from Today → pick a “weather” → optionally add a few words → SoulMate reflects it back warmly → choose to talk or close. 30 seconds, skippable at every step.</p></div>
+      <div class="panel"><h3>Chatting with the companion</h3><p>Open Companion → type or speak → replies arrive with an optional “Why this reply?” → memory recall surfaces in plain language → heavy language triggers gentle in-context safety.</p></div>
+      <div class="panel"><h3>Reviewing reflections</h3><p>Reflections → browse a calm card wall of past moments, tagged by mood and source → open or write a new entry.</p></div>
+      <div class="panel"><h3>Managing memory &amp; personalisation</h3><p>Memory → see grouped, plain-language items → toggle off to forget, delete to remove for good, or clear everything → mirrored controls in Settings.</p></div>
+      <div class="panel" style="border-color:var(--care-soft);background:var(--care-tint);"><h3 style="color:var(--care);">Safety routing</h3><p>Risk language detected → SoulMate pauses gently, names care over task, offers human crisis lines + grounding → a persistent, non-dismissible support bar remains for the session.</p></div>
+    </div>
+  </section>
+
+  <!-- 4. DESIGN SYSTEM -->
+  <section class="sec-wrap">
+    <p class="sec-no">04 — Design system summary</p>
+    <h2 class="sec">Tokens &amp; components</h2>
+    <p class="label" style="margin:24px 0 12px;">Core palette</p>
+    <div class="grid3">
+      <div><div class="swatch" style="background:#F4EFE7;color:#36322B;"><span><span class="sw-name">Sand / page</span><br><span class="sw-hex">#F4EFE7</span></span></div></div>
+      <div><div class="swatch" style="background:#FCFAF5;color:#36322B;"><span><span class="sw-name">Surface / card</span><br><span class="sw-hex">#FCFAF5</span></span></div></div>
+      <div><div class="swatch" style="background:#36322B;color:#F4EFE7;"><span><span class="sw-name">Ink</span><br><span class="sw-hex">#36322B</span></span></div></div>
+      <div><div class="swatch" style="background:#6E8E76;color:#fff;"><span><span class="sw-name">Sage / primary</span><br><span class="sw-hex">#6E8E76</span></span></div></div>
+      <div><div class="swatch" style="background:#C2826B;color:#fff;"><span><span class="sw-name">Clay / warmth</span><br><span class="sw-hex">#C2826B</span></span></div></div>
+      <div><div class="swatch" style="background:#8E83A6;color:#fff;"><span><span class="sw-name">Lavender / reflect</span><br><span class="sw-hex">#8E83A6</span></span></div></div>
+      <div><div class="swatch" style="background:#C79A53;color:#fff;"><span><span class="sw-name">Gold / sun</span><br><span class="sw-hex">#C79A53</span></span></div></div>
+      <div><div class="swatch" style="background:#BC5A4A;color:#fff;"><span><span class="sw-name">Care / safety</span><br><span class="sw-hex">#BC5A4A</span></span></div></div>
+      <div><div class="swatch" style="background:#211D18;color:#EEE7DA;"><span><span class="sw-name">Warm dark base</span><br><span class="sw-hex">#211D18</span></span></div></div>
+    </div>
+    <div class="grid2" style="margin-top:24px;">
+      <div class="panel"><h3>Mood spectrum</h3><p style="margin-bottom:14px;">Five calm “weather” states map feeling to colour without judgement.</p>
+        <div class="pillrow">
+          <span class="pill2" style="background:#DDA94A22;color:#9a7320;border-color:#DDA94A55;">Radiant</span>
+          <span class="pill2" style="background:#6E8E7622;color:#4F6E58;border-color:#6E8E7655;">Steady</span>
+          <span class="pill2" style="background:#9BA39C22;color:#6f766f;border-color:#9BA39C55;">Cloudy</span>
+          <span class="pill2" style="background:#7F95AA22;color:#566a7e;border-color:#7F95AA55;">Low</span>
+          <span class="pill2" style="background:#7E708822;color:#5d5267;border-color:#7E708855;">Heavy</span>
+        </div>
+      </div>
+      <div class="panel"><h3>Type scale &amp; geometry</h3><p>Display serif 24–54px · body 15.5px · labels 11px uppercase tracked. Radii: 10 / 14 / 18 / 24 / 32px + full pills. Shadows are whisper-soft; the system is border-led.</p></div>
+    </div>
+    <p class="label" style="margin:24px 0 12px;">Components</p>
+    <div class="pillrow">
+      <span class="tag">Buttons (primary · clay · soft · outline · ghost · care)</span>
+      <span class="tag">Tonal icon badges</span>
+      <span class="tag">Breathing orb</span>
+      <span class="tag">Mood picker (4 styles)</span>
+      <span class="tag">OCEAN radar / bars / rings</span>
+      <span class="tag">Chat bubbles &amp; minimal</span>
+      <span class="tag">“Why this?” explainability chip</span>
+      <span class="tag">Memory rows w/ toggle + forget</span>
+      <span class="tag">Re-entry support sheet</span>
+      <span class="tag">Pills &amp; toggles</span>
+    </div>
+  </section>
+
+  <!-- 5. HCI RATIONALE TABLE -->
+  <section class="sec-wrap">
+    <p class="sec-no">05 — HCI rationale</p>
+    <h2 class="sec">Each screen, and the thinking behind it</h2>
+    <p class="lede" style="margin-bottom:24px;">For every major screen: the user problem it solves, the HCI principle it applies, and how it supports comfort, trust, and low cognitive load.</p>
+    <table>
+      <thead><tr><th style="width:120px;">Screen</th><th>User problem</th><th>HCI principle</th><th>Why it supports comfort, trust &amp; low load</th></tr></thead>
+      <tbody>
+        <tr><td class="hci-screen">Welcome / Onboarding</td><td>“What is this, and is it safe to open up here?”</td><td>Recognition over recall; progressive disclosure.</td><td>One idea per step, a visible progress trail, and a breathing welcome set a calm pace before any input is asked for.</td></tr>
+        <tr><td class="hci-screen">Disclaimer &amp; Consent</td><td>Fear of being judged, recorded, or “treated”.</td><td>Visibility of system status; user control &amp; freedom; informed consent.</td><td>Plain-language toggles state exactly what is remembered and why; “Needed” vs optional is explicit; nothing is on by surprise.</td></tr>
+        <tr><td class="hci-screen">Home / Today</td><td>“Where do I start? I don’t have energy to decide.”</td><td>Minimise cognitive load; clear primary action.</td><td>A single warm greeting + one obvious next step (check in). Everything else is gentle, optional, and below the fold.</td></tr>
+        <tr><td class="hci-screen">Mood check-in</td><td>Naming feelings is hard and high-friction.</td><td>Recognition over recall; low-friction input; emotional safety.</td><td>Pick a “weather” instead of articulating words; every step skippable; the reflection-back makes the user feel heard, not measured.</td></tr>
+        <tr><td class="hci-screen">Companion chat</td><td>Wanting to be understood without being analysed.</td><td>Match between system &amp; real world; feedback; explainability.</td><td>Warm, unhurried replies; an opt-in “Why this reply?” reveals memory use in plain words — transparency without clutter.</td></tr>
+        <tr><td class="hci-screen">Reflection journal</td><td>Feelings vanish; progress feels invisible.</td><td>External memory aid; ownership.</td><td>A calm, browsable record the user controls; mood + source tags give context at a glance.</td></tr>
+        <tr><td class="hci-screen">Memory control</td><td>“What does it know about me, and can I undo that?”</td><td>User control &amp; freedom; reversibility; transparency.</td><td>Every item is plain-language, toggleable, and deletable; “clear everything” is always available. Forgetting is real and immediate.</td></tr>
+        <tr><td class="hci-screen">OCEAN insight</td><td>Personalisation feels like a black box / a verdict.</td><td>Explainability; avoiding harmful labelling.</td><td>Traits are framed as gentle, evolving, non-judgemental language with an honest “why am I seeing this?” — and can be switched off.</td></tr>
+        <tr><td class="hci-screen" style="color:var(--care);">Safety support</td><td>Crisis moments need human help, calmly surfaced.</td><td>Error prevention &amp; recovery; help &amp; documentation; harm reduction.</td><td>Pauses the AI, prioritises people over tasks, offers real lines + grounding, and keeps support persistently reachable — warm, never alarming.</td></tr>
+        <tr><td class="hci-screen">Settings / Privacy</td><td>Wanting ongoing control, not a one-time agreement.</td><td>User control; consistency; flexibility.</td><td>Mirrors core memory controls; export, delete and reminders are clearly shown as proposed future controls, not implied as built.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 6. UX COPY -->
+  <section class="sec-wrap">
+    <p class="sec-no">06 — UX copy</p>
+    <h2 class="sec">Short examples, in voice</h2>
+    <div style="margin-top:16px;">
+      <div class="copy-row"><span class="copy-label">Primary buttons</span><span class="copy-eg">“Begin” · “Check in” · “Talk it through” · “Save check-in” · “Begin gently”</span></div>
+      <div class="copy-row"><span class="copy-label">Gentle outs</span><span class="copy-eg">“Maybe later” · “Skip &amp; save” · “nothing at all” · “Done for now”</span></div>
+      <div class="copy-row"><span class="copy-label">Labels</span><span class="copy-eg">“Today’s weather” · “How I’m getting to know you” · “What SoulMate remembers” · “Gentle boundaries”</span></div>
+      <div class="copy-row"><span class="copy-label">Empty states</span><span class="copy-eg"><em>“Nothing here — SoulMate will only remember what you allow.”</em> · <em>“However today is landing for you, this is a place to slow down and notice it.”</em></span></div>
+      <div class="copy-row"><span class="copy-label">Reflection-back</span><span class="copy-eg"><em>“In-between days are completely valid. You don’t have to figure it all out right now.”</em></span></div>
+      <div class="copy-row"><span class="copy-label">Explainability</span><span class="copy-eg"><em>“I remembered you mentioned your exams felt close — I kept that in your memory.”</em></span></div>
+      <div class="copy-row"><span class="copy-label">Anti-dependency</span><span class="copy-eg"><em>“You’ve had a few heavy days. Is there one person you could send a small hello to today?”</em></span></div>
+      <div class="copy-row"><span class="copy-label">Safety message</span><span class="copy-eg"><em>“I want to pause gently here, because what you said sounds really painful — and you matter. You don’t have to be alone with this. Could we reach someone who can be with you right now?”</em></span></div>
+    </div>
+  </section>
+
+  <!-- 7. ACCESSIBILITY -->
+  <section class="sec-wrap">
+    <p class="sec-no">07 — Accessibility checklist</p>
+    <h2 class="sec">Inclusive by default</h2>
+    <div class="grid2" style="margin-top:16px;">
+      <div>
+        <div class="check" id="c1"></div><div class="check" id="c2"></div><div class="check" id="c3"></div><div class="check" id="c4"></div>
+      </div>
+      <div>
+        <div class="check" id="c5"></div><div class="check" id="c6"></div><div class="check" id="c7"></div><div class="check" id="c8"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. REPORT PARAGRAPH -->
+  <section class="sec-wrap">
+    <p class="sec-no">08 — For your report</p>
+    <h2 class="sec">A paragraph you can quote</h2>
+    <div class="report" style="margin-top:18px;">
+      <p>The SoulMate interface was redesigned around a single principle: an emotional-support tool should feel like a calm, trustworthy room rather than a clinical instrument. Every decision serves established HCI heuristics — progressive disclosure and a single primary action per screen reduce cognitive load; recognition-based mood input and plain-language explainability lower the friction of expressing and understanding feelings; and direct, reversible control over memory and personalisation makes the system’s behaviour transparent and keeps the user firmly in charge of their own data. A warm sand-and-sage palette, soft serif typography, and generous whitespace replace the previous high-contrast “technical” aesthetic, deliberately signalling that SoulMate is non-clinical. Crucially, the design resists fostering dependency: it favours gentle intentions over gamified streaks and actively nudges users back toward real-world connection, while an always-reachable, calmly-presented safety layer routes anyone in crisis toward trained human support. The result is an interface that is emotionally comfortable, accessible, and honest about being a companion — not a substitute for professional care.</p>
+    </div>
+    <p class="body" style="margin-top:30px;">
+      <a class="back" href="SoulMate.html">← Back to the interactive prototype</a>
+    </p>
+  </section>
+
+</div>
+
+<script>
+  const checks = {
+    c1: ['Colour contrast', 'Body ink on sand meets WCAG AA (≈8:1); care/sage text on tints verified ≥4.5:1.'],
+    c2: ['Readability', 'Base 15.5px, line-height 1.6–1.75, reading width ≤720px; adjustable text size (S/M/L).'],
+    c3: ['Touch / click targets', 'All interactive targets ≥44px; nav rows, mood tiles and toggles are generously padded.'],
+    c4: ['Empty states', 'Every list and screen has a warm, instructive empty state — never a blank void.'],
+    c5: ['Error & risk states', 'Disabled actions are explained; crisis language triggers a calm, persistent support path.'],
+    c6: ['Responsive layout', 'Comfortable centred measure; grids collapse to single column on narrow screens.'],
+    c7: ['Motion & focus', 'Respects prefers-reduced-motion; visible but quiet focus rings; no flashing or looping urgency.'],
+    c8: ['Inclusive language', 'Non-judgemental, permission-giving copy; no diagnosis, no shame, always an opt-out.'],
+  };
+  const tick = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4F6E58" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+  for (const id in checks) {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = tick + '<span><b>' + checks[id][0] + '.</b> ' + checks[id][1] + '</span>';
+  }
+</script>
+</body>
+</html>

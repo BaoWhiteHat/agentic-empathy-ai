@@ -44,3 +44,8 @@ yarn-error.log*
 # Large local benchmark/data files
 backend/data/LongMemEval/longmemeval_s_cleaned.json
 backend/evaluate/benchmark/results/
+
+# Heavy media / runtime audio artifacts (do not commit)
+design-reference/safety/audio/
+*.mp3
+*.wav

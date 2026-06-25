@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SoulMate — Physical Companion Body Concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<template id="__bundler_thumbnail">
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+<rect width="100" height="100" rx="22" fill="#2E9E6E"/>
+<rect x="33" y="13" width="11" height="26" rx="5.5" fill="#FDFEFA"/>
+<rect x="56" y="13" width="11" height="26" rx="5.5" fill="#FDFEFA"/>
+<rect x="26" y="34" width="48" height="44" rx="13" fill="#FDFEFA"/>
+<circle cx="42" cy="56" r="3.4" fill="#1F2A24"/><circle cx="58" cy="56" r="3.4" fill="#1F2A24"/>
+</svg>
+</template>
+<style>
+:root{
+  --font-display:'Newsreader',Georgia,serif;
+  --font-body:'Hanken Grotesk',system-ui,sans-serif;
+  --bg:#F3F7EE; --bg-deep:#E8F1E0; --surface:#FDFEFA; --surface-2:#EDF3E7; --surface-3:#E2EAD9;
+  --ink:#2A2F26; --ink-soft:#5A6353; --ink-faint:#8F9A87;
+  --line:#E2E8DA; --line-strong:#D2DBC8;
+  --sage:#2E9E6E; --sage-deep:#1C7A52; --sage-soft:#D8EFE4; --sage-tint:#ECF8F1;
+  --clay:#C77B5E; --clay-deep:#A85C40; --clay-soft:#F6E2D7;
+  --gold:#CCA24F; --gold-soft:#F4E8C9;
+  --teal:#3F8FA8; --amber:#D98A3D;
+  --screen:#1F2A24; --screen-glow:#BFEFD6;
+  /* device material tones */
+  --ivory:#FBFBF3; --ivory-shade:#ECEEE1; --ivory-deep:#DFE3D3; --edge:#BCC4B0;
+  --shadow-soft:0 2px 10px rgba(42,47,38,.05);
+  --shadow-card:0 12px 40px rgba(42,47,38,.08);
+  --r-sm:12px; --r-md:18px; --r-lg:26px; --r-xl:34px;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:var(--font-body); color:var(--ink);
+  background:
+    radial-gradient(120% 80% at 100% -5%, var(--bg-deep), transparent 60%),
+    radial-gradient(100% 70% at -10% 0%, #EFF4E9, transparent 55%),
+    var(--bg);
+  -webkit-font-smoothing:antialiased; line-height:1.6; letter-spacing:.004em;
+}
+.serif{font-family:var(--font-display);font-weight:500;letter-spacing:-.01em;}
+.label{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);}
+h1,h2,h3,h4{margin:0;}
+p{margin:0;text-wrap:pretty;}
+a{color:inherit;}
+
+/* ---- sticky top nav ---- */
+.topbar{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);
+  background:color-mix(in oklab, var(--bg) 82%, transparent);border-bottom:1px solid var(--line);}
+.topbar-in{max-width:1180px;margin:0 auto;padding:13px 40px;display:flex;align-items:center;gap:16px;}
+.brand{display:flex;align-items:center;gap:11px;}
+.brand-mark{width:36px;height:36px;border-radius:11px;background:var(--sage);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px color-mix(in oklab,var(--sage) 38%,transparent);}
+.brand-name{font-family:var(--font-display);font-size:18px;font-weight:600;line-height:1;}
+.brand-sub{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-top:3px;}
+.navlinks{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap;}
+.navlinks a{font-size:13px;font-weight:600;color:var(--ink-soft);text-decoration:none;padding:7px 12px;border-radius:99px;white-space:nowrap;transition:background .15s,color .15s;}
+.navlinks a:hover{background:var(--sage-tint);color:var(--sage-deep);}
+
+.wrap{max-width:1180px;margin:0 auto;padding:0 40px;}
+section{scroll-margin-top:80px;}
+
+/* ---- hero ---- */
+.hero{padding:64px 0 30px;display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;}
+.hero .eyebrow{margin-bottom:14px;}
+.hero h1{font-size:52px;line-height:1.05;letter-spacing:-.02em;margin-bottom:18px;}
+.hero .lede{font-size:17px;color:var(--ink-soft);max-width:520px;}
+.chiprow{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px;}
+.chip{display:inline-flex;align-items:center;gap:7px;padding:7px 13px;border-radius:99px;background:var(--surface);border:1px solid var(--line);font-size:12.5px;font-weight:600;color:var(--ink-soft);box-shadow:var(--shadow-soft);}
+.chip .dot{width:8px;height:8px;border-radius:50%;background:var(--sage);}
+.hero-art{display:flex;align-items:center;justify-content:center;}
+
+/* ---- generic section heading ---- */
+.sec-head{padding:46px 0 8px;}
+.sec-head .num{font-family:var(--font-display);font-size:15px;color:var(--sage-deep);font-weight:600;}
+.sec-head h2{font-size:34px;line-height:1.1;letter-spacing:-.01em;margin:6px 0 10px;}
+.sec-head p{font-size:16px;color:var(--ink-soft);max-width:680px;}
+
+/* ---- cards / grids ---- */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow-card);}
+.principles{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:26px;}
+.principle{padding:22px 22px 24px;}
+.principle .ic{width:42px;height:42px;border-radius:12px;background:var(--sage-soft);color:var(--sage-deep);display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+.principle h4{font-size:16px;margin-bottom:6px;}
+.principle p{font-size:13.5px;color:var(--ink-soft);}
+
+/* ---- ear matrix ---- */
+.earmatrix{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:26px;}
+.state{padding:20px 18px 18px;display:flex;flex-direction:column;gap:14px;position:relative;overflow:hidden;}
+.state .mini{display:flex;justify-content:center;padding:6px 0 2px;}
+.state h4{font-size:15.5px;display:flex;align-items:center;gap:8px;}
+.state .stnum{width:22px;height:22px;border-radius:50%;background:var(--surface-2);color:var(--ink-soft);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.state .ear-behaviour{font-size:13px;color:var(--ink-soft);}
+.webchip{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:99px;background:var(--surface-2);border:1px solid var(--line);font-size:12px;font-weight:600;color:var(--ink);width:fit-content;}
+.webchip .wd{width:8px;height:8px;border-radius:50%;background:var(--glow,var(--sage));flex-shrink:0;}
+.cue{font-size:11.5px;color:var(--ink-faint);display:flex;gap:7px;align-items:flex-start;line-height:1.45;}
+.cue b{color:var(--sage-deep);font-weight:700;}
+
+/* ---- concept blocks ---- */
+.concept{margin-top:26px;border-radius:var(--r-xl);overflow:hidden;border:1px solid var(--line);background:var(--surface);box-shadow:var(--shadow-card);}
+.concept-head{display:flex;align-items:flex-end;gap:18px;padding:26px 32px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,var(--sage-tint),var(--surface));flex-wrap:wrap;}
+.concept-tag{font-family:var(--font-display);font-size:40px;font-weight:600;color:var(--sage-deep);line-height:.9;}
+.concept-head .meta h3{font-size:24px;letter-spacing:-.01em;}
+.concept-head .meta p{font-size:14.5px;color:var(--ink-soft);margin-top:3px;}
+.rec-badge{margin-left:auto;display:inline-flex;align-items:center;gap:7px;padding:8px 15px;border-radius:99px;background:var(--sage);color:#fff;font-size:12.5px;font-weight:700;box-shadow:0 6px 16px color-mix(in oklab,var(--sage) 36%,transparent);}
+.views{display:grid;grid-template-columns:repeat(3,1fr);gap:0;}
+.view{padding:26px 22px 22px;border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;}
+.view:last-child{border-right:none;}
+.view .vlabel{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--ink-faint);margin-bottom:6px;align-self:flex-start;}
+.view svg{width:100%;height:auto;max-width:280px;}
+.concept-body{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--line);}
+.cb-col{padding:24px 32px;}
+.cb-col + .cb-col{border-left:1px solid var(--line);}
+.cb-block{margin-bottom:22px;}
+.cb-block:last-child{margin-bottom:0;}
+.cb-block .label{margin-bottom:10px;}
+.cb-block p{font-size:14px;color:var(--ink-soft);}
+.swatches{display:flex;flex-wrap:wrap;gap:10px;}
+.sw{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:600;color:var(--ink-soft);}
+.sw .chipcol{width:26px;height:26px;border-radius:8px;border:1px solid var(--line-strong);}
+.hwlist{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;}
+.hwlist li{display:flex;gap:11px;align-items:flex-start;font-size:13.5px;color:var(--ink-soft);}
+.hwlist .n{width:22px;height:22px;border-radius:50%;background:var(--sage-soft);color:var(--sage-deep);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.hwlist b{color:var(--ink);font-weight:600;}
+
+/* ---- comparison table ---- */
+.cmp{width:100%;border-collapse:separate;border-spacing:0;margin-top:24px;font-size:14px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow-card);}
+.cmp th,.cmp td{padding:15px 18px;text-align:left;border-bottom:1px solid var(--line);}
+.cmp thead th{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);background:var(--surface-2);}
+.cmp tbody tr:last-child td{border-bottom:none;}
+.cmp td:first-child{font-weight:600;color:var(--ink);}
+.rate{display:inline-flex;align-items:center;gap:7px;font-weight:600;}
+.rate .bead{width:9px;height:9px;border-radius:50%;}
+.rate.high .bead{background:var(--sage);} .rate.high{color:var(--sage-deep);}
+.rate.med .bead{background:var(--gold);} .rate.med{color:#8a6e2e;}
+.rate.low .bead{background:var(--clay);} .rate.low{color:var(--clay-deep);}
+.cmp tr.winner td:first-child::after{content:'★';color:var(--sage);margin-left:8px;}
+
+/* ---- recommendation ---- */
+.rec{margin-top:26px;border-radius:var(--r-xl);overflow:hidden;border:1px solid var(--sage-soft);background:linear-gradient(180deg,var(--sage-tint),var(--surface));box-shadow:var(--shadow-card);display:grid;grid-template-columns:.8fr 1.2fr;}
+.rec-art{padding:34px;display:flex;align-items:center;justify-content:center;border-right:1px solid var(--sage-soft);}
+.rec-art svg{width:100%;max-width:240px;height:auto;}
+.rec-text{padding:34px 38px;}
+.rec-text h3{font-size:28px;letter-spacing:-.01em;margin-bottom:10px;}
+.rec-text .why{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px;}
+.rec-why{display:flex;gap:11px;align-items:flex-start;}
+.rec-why .ic{width:30px;height:30px;border-radius:9px;background:var(--surface);border:1px solid var(--sage-soft);color:var(--sage-deep);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.rec-why b{display:block;font-size:13.5px;color:var(--ink);}
+.rec-why span{font-size:12.5px;color:var(--ink-soft);}
+
+footer{padding:40px 0 60px;color:var(--ink-faint);font-size:12.5px;border-top:1px solid var(--line);margin-top:50px;}
+
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr;gap:24px;} .hero h1{font-size:38px;}
+  .principles,.earmatrix{grid-template-columns:repeat(2,1fr);}
+  .views{grid-template-columns:1fr;} .view{border-right:none;border-bottom:1px solid var(--line);}
+  .concept-body{grid-template-columns:1fr;} .cb-col+.cb-col{border-left:none;border-top:1px solid var(--line);}
+  .rec{grid-template-columns:1fr;} .rec-art{border-right:none;border-bottom:1px solid var(--sage-soft);}
+  .wrap,.topbar-in{padding-left:22px;padding-right:22px;}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;}}
+@media print{.topbar{position:static;}body{background:#fff;}}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="topbar-in">
+  <div class="brand">
+    <div class="brand-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M20.8 7.6a5 5 0 0 0-8.8-2.3A5 5 0 0 0 3.2 7.6c0 4 5.5 8 8.8 10.4 3.3-2.4 8.8-6.4 8.8-10.4z"/></svg></div>
+    <div><div class="brand-name">SoulMate</div><div class="brand-sub">Companion Body · Concept</div></div>
+  </div>
+  <nav class="navlinks">
+    <a href="#principles">Principles</a>
+    <a href="#ears">Ear feedback</a>
+    <a href="#concept-a">Concept A</a>
+    <a href="#concept-b">Concept B</a>
+    <a href="#concept-c">Concept C</a>
+    <a href="#recommendation">Recommendation</a>
+  </nav>
+</div></div>
+
+<div class="wrap">
+  <section class="hero">
+    <div>
+      <div class="eyebrow label">Industrial design concept · ESP32 desktop companion</div>
+      <h1 class="serif">A calm presence<br/>you can keep on your desk.</h1>
+      <p class="lede">A soft, ivory, rabbit-eared companion body for SoulMate — where the ears are not decoration but a quiet, glanceable status light, and every state is echoed on the face screen and in the app. Designed to be 3D-printable, ESP32-ready, and emotionally safe.</p>
+      <div class="chiprow">
+        <span class="chip"><span class="dot"></span>Warm ivory shell</span>
+        <span class="chip"><span class="dot"></span>Sage / mint accents</span>
+        <span class="chip"><span class="dot"></span>Ears = status feedback</span>
+        <span class="chip"><span class="dot"></span>Student-buildable</span>
+      </div>
+    </div>
+    <div class="hero-art" id="hero-art"></div>
+  </section>
+
+  <section id="principles">
+    <div class="sec-head"><div class="num">01</div><h2 class="serif">Design principles</h2>
+      <p>The body extends the SoulMate app into the physical world. It should feel like the same product — calm, soft, and trustworthy — and never like a gadget, a toy, or a clinical device.</p></div>
+    <div class="principles" id="principles-grid"></div>
+  </section>
+
+  <section id="ears">
+    <div class="sec-head"><div class="num">02</div><h2 class="serif">The ears are the status light</h2>
+      <p>Two soft, LED-lit companion antennas communicate what the system is doing during a voice exchange — the physical twin of the app's status pipeline (Listening → Transcribing → Preparing → Speaking). Crucially, colour is never the only signal: each state pairs a distinct <b>light motion</b>, a <b>face‑screen expression</b>, and matching <b>web‑UI status text</b>.</p></div>
+    <div class="earmatrix" id="earmatrix"></div>
+    <div class="card" style="margin-top:18px;padding:20px 24px;display:flex;gap:14px;align-items:flex-start;">
+      <div style="width:34px;height:34px;border-radius:10px;background:var(--sage-soft);color:var(--sage-deep);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+      </div>
+      <div><b style="font-size:14px;">Accessibility — never colour alone.</b>
+      <p style="font-size:13.5px;color:var(--ink-soft);margin-top:3px;">Every state is distinguishable by <b style="color:var(--sage-deep)">motion pattern</b> (breathing, pulsing, travelling, steady, rhythmic, off) and by the <b style="color:var(--sage-deep)">face icon</b>, so the device remains legible for colour‑blind users and at a glance from across a room. The web app always shows a plain‑language status line as the authoritative source of truth.</p></div>
+    </div>
+  </section>
+
+  <section id="concepts-root"></section>
+
+  <section id="recommendation">
+    <div class="sec-head"><div class="num">04</div><h2 class="serif">Recommendation</h2>
+      <p>One concept to take forward into prototyping — judged on emotional comfort, HCI clarity, ESP32 realism, print feasibility, and consistency with the SoulMate app.</p></div>
+    <table class="cmp" id="cmp"></table>
+    <div class="rec" id="rec"></div>
+  </section>
+
+  <footer>
+    SoulMate — Physical Companion Body Concept · A non-clinical AI companion for emotional reflection.
+    This is an industrial-design concept artifact for a final-year HCI project; it documents the device only and does not modify the SoulMate app prototype.
+  </footer>
+</div>
+
+<script src="companion-svg.js"></script>
+<script src="companion-concept.js"></script>
+</body>
+</html>

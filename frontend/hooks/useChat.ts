@@ -8,16 +8,19 @@ interface Message {
   content: string;
 }
 
-export const useChat = () => {
+type ChatMode = 'messaging' | 'voice' | 'empty-chair';
+
+export const useChat = (modeOverride?: ChatMode) => {
   const { userId } = useUser();
   const pathname = usePathname(); // Đọc URL hiện tại (ví dụ: '/voice')
 
-  // 1. Tự động nhận diện Mode dựa vào thanh địa chỉ URL
-  const mode = useMemo(() => {
+  // 1. Mode: dùng tham số truyền vào nếu có, nếu không thì suy ra từ URL.
+  const mode = useMemo<ChatMode>(() => {
+    if (modeOverride) return modeOverride;
     if (pathname.includes('/voice')) return 'voice';
     if (pathname.includes('/empty-chair')) return 'empty-chair';
     return 'messaging'; // Mặc định là nhắn tin
-  }, [pathname]);
+  }, [pathname, modeOverride]);
 
   // 2. Khởi tạo kho lưu trữ tin nhắn
   const [chatHistories, setChatHistories] = useState<{
@@ -31,6 +34,7 @@ export const useChat = () => {
   });
 
   const [emotion, setEmotion] = useState<string>("Neutral");
+  const [status, setStatus] = useState<string>("idle");
   const [socket, setSocket] = useState<WebSocket | null>(null);
 
   // Audio playback via Web Audio API (bypasses autoplay policy when unlocked during user gesture)
@@ -47,74 +51,100 @@ export const useChat = () => {
   }, []);
 
   // 3. Thiết lập kết nối WebSocket (only reconnect when userId changes)
+  //    + tự động kết nối lại sau 3s nếu rớt mạng (trừ khi component unmount).
+  const wsRef = useRef<WebSocket | null>(null);
+  const intentionalCloseRef = useRef(false);
+  const reconnectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   useEffect(() => {
     if (!userId) return;
+    intentionalCloseRef.current = false;
 
-    const ws = new WebSocket(`ws://localhost:8000/ws/chat/${userId}`);
+    const connect = () => {
+      const ws = new WebSocket(`ws://localhost:8000/ws/chat/${userId}`);
+      wsRef.current = ws;
 
-    ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
+      ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
 
-      if (data.type === "message") {
-        const targetMode = data.mode || "messaging";
-        setChatHistories(prev => ({
-          ...prev,
-          [targetMode]: [...prev[targetMode as keyof typeof prev], { role: "ai", content: data.content }]
-        }));
-      }
-      else if (data.type === "user_speech") {
-        // Voice transcription — use the mode from the server response
-        const targetMode = data.mode || "voice";
-        setChatHistories(prev => ({
-          ...prev,
-          [targetMode]: [...prev[targetMode as keyof typeof prev], { role: "user", content: data.content }]
-        }));
-      }
-      else if (data.type === "audio_chunk") {
-        const binary = atob(data.data);
-        const bytes = new Uint8Array(binary.length);
-        for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-        audioChunksRef.current.push(bytes);
-      }
-      else if (data.type === "audio_end") {
-        const chunks = audioChunksRef.current;
-        audioChunksRef.current = [];
-        if (chunks.length === 0) return;
-        const totalLength = chunks.reduce((sum, b) => sum + b.length, 0);
-        const combined = new Uint8Array(totalLength);
-        let offset = 0;
-        for (const chunk of chunks) { combined.set(chunk, offset); offset += chunk.length; }
-        const ctx = audioCtxRef.current;
-        if (ctx) {
-          ctx.decodeAudioData(combined.buffer, (buffer) => {
-            const source = ctx.createBufferSource();
-            source.buffer = buffer;
-            source.connect(ctx.destination);
-            source.start(0);
-          }, (e) => console.error('Audio decode failed:', e));
+        if (data.type === "message") {
+          const targetMode = data.mode || "messaging";
+          setChatHistories(prev => ({
+            ...prev,
+            [targetMode]: [...prev[targetMode as keyof typeof prev], { role: "ai", content: data.content }]
+          }));
         }
-      }
-      else if (data.type === "emotion_status") {
-        setEmotion(data.emotion);
-      }
+        else if (data.type === "user_speech") {
+          // Voice transcription — use the mode from the server response
+          const targetMode = data.mode || "voice";
+          setChatHistories(prev => ({
+            ...prev,
+            [targetMode]: [...prev[targetMode as keyof typeof prev], { role: "user", content: data.content }]
+          }));
+        }
+        else if (data.type === "audio_chunk") {
+          const binary = atob(data.data);
+          const bytes = new Uint8Array(binary.length);
+          for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+          audioChunksRef.current.push(bytes);
+        }
+        else if (data.type === "audio_end") {
+          const chunks = audioChunksRef.current;
+          audioChunksRef.current = [];
+          if (chunks.length === 0) return;
+          const totalLength = chunks.reduce((sum, b) => sum + b.length, 0);
+          const combined = new Uint8Array(totalLength);
+          let offset = 0;
+          for (const chunk of chunks) { combined.set(chunk, offset); offset += chunk.length; }
+          const ctx = audioCtxRef.current;
+          if (ctx) {
+            ctx.decodeAudioData(combined.buffer as ArrayBuffer, (buffer) => {
+              const source = ctx.createBufferSource();
+              source.buffer = buffer;
+              source.connect(ctx.destination);
+              source.start(0);
+            }, (e) => console.error('Audio decode failed:', e));
+          }
+        }
+        else if (data.type === "emotion_status") {
+          setEmotion(data.emotion);
+        }
+        else if (data.type === "status") {
+          setStatus(data.content);
+        }
+      };
+
+      ws.onopen = () => console.log("SoulMate Socket Connected");
+      ws.onclose = () => {
+        console.log("SoulMate Socket Disconnected");
+        // Auto-reconnect after 3s — unless this was an intentional unmount, or a
+        // newer socket has already replaced this one (avoids stale reconnects).
+        if (!intentionalCloseRef.current && wsRef.current === ws) {
+          reconnectTimerRef.current = setTimeout(connect, 3000);
+        }
+      };
+
+      setSocket(ws);
     };
 
-    ws.onopen = () => console.log("SoulMate Socket Connected");
-    ws.onclose = () => console.log("SoulMate Socket Disconnected");
+    connect();
 
-    setSocket(ws);
-    return () => ws.close();
+    return () => {
+      intentionalCloseRef.current = true;
+      if (reconnectTimerRef.current) clearTimeout(reconnectTimerRef.current);
+      wsRef.current?.close();
+    };
   }, [userId]);
 
   // 4. Hàm gửi tin nhắn
   const sendMessage = useCallback((text: string) => {
     if (socket && text.trim()) {
-      socket.send(JSON.stringify({ 
+      socket.send(JSON.stringify({
         action: "send_text",
-        text: text, 
-        mode: mode 
+        text: text,
+        mode: mode
       }));
-      
+
       setChatHistories(prev => ({
         ...prev,
         [mode]: [...prev[mode as keyof typeof prev], { role: "user", content: text }]
@@ -131,6 +161,7 @@ export const useChat = () => {
     messages: currentMessages,
     sendMessage,
     emotion,
+    status,
     socket,
     unlockAudio,
   };
