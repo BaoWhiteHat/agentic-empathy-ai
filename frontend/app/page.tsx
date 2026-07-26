@@ -1,7 +1,5 @@
-// app/page.tsx
-import { redirect } from 'next/navigation';
+import { SoulMateApp } from '../components/SoulMateApp';
 
 export default function Home() {
-  // Khi mở localhost:3000, tự động đá sang localhost:3000/messaging
-  redirect('/messaging');
+  return <SoulMateApp />;
 }

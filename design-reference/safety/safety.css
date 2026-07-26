@@ -1,0 +1,127 @@
+/* ============================================================
+   SoulMate — EmptyChair Safety Support
+   Green / sage / mint · warm off-white · calm, non-clinical
+   Preview stylesheet (mirrors soulmate/styles.css tokens).
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap');
+
+:root {
+  --font-display: 'Newsreader', Georgia, serif;
+  --font-body: 'Hanken Grotesk', system-ui, sans-serif;
+
+  --bg: #F3F7EE;
+  --bg-tint: #E8F1E0;
+  --surface: #FDFEFA;
+  --surface-2: #EDF3E7;
+  --surface-3: #E2EAD9;
+  --ink: #2A2F26;
+  --ink-soft: #5A6353;
+  --ink-faint: #8F9A87;
+  --line: #E2E8DA;
+  --line-strong: #D2DBC8;
+
+  --sage: #2E9E6E;
+  --sage-deep: #1C7A52;
+  --sage-soft: #D8EFE4;
+  --sage-tint: #ECF8F1;
+
+  --clay: #C77B5E;
+  --clay-deep: #A85C40;
+  --clay-soft: #F6E2D7;
+  --clay-tint: #FAEEE6;
+
+  --gold: #CCA24F;
+  --gold-soft: #F4E8C9;
+
+  /* care = crisis-aware copy: warm + clear, never shrill */
+  --care: #C75B47;
+  --care-deep: #A2402E;
+  --care-soft: #F5DAD2;
+  --care-tint: #FBEDE8;
+
+  --r-xs: 10px;
+  --r-sm: 14px;
+  --r-md: 18px;
+  --r-lg: 24px;
+  --r-xl: 32px;
+  --r-pill: 999px;
+
+  --shadow-soft: 0 2px 8px rgba(42,47,38,.05);
+  --shadow-card: 0 8px 30px rgba(42,47,38,.07);
+  --shadow-lift: 0 20px 52px rgba(42,47,38,.14);
+
+  --ease: cubic-bezier(.22,.61,.36,1);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; height: 100%; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  background-image: radial-gradient(circle at 86% 4%, color-mix(in oklab, var(--sage) 9%, transparent), transparent 46%);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: .005em;
+}
+#root { height: 100%; }
+
+.serif { font-family: var(--font-display); font-weight: 500; letter-spacing: -.01em; }
+.serif-i { font-family: var(--font-display); font-style: italic; font-weight: 400; }
+.label {
+  font-size: 11px; font-weight: 600; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--ink-faint);
+}
+
+:focus-visible {
+  outline: 3px solid color-mix(in oklab, var(--sage) 45%, transparent);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+input, textarea { font-family: inherit; }
+button:disabled { cursor: default; }
+
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: color-mix(in oklab, var(--ink-faint) 38%, transparent);
+  border-radius: 99px; border: 2px solid transparent; background-clip: padding-box;
+}
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+::selection { background: color-mix(in oklab, var(--sage) 28%, transparent); }
+
+/* ---- motion: transform-only entrances so content is ALWAYS visible    ---- */
+/* (never gate visibility on opacity in a fill:both animation — a paused/   */
+/*  print/PDF render would keep content hidden at the `from` frame)         */
+@keyframes so-fade-up { from { transform: translateY(10px); } to { transform: translateY(0); } }
+@keyframes so-fade-in { from { transform: translateY(0); } to { transform: translateY(0); } }
+@keyframes so-scale-in { from { transform: scale(.97); } to { transform: scale(1); } }
+@keyframes so-rise { from { transform: translateY(22px); } to { transform: translateY(0); } }
+@keyframes so-pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+@keyframes so-breathe-glow {
+  0%,100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--sage) 30%, transparent); }
+  70% { box-shadow: 0 0 0 18px color-mix(in oklab, var(--sage) 0%, transparent); }
+}
+.fade-up { animation: so-fade-up .5s var(--ease) both; }
+.fade-in { animation: so-fade-in .4s var(--ease) both; }
+.scale-in { animation: so-scale-in .32s var(--ease) both; }
+.rise { animation: so-rise .42s var(--ease) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition-duration: .001ms !important;
+  }
+}
+
+/* ---- shared surfaces ---- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card);
+}

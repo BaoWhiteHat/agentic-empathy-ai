@@ -1,0 +1,224 @@
+/* ============================================================
+   SoulMate — Fresh & Calm design tokens
+   Fresh sage/mint · cream paper · soft ivory cards · dark-olive ink
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap');
+
+:root {
+  /* ---- type families (overridable by Tweaks) ---- */
+  --font-display: 'Newsreader', Georgia, serif;
+  --font-body: 'Hanken Grotesk', system-ui, sans-serif;
+
+  /* ---- LIGHT (default): fresh cream paper ---- */
+  --bg: #F3F7EE;             /* warm off-white cream-mint */
+  --bg-tint: #E8F1E0;        /* gentle radial wash, fresher */
+  --surface: #FDFEFA;        /* soft ivory cards */
+  --surface-2: #EDF3E7;      /* insets, inputs */
+  --surface-3: #E2EAD9;      /* hover */
+  --ink: #2A2F26;            /* dark olive charcoal */
+  --ink-soft: #5A6353;       /* muted olive-grey */
+  --ink-faint: #8F9A87;      /* labels, captions */
+  --line: #E2E8DA;           /* hairline */
+  --line-strong: #D2DBC8;
+
+  /* ---- accents ---- */
+  --sage: #2E9E6E;           /* primary — fresh sage/mint */
+  --sage-deep: #1C7A52;      /* readable green text on light */
+  --sage-soft: #D8EFE4;      /* tonal badge / chip bg */
+  --sage-tint: #ECF8F1;      /* subtle active / hover */
+
+  --clay: #C77B5E;           /* warmth / secondary accent */
+  --clay-deep: #A85C40;
+  --clay-soft: #F6E2D7;
+  --clay-tint: #FAEEE6;
+
+  --lavender: #87859F;       /* quiet tertiary (rare) */
+  --lavender-deep: #686183;
+  --lavender-soft: #E7E4EF;
+  --lavender-tint: #F0EEF5;
+
+  --gold: #CCA24F;           /* gentle sun / highlight */
+  --gold-soft: #F4E8C9;
+
+  /* ---- mood / weather spectrum ---- */
+  --mood-radiant: #E0A93F;
+  --mood-calm: #2E9E6E;
+  --mood-cloudy: #9AA79A;
+  --mood-low: #6F93AE;
+  --mood-heavy: #7E7595;
+
+  /* ---- care (crisis-aware copy — warm, clear, not shrill) ---- */
+  --care: #C75B47;
+  --care-soft: #F5DAD2;
+  --care-tint: #FBEDE8;
+
+  /* ---- voice / ESP32 status pipeline ---- */
+  --v-listen: #2E9E6E;       /* listening to you */
+  --v-transcribe: #3F8FA8;   /* transcribing */
+  --v-prepare: #CCA24F;      /* preparing a response */
+  --v-speak: #C77B5E;        /* speaking through ESP32 */
+  --v-connected: #2E9E6E;
+
+  /* ---- geometry ---- */
+  --r-xs: 10px;
+  --r-sm: 14px;
+  --r-md: 18px;
+  --r-lg: 24px;
+  --r-xl: 32px;
+  --r-pill: 999px;
+
+  --shadow-soft: 0 2px 8px rgba(42,47,38,.05);
+  --shadow-card: 0 8px 30px rgba(42,47,38,.07);
+  --shadow-lift: 0 20px 52px rgba(42,47,38,.14);
+
+  --ease: cubic-bezier(.22,.61,.36,1);
+}
+
+.dark {
+  --bg: #181D17;             /* deep warm-olive night */
+  --bg-tint: #1E251C;
+  --surface: #222A20;        /* card */
+  --surface-2: #2A3227;
+  --surface-3: #333C2F;
+  --ink: #ECF1E6;
+  --ink-soft: #A9B3A2;
+  --ink-faint: #7A8573;
+  --line: #323B2E;
+  --line-strong: #41492F;
+
+  --sage: #5BC196;           /* bright mint for dark */
+  --sage-deep: #93DCB8;      /* light green text */
+  --sage-soft: #23362A;
+  --sage-tint: #1E2B22;
+
+  --clay: #D89A7E;
+  --clay-deep: #E6B89F;
+  --clay-soft: #3A2B23;
+  --clay-tint: #2E251F;
+
+  --lavender: #ADA1C4;
+  --lavender-deep: #C7BEDA;
+  --lavender-soft: #2E2937;
+  --lavender-tint: #28232F;
+
+  --gold: #DCBA72;
+  --gold-soft: #38311D;
+
+  --mood-radiant: #E3BB60;
+  --mood-calm: #5BC196;
+  --mood-cloudy: #A6AEA3;
+  --mood-low: #87A6C0;
+  --mood-heavy: #9C90AE;
+
+  --care: #E08369;
+  --care-soft: #3A2620;
+  --care-tint: #2E211B;
+
+  --v-listen: #5BC196;
+  --v-transcribe: #62B2C9;
+  --v-prepare: #DCBA72;
+  --v-speak: #D89A7E;
+  --v-connected: #5BC196;
+
+  --shadow-soft: 0 2px 8px rgba(0,0,0,.24);
+  --shadow-card: 0 8px 30px rgba(0,0,0,.34);
+  --shadow-lift: 0 20px 52px rgba(0,0,0,.5);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0; padding: 0; height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: .005em;
+  transition: background-color .4s var(--ease), color .4s var(--ease);
+}
+
+#root { height: 100%; }
+
+/* ---- type helpers ---- */
+.serif { font-family: var(--font-display); font-weight: 500; letter-spacing: -.01em; }
+.serif-i { font-family: var(--font-display); font-style: italic; font-weight: 400; }
+.label {
+  font-size: 11px; font-weight: 600; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--ink-faint);
+}
+
+/* ---- focus: visible but quiet ---- */
+:focus-visible {
+  outline: 3px solid color-mix(in oklab, var(--sage) 45%, transparent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+button { font-family: inherit; cursor: pointer; }
+input, textarea { font-family: inherit; }
+
+/* ---- scrollbars: quiet ---- */
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: color-mix(in oklab, var(--ink-faint) 38%, transparent);
+  border-radius: 99px; border: 2px solid transparent; background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { background: color-mix(in oklab, var(--ink-faint) 60%, transparent); background-clip: padding-box; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+::selection { background: color-mix(in oklab, var(--sage) 28%, transparent); }
+
+/* ---- ambient breathing animation (gentle) ---- */
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: .55; }
+  50% { transform: scale(1.08); opacity: .9; }
+}
+@keyframes float-in {
+  from { transform: translateY(10px); }
+  to { transform: translateY(0); }
+}
+@keyframes soft-pulse {
+  0%, 100% { opacity: .4; }
+  50% { opacity: .85; }
+}
+@keyframes ripple {
+  from { transform: scale(.7); opacity: .5; }
+  to { transform: scale(2.4); opacity: 0; }
+}
+@keyframes shimmer-dot {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+@keyframes wave-bar {
+  0%, 100% { transform: scaleY(.3); }
+  50% { transform: scaleY(1); }
+}
+@keyframes conn-pulse {
+  0% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--v-connected) 55%, transparent); }
+  70% { box-shadow: 0 0 0 7px color-mix(in oklab, var(--v-connected) 0%, transparent); }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+@keyframes caret-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.fade-up { animation: float-in .5s var(--ease) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+}
+
+/* ---- generic surfaces ---- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card);
+}
+.hair { border: 1px solid var(--line); }

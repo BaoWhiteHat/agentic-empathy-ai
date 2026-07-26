@@ -2,9 +2,9 @@
 'use client';
 import { createContext, useContext, useState, useEffect } from 'react';
 
-const UserContext = createContext({
+const UserContext = createContext<{ userId: string; setUserId: (id: string) => void }>({
   userId: '',
-  setUserId: (id: string) => {},
+  setUserId: () => {},
 });
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
@@ -13,12 +13,14 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   // Lưu userId vào trình duyệt để F5 không bị mất "đăng nhập"
   useEffect(() => {
     const savedId = localStorage.getItem('soulmate_user_id');
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- hydrate persisted userId after mount
     if (savedId) setUserId(savedId);
   }, []);
 
   const handleSetUserId = (id: string) => {
     setUserId(id);
-    localStorage.setItem('soulmate_user_id', id);
+    if (id) localStorage.setItem('soulmate_user_id', id);
+    else localStorage.removeItem('soulmate_user_id');
   };
 
   return (

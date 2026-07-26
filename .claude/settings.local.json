@@ -63,7 +63,25 @@
       "Bash(PYTHONIOENCODING=utf-8 uv run python -c ' *)",
       "Bash(npx tsc *)",
       "Bash(npx next *)",
-      "Bash(npx eslint *)"
+      "Bash(npx eslint *)",
+      "Bash(rm -rf app/messaging app/voice app/empty-chair)",
+      "Bash(rm -f components/OceanChart.tsx components/ThemeProvider.tsx context/ThemeContext.tsx)",
+      "Bash(rm -rf components/empty-chair)",
+      "PowerShell(Get-Process *)",
+      "Bash(ls public/)",
+      "Bash(ls public/audio/)",
+      "Bash(echo \"EXIT:$?\")",
+      "mcp__ide__getDiagnostics",
+      "Bash(sed -i '267,490d' frontend/components/screens/Companion.tsx)",
+      "Bash(sed -n '262,272p' frontend/components/screens/Companion.tsx)",
+      "Bash(ls -la public/fonts/)",
+      "Bash(ls -la components/screens/)",
+      "Bash(awk '/^\\\\+---/{f=1} f{print} /OLED emotion eyes/{f=0}' BACKEND_DOCS.md)",
+      "Bash(awk '/^\\\\+---/{f=1} f{print} /OLED emotion eyes/{f=0}' FRONTEND_DOCS.md)",
+      "Read(//tmp/**)",
+      "Bash(awk '/\\\\*\\\\*D1 —/{f=1} f{print} /voice-monitor.*event\\\\.$|event`\\\\.$/{if\\(f\\)exit}' BACKEND_DOCS.md)",
+      "Bash(awk '/\\\\*\\\\*D1 —/{f=1} f{print} /event`\\\\.$/{if\\(f\\)exit}' FRONTEND_DOCS.md)",
+      "Bash(echo \"=== exit: $? ===\")"
     ]
   }
 }

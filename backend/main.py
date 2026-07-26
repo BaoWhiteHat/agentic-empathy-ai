@@ -12,7 +12,7 @@ if sys.platform == "win32":
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 
 from core.dependencies import get_system
-from api import chat, profile, voice_monitor
+from api import chat, profile, voice_monitor, reflections, companion_control
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -26,7 +26,7 @@ app = FastAPI(title="SoulMate API", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -35,3 +35,5 @@ app.add_middleware(
 app.include_router(chat.router)
 app.include_router(profile.router)
 app.include_router(voice_monitor.router)
+app.include_router(reflections.router)
+app.include_router(companion_control.router)
