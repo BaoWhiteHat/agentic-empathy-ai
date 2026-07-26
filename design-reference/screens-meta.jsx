@@ -211,9 +211,9 @@ function OnboardingConversational({ onComplete }) {
    ============================================================ */
 function SafetyScreen({ onBack }) {
   const lines = [
-    { region: 'Vietnam', name: 'Heart 2 Heart (Ngày Mai)', num: '1900 599 920', hours: 'Daily · 13:00\u201320:30' },
+    { region: 'Vietnam', name: 'Vietnam: 096 306 1414', num: '', hours: 'Public support number' },
     { region: 'Vietnam', name: 'Crisis text & chat support', num: 'text via app', hours: 'Always on' },
-    { region: 'United States', name: '988 Suicide & Crisis Lifeline', num: '988', hours: '24/7' },
+    { region: 'US', name: 'US: 988 (Suicide & Crisis Lifeline)', num: '', hours: '24/7' },
     { region: 'International', name: 'Befrienders Worldwide', num: 'befrienders.org', hours: 'Find a local line' },
   ];
   const grounding = [
@@ -246,7 +246,7 @@ function SafetyScreen({ onBack }) {
             React.createElement('div', { style: { fontWeight: 600, fontSize: 15 } }, l.name),
             React.createElement('div', { style: { fontSize: 12.5, color: 'var(--ink-faint)' } }, l.hours)
           ),
-          React.createElement('div', { style: { fontFamily: 'var(--font-display)', fontSize: 19, color: 'var(--care)', fontWeight: 500, whiteSpace: 'nowrap' } }, l.num)
+          l.num && React.createElement('div', { style: { fontFamily: 'var(--font-display)', fontSize: 19, color: 'var(--care)', fontWeight: 500, whiteSpace: 'nowrap' } }, l.num)
         ))
       ),
       React.createElement('p', { className: 'label', style: { marginBottom: 12 } }, 'Or, settle your body for a moment'),

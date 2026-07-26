@@ -19,7 +19,8 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   const handleSetUserId = (id: string) => {
     setUserId(id);
-    localStorage.setItem('soulmate_user_id', id);
+    if (id) localStorage.setItem('soulmate_user_id', id);
+    else localStorage.removeItem('soulmate_user_id');
   };
 
   return (

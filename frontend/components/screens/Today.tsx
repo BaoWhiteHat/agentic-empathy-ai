@@ -5,9 +5,8 @@ import { Icon } from '../ui/Icon';
 import { Button, IconBadge, BreathingOrb, Skeleton } from '../ui/primitives';
 import { OceanRadar, type OceanData } from '../ui/Ocean';
 import { ScreenScroll } from '../ui/ScreenScroll';
-import { MOODS, moodById, greet, getWeekMoods, localDateStr, type Mood } from '../../lib/moods';
+import { MOODS, moodById, greet, getMoodEntryForDate, getWeekMoods, localDateStr, saveOrUpdateTodayMoodEntry, type Mood } from '../../lib/moods';
 import type { ScreenId } from '../SoulMateApp';
-import { useUser } from '../../context/UserContext';
 import { useTweaks } from '../../context/TweaksContext';
 
 // Per-mood dot sizing for the week strip — size encodes "mood confidence",
@@ -63,48 +62,49 @@ const MOOD_INVITATION: Record<string, string> = {
   heavy:   'This storm does not have to be carried all at once. Start with one breath.',
 };
 
-// Shared "Your week, gently" dot strip (used by Today + Insight). A dashed SVG
-// line links centre-to-centre of consecutive days that both have a check-in;
-// gaps around null days are skipped by drawing per-pair segments. Dot size +
-// opacity encode the mood (see WEEK_DOT); null days render as a dashed outline.
+// Shared "Your week, gently" dot strip (used by Today + Insight). Connector
+// segments are rendered between fixed node slots so the line never crosses the
+// icon circles. Dot size + opacity encode the mood (see WEEK_DOT), while null
+// days render as a dashed outline.
 export function WeekStrip({ days }: { days: { label: string; id: string | null; note: string }[] }) {
-  const ROW_H = 52;           // dot-cell height; line + dot centres sit at ROW_H / 2
-  const CY = ROW_H / 2;
-  const cx = (i: number) => `${((i + 0.5) / days.length) * 100}%`;  // column centre, % of width
+  const NODE_SLOT = 56;
+  const CONNECTOR_MIN = 20;
+  const CONNECTOR_GAP = 6;
+  const minStripWidth = days.length * NODE_SLOT + Math.max(days.length - 1, 0) * CONNECTOR_MIN;
   return (
-    <div style={{ position: 'relative' }}>
-      <svg width="100%" height={ROW_H} style={{ position: 'absolute', top: 0, left: 0, zIndex: 0, pointerEvents: 'none', overflow: 'visible' }} aria-hidden="true">
-        {days.map((w, i) => {
-          const next = days[i + 1];
-          if (!w.id || !next?.id) return null;   // only connect two real check-ins
-          return <line key={i} x1={cx(i)} y1={CY} x2={cx(i + 1)} y2={CY} stroke="var(--sage)" strokeOpacity={0.25} strokeWidth={1.5} strokeDasharray="4 3" />;
-        })}
-      </svg>
-      <div style={{ display: 'flex', justifyContent: 'space-between', gap: 8, position: 'relative', zIndex: 1 }}>
+    <div className="week-strip" style={{ overflowX: 'auto', overflowY: 'visible', padding: '0 2px 2px' }}>
+      <div className="week-strip-track" style={{ display: 'flex', alignItems: 'flex-start', minWidth: minStripWidth }}>
         {days.map((w, i) => {
           const m = w.id ? moodById(w.id) : null;
           const cfg = m ? WEEK_DOT[m.id] : null;
           const size = cfg?.size ?? 32;
           return (
-            <div key={i} title={w.note || undefined} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, flex: 1 }}>
-              <div style={{ height: ROW_H, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <div aria-label={m ? undefined : 'No check-in yet'} style={{
-                  width: size,
-                  height: size,
-                  borderRadius: '50%',
-                  background: m ? m.color : 'transparent',
-                  opacity: m ? cfg!.opacity : 0.4,
-                  border: m ? 'none' : '1.5px dashed var(--line-strong)',
-                  boxShadow: m && cfg?.ring ? `0 0 0 5px color-mix(in oklab, ${m.color} 20%, transparent)` : 'none',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                  {m && <Icon name={m.weather} size={Math.round(size * 0.36)} style={{ color: '#fff' }} />}
+            <React.Fragment key={`${w.label}-${i}`}>
+              <div className="week-node-slot" title={w.note || undefined} style={{ width: NODE_SLOT, flex: `0 0 ${NODE_SLOT}px`, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+                <div data-week-node style={{ width: NODE_SLOT, height: NODE_SLOT, flex: `0 0 ${NODE_SLOT}px`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div className="week-mood-dot" aria-label={m ? undefined : 'No check-in yet'} style={{
+                    width: size,
+                    height: size,
+                    borderRadius: '50%',
+                    background: m ? m.color : 'color-mix(in oklab, var(--ink-faint) 10%, transparent)',
+                    opacity: m ? cfg!.opacity : 0.82,
+                    border: m ? 'none' : '1.5px dashed var(--ink-faint)',
+                    boxShadow: m && cfg?.ring ? `0 0 0 5px color-mix(in oklab, ${m.color} 20%, transparent)` : 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                    {m && <Icon name={m.weather} size={Math.round(size * 0.36)} style={{ color: '#fff' }} />}
+                  </div>
                 </div>
+                <span style={{ fontSize: 10.5, fontWeight: 600, color: 'var(--ink-faint)' }}>{w.label}</span>
               </div>
-              <span style={{ fontSize: 10.5, fontWeight: 600, color: 'var(--ink-faint)' }}>{w.label}</span>
-            </div>
+              {i < days.length - 1 && (
+                <div data-week-connector aria-hidden="true" style={{ height: NODE_SLOT, flex: 1, minWidth: CONNECTOR_MIN, position: 'relative' }}>
+                  <div style={{ position: 'absolute', top: NODE_SLOT / 2, left: CONNECTOR_GAP, right: CONNECTOR_GAP, borderTop: '1.5px dashed var(--week-connector)' }} />
+                </div>
+              )}
+            </React.Fragment>
           );
         })}
       </div>
@@ -132,30 +132,27 @@ export function TodayScreen({ name, todayMood: todayMoodProp, ocean, narrative =
   // card immediately, and the 'reflection-saved' listener catches other writes.
   const [todayMood, setTodayMood] = useState<string | null>(null);
   useEffect(() => {
-    const history = JSON.parse(localStorage.getItem('soulmate_moods') || '[]');
-    const entry = history.findLast(
-      (e: { date: string; mood: string }) => e.date === localDateStr()
-    );
-    if (entry) setTodayMood(entry.mood);
+    const entry = getMoodEntryForDate(localDateStr());
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- hydrate today's mood from localStorage after mount
+    setTodayMood(entry?.mood ?? null);
 
     const handler = () => {
-      const h = JSON.parse(localStorage.getItem('soulmate_moods') || '[]');
-      const e = h.findLast((e: { date: string; mood: string }) => e.date === localDateStr());
-      if (e) setTodayMood(e.mood);
+      const e = getMoodEntryForDate(localDateStr());
+      setTodayMood(e?.mood ?? null);
     };
     window.addEventListener('reflection-saved', handler);
     return () => window.removeEventListener('reflection-saved', handler);
   }, []);
   // Mirror in-session check-ins pushed down from the parent modal.
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- sync parent check-in completion into this card
   useEffect(() => { if (todayMoodProp) setTodayMood(todayMoodProp); }, [todayMoodProp]);
 
   const mood = todayMood ? moodById(todayMood) : null;
-  const { userId } = useUser();
   const { tweaks } = useTweaks();
   // Focus mode forces the calm single-column layout (minimal chrome).
   const dashboard = tweaks.focusMode ? 'calm' : tweaks.dashboard;
-  const [reflectOpen, setReflectOpen] = useState(false);
   const greeting = getTimeGreeting();
+  const narrativeText = narrative.trim();
 
   // Read the week's moods from localStorage only after mount — calling
   // getWeekMoods() during render runs on the server (no localStorage), so the
@@ -163,6 +160,7 @@ export function TodayScreen({ name, todayMood: todayMoodProp, ocean, narrative =
   // refreshes the strip the moment a new check-in lands, without a reload.
   const [weekMoods, setWeekMoods] = useState<ReturnType<typeof getWeekMoods>>([]);
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- hydrate week strip from localStorage after mount
     setWeekMoods(getWeekMoods());
     const handler = () => setWeekMoods(getWeekMoods());
     window.addEventListener('reflection-saved', handler);
@@ -170,7 +168,7 @@ export function TodayScreen({ name, todayMood: todayMoodProp, ocean, narrative =
   }, []);
 
   const Greeting = (
-    <div style={{ marginBottom: 28 }}>
+    <div className="today-greeting" style={{ marginBottom: 28 }}>
       <p className="label" style={{ marginBottom: 6 }}>{new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</p>
       <h1 className="serif" style={{ fontSize: 38, margin: 0, lineHeight: 1.1 }}>{`${greet()}, ${name}.`}</h1>
       <p style={{ fontSize: 'var(--text-base)', color: 'var(--ink-soft)', marginTop: 8, maxWidth: 520, lineHeight: 1.55 }}>
@@ -181,11 +179,15 @@ export function TodayScreen({ name, todayMood: todayMoodProp, ocean, narrative =
   );
 
   const CheckInCard = (
-    <div className="card" style={{ padding: '28px 30px', position: 'relative', overflow: 'hidden', background: mood ? `linear-gradient(135deg, color-mix(in oklab, ${mood.color} 14%, var(--surface)), var(--surface))` : 'var(--surface)' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 22 }}>
-        <BreathingOrb size={92} tone={mood ? mood.color : 'var(--sage)'}>
-          {mood ? <Icon name={mood.weather} size={28} style={{ color: mood.color }} /> : <Icon name={greeting.icon} size={26} style={{ color: 'var(--sage)' }} />}
-        </BreathingOrb>
+    <div className="today-checkin-card card" style={{ padding: '28px 30px', position: 'relative', overflow: 'hidden', background: mood ? `linear-gradient(135deg, color-mix(in oklab, ${mood.color} 14%, var(--surface)), var(--surface))` : 'var(--surface)' }}>
+      <div className="today-checkin-content" style={{ display: 'flex', alignItems: 'center', gap: 22 }}>
+        <div className="today-checkin-visual" aria-hidden="true" style={{
+          background: `color-mix(in oklab, ${mood ? mood.color : 'var(--sage)'} 16%, var(--surface))`,
+          borderColor: `color-mix(in oklab, ${mood ? mood.color : 'var(--sage)'} 42%, var(--line))`,
+          color: mood ? mood.color : 'var(--sage-deep)',
+        }}>
+          <Icon name={mood ? mood.weather : greeting.icon} size={27} />
+        </div>
         <div style={{ flex: 1 }}>
           <p className="label" style={{ marginBottom: 6 }}>{mood ? 'Today’s weather' : 'Daily check-in'}</p>
           <h2 className="serif" style={{ fontSize: 'calc(var(--text-base) * 1.5)', margin: '0 0 4px' }}>{mood ? `Feeling ${mood.label.toLowerCase()}` : greeting.heading}</h2>
@@ -197,7 +199,7 @@ export function TodayScreen({ name, todayMood: todayMoodProp, ocean, narrative =
   );
 
   const TalkCard = (
-    <button className="card" onClick={() => onNavigate('companion')} style={{ padding: '24px 26px', textAlign: 'left', display: 'flex', gap: 16, alignItems: 'center', cursor: 'pointer' }}>
+    <button className="today-quick-card card" onClick={() => onNavigate('companion')} style={{ padding: '24px 26px', textAlign: 'left', display: 'flex', gap: 16, alignItems: 'center', cursor: 'pointer' }}>
       <IconBadge name="chat" tone="sage" size={48} iconSize={22} />
       <div style={{ flex: 1 }}>
         <div style={{ fontWeight: 600, fontSize: 'var(--text-base)', fontFamily: 'var(--font-display)', color: 'var(--ink)' }}>Talk it through</div>
@@ -208,7 +210,7 @@ export function TodayScreen({ name, todayMood: todayMoodProp, ocean, narrative =
   );
 
   const ReflectCard = (
-    <button className="card" onClick={() => setReflectOpen(true)} style={{ padding: '24px 26px', textAlign: 'left', display: 'flex', gap: 16, alignItems: 'center', cursor: 'pointer' }}>
+    <button className="today-quick-card card" onClick={() => onNavigate('reflections')} style={{ padding: '24px 26px', textAlign: 'left', display: 'flex', gap: 16, alignItems: 'center', cursor: 'pointer' }}>
       <IconBadge name="feather" tone="clay" size={48} iconSize={22} />
       <div style={{ flex: 1 }}>
         <div style={{ fontWeight: 600, fontSize: 'var(--text-base)', fontFamily: 'var(--font-display)', color: 'var(--ink)' }}>Write a reflection</div>
@@ -219,7 +221,7 @@ export function TodayScreen({ name, todayMood: todayMoodProp, ocean, narrative =
   );
 
   const WeekCard = (
-    <div className="card" style={{ padding: '24px 26px' }}>
+    <div className="today-week-card card" style={{ padding: '24px 26px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
         <p className="label">Your week, gently</p>
       </div>
@@ -228,50 +230,51 @@ export function TodayScreen({ name, todayMood: todayMoodProp, ocean, narrative =
   );
 
   const InsightCard = (
-    <button className="card" onClick={() => onNavigate('insights')} style={{ padding: '24px 26px', textAlign: 'left', cursor: 'pointer', display: 'flex', gap: 18, alignItems: 'center' }}>
-      <div style={{ width: 96, height: 96, flexShrink: 0 }}><OceanRadar data={ocean} size={96} showLabels={false} /></div>
+    <button className="today-insight-card card" onClick={() => onNavigate('insights')} style={{ padding: '24px 26px', textAlign: 'left', cursor: 'pointer', display: 'flex', gap: 18, alignItems: 'center' }}>
+      <div className="today-insight-radar" style={{ width: 96, height: 96, flexShrink: 0 }}><OceanRadar data={ocean} size={96} showLabels={false} /></div>
       <div style={{ flex: 1 }}>
-        <p className="label" style={{ marginBottom: 6 }}>How I’m getting to know you</p>
+        <p className="label" style={{ marginBottom: 6 }}>Personal reflection</p>
         {!oceanLoaded && !oceanError ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
             <Skeleton height={12} /><Skeleton height={12} width="68%" />
           </div>
-        ) : oceanError || !narrative.trim() ? (
-          <div style={{ fontSize: 'calc(var(--text-base) * 0.9)', color: 'var(--ink-faint)', lineHeight: 1.5 }}>Not enough conversations yet.</div>
+        ) : oceanError ? (
+          <div style={{ fontSize: 'calc(var(--text-base) * 0.9)', color: 'var(--ink-soft)', lineHeight: 1.5 }}>{`I can't refresh this right now.`}</div>
+        ) : !narrativeText ? (
+          <div>
+            <div style={{ fontSize: 'calc(var(--text-base) * 0.9)', color: 'var(--ink)', lineHeight: 1.45, fontWeight: 600 }}>{`I'll build this after a few more conversations.`}</div>
+            <div style={{ fontSize: 12.5, color: 'var(--ink-soft)', lineHeight: 1.45, marginTop: 3 }}>SoulMate creates this after enough history is available.</div>
+          </div>
         ) : (
-          <div style={{ fontSize: 'calc(var(--text-base) * 0.9)', color: 'var(--ink)', lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{narrative}</div>
+          <div style={{ fontSize: 'calc(var(--text-base) * 0.9)', color: 'var(--ink)', lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{narrativeText}</div>
         )}
         <span style={{ fontSize: 12.5, color: 'var(--sage-deep)', fontWeight: 600, marginTop: 8, display: 'inline-flex', alignItems: 'center', gap: 5 }}>See your insight<Icon name="chevR" size={14} /></span>
       </div>
     </button>
   );
 
-  const reflectionModal = reflectOpen ? <QuickReflection userId={userId} onClose={() => setReflectOpen(false)} /> : null;
-
   if (dashboard === 'bento') {
     return (
       <ScreenScroll>
         {Greeting}
-        <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 18 }}>
+        <div className="today-bento-grid" style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 18 }}>
           <div style={{ gridColumn: '1 / 2', gridRow: '1 / 3' }}>{CheckInCard}</div>
           <div>{TalkCard}</div>
           <div>{ReflectCard}</div>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 18, marginTop: 18 }}>{WeekCard}{InsightCard}</div>
-        {reflectionModal}
+        <div className="today-secondary-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 18, marginTop: 18 }}>{WeekCard}{InsightCard}</div>
       </ScreenScroll>
     );
   }
   return (
     <ScreenScroll>
       {Greeting}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 18, maxWidth: 720 }}>
+      <div className="today-calm-layout" style={{ display: 'flex', flexDirection: 'column', gap: 18, maxWidth: 720 }}>
         {CheckInCard}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 18 }}>{TalkCard}{ReflectCard}</div>
+        <div className="today-action-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 18 }}>{TalkCard}{ReflectCard}</div>
         {WeekCard}
         {InsightCard}
       </div>
-      {reflectionModal}
     </ScreenScroll>
   );
 }
@@ -308,17 +311,12 @@ export function MoodCheckIn({ style = 'weather', onClose, onComplete }: { style?
   // blank re-check-in can never overwrite a real note the user already wrote.
   const commit = (next: 'talk' | 'done') => {
     if (!picked) return;
-    const today = localDateStr();
-    const history = JSON.parse(localStorage.getItem('soulmate_moods') || '[]');
-    const existing = history.findLast((e: { date: string; note?: string }) => e.date === today);
+    const existing = getMoodEntryForDate(localDateStr());
     const cleanNote = note.trim();
     const finalNote = cleanNote.length > 0 ? cleanNote : (existing?.note || autoNote(picked));
-    const entry = { date: today, mood: picked, note: finalNote };
     // Replace today's entry instead of appending — avoids duplicate same-day rows
-    // and keeps every reader (which use findLast) consistent.
-    const updated = history.filter((e: { date: string }) => e.date !== today);
-    updated.push(entry);
-    localStorage.setItem('soulmate_moods', JSON.stringify(updated));
+    // and keeps every reader consistent.
+    saveOrUpdateTodayMoodEntry(picked, finalNote);
     // Notify in-page listeners (WeekStrip + the TODAY'S WEATHER card) so they
     // re-read localStorage immediately — no reload or navigation needed.
     window.dispatchEvent(new Event('reflection-saved'));
@@ -334,8 +332,8 @@ export function MoodCheckIn({ style = 'weather', onClose, onComplete }: { style?
   } as Record<string, string>)[mood.id] : '';
 
   return (
-    <div style={{ position: 'fixed', inset: 0, zIndex: 60, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, background: 'color-mix(in oklab, var(--ink) 32%, transparent)', backdropFilter: 'blur(6px)' }}>
-      <div className="card fade-up" style={{ width: '100%', maxWidth: 560, padding: '34px 36px', boxShadow: 'var(--shadow-lift)', position: 'relative' }}>
+    <div className="mood-checkin-overlay" style={{ position: 'fixed', inset: 0, zIndex: 60, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, background: 'color-mix(in oklab, var(--ink) 32%, transparent)', backdropFilter: 'blur(6px)' }}>
+      <div className="mood-checkin-dialog card fade-up" style={{ width: '100%', maxWidth: 560, padding: '34px 36px', boxShadow: 'var(--shadow-lift)', position: 'relative' }}>
         <button onClick={onClose} aria-label="Close" style={{ position: 'absolute', top: 20, right: 20, background: 'var(--surface-2)', border: 'none', borderRadius: 99, width: 34, height: 34, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--ink-soft)' }}><Icon name="x" size={17} /></button>
 
         {step === 0 && (
@@ -371,7 +369,7 @@ export function MoodCheckIn({ style = 'weather', onClose, onComplete }: { style?
             </div>
             <h2 className="serif" style={{ fontSize: 'calc(var(--text-base) * 1.5)', margin: '0 0 10px' }}>{`Checked in: ${mood.label.toLowerCase()}`}</h2>
             <p style={{ fontSize: 'calc(var(--text-base) * 0.94)', color: 'var(--ink-soft)', lineHeight: 1.6, maxWidth: 380, margin: '0 auto 24px' }}>{reflectBack}</p>
-            <div style={{ display: 'flex', gap: 10, justifyContent: 'center' }}>
+            <div className="mood-checkin-final-actions" style={{ display: 'flex', gap: 10, justifyContent: 'center' }}>
               <Button variant="soft" icon="chat" onClick={() => commit('talk')}>Talk about it</Button>
               <Button variant="primary" onClick={() => commit('done')}>Done for now</Button>
             </div>
@@ -417,7 +415,7 @@ function MoodPicker({ style, picked, onPick }: { style: string; picked: string |
   }
   // weather (default) & emoji share a row layout
   return (
-    <div style={{ display: 'flex', gap: 10, justifyContent: 'space-between' }}>
+    <div className="mood-picker-row" style={{ display: 'flex', gap: 10, justifyContent: 'space-between' }}>
       {MOODS.map((m) => {
         const on = picked === m.id;
         return (
@@ -429,50 +427,6 @@ function MoodPicker({ style, picked, onPick }: { style: string; picked: string |
           </button>
         );
       })}
-    </div>
-  );
-}
-
-/* ============================================================
-   QUICK REFLECTION (modal overlay) — writes straight to the backend
-   without leaving the Today screen.
-   ============================================================ */
-function QuickReflection({ userId, onClose }: { userId: string; onClose: () => void }) {
-  const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
-  const [saving, setSaving] = useState(false);
-
-  const save = async () => {
-    if (!title.trim() && !body.trim()) { onClose(); return; }
-    setSaving(true);
-    // Never POST an empty title — fall back to the start of the body, then a default.
-    const finalTitle = title.trim() || body.trim().slice(0, 30) || 'A quiet moment';
-    try {
-      await fetch(`http://localhost:8000/api/reflections/${userId}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: finalTitle, body, mood: '' }),
-      });
-      window.dispatchEvent(new Event('reflection-saved'));  // tell the Reflections screen to refetch
-    } catch { /* swallow network errors — still close the modal */ }
-    setSaving(false);
-    onClose();
-  };
-
-  return (
-    <div style={{ position: 'fixed', inset: 0, zIndex: 60, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, background: 'color-mix(in oklab, var(--ink) 32%, transparent)', backdropFilter: 'blur(6px)' }}>
-      <div className="card fade-up" style={{ width: '100%', maxWidth: 560, padding: '28px 30px', boxShadow: 'var(--shadow-lift)', position: 'relative', borderLeft: '3px solid var(--clay)' }}>
-        <button onClick={onClose} aria-label="Close" style={{ position: 'absolute', top: 18, right: 18, background: 'var(--surface-2)', border: 'none', borderRadius: 99, width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--ink-soft)' }}><Icon name="x" size={16} /></button>
-        <p className="label" style={{ marginBottom: 12 }}>Write a reflection</p>
-        <input autoFocus value={title} onChange={(e) => setTitle(e.target.value)} placeholder="A title, if you like…"
-          style={{ width: '100%', border: 'none', background: 'transparent', outline: 'none', fontFamily: 'var(--font-display)', fontSize: 'calc(var(--text-base) * 1.375)', color: 'var(--ink)', marginBottom: 10 }} />
-        <textarea value={body} onChange={(e) => setBody(e.target.value)} placeholder="What’s on your mind?" rows={5}
-          style={{ width: '100%', border: 'none', background: 'transparent', outline: 'none', fontSize: 'calc(var(--text-base) * 0.97)', lineHeight: 1.65, color: 'var(--ink)', resize: 'none', fontFamily: 'var(--font-body)' }} />
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, marginTop: 12 }}>
-          <Button variant="ghost" onClick={onClose}>Cancel</Button>
-          <Button variant="primary" icon="check" onClick={save} disabled={saving}>{saving ? 'Saving…' : 'Save'}</Button>
-        </div>
-      </div>
     </div>
   );
 }

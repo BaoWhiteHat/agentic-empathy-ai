@@ -198,8 +198,8 @@ export function CalmingSounds({ onClose }: { onClose: () => void }) {
 
 /* ── safety / support resources page ── */
 const SAFETY_RESOURCES = [
-  { country: 'Vietnam', service: 'Heart 2 Heart — đường dây nóng tâm lý', phone: '1900 599 920', primary: true },
-  { country: 'US · Canada', service: 'Suicide & Crisis Lifeline (call or text)', phone: '988', primary: true },
+  { country: 'Vietnam: 096 306 1414', service: 'Public support number', phone: '096 306 1414', primary: true },
+  { country: 'US: 988 (Suicide & Crisis Lifeline)', service: 'Call or text', phone: '988', primary: true },
   { country: 'UK · Ireland', service: 'Samaritans', phone: '116 123' },
   { country: 'Australia', service: 'Lifeline', phone: '13 11 14' },
 ];

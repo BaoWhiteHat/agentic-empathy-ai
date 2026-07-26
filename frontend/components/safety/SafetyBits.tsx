@@ -49,31 +49,51 @@ const OPTION_ICON: Record<string, string> = {
   try_grounding: 'eye', try_breathing: 'wind', play_sounds: 'waves', open_safety: 'heart-handshake', end_session: 'leaf',
 };
 
-export function SafetySupportPanel({ targetName, options, onChoose, onRequestResume }: { targetName: string; options: SupportOption[]; onChoose: (a: SupportOption['action']) => void; onRequestResume: () => void }) {
+export function SafetySupportPanel({ targetName, options, onChoose, onRequestResume, onClose, overSafetyPage = false }: { targetName: string; options: SupportOption[]; onChoose: (a: SupportOption['action']) => void; onRequestResume: () => void; onClose: () => void; overSafetyPage?: boolean }) {
   const cardRef = useRef<HTMLDivElement>(null);
-  useEffect(() => { cardRef.current?.focus(); }, []);
+  useEffect(() => {
+    const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        onClose();
+      }
+    };
+    cardRef.current?.focus();
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      previouslyFocused?.focus();
+    };
+  }, [onClose]);
   return (
-    <div className="fade-in" role="dialog" aria-modal="true" aria-labelledby="sp-title"
-      style={{ position: 'absolute', inset: 0, zIndex: 60, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, background: 'color-mix(in oklab, var(--bg) 78%, transparent)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }}>
-      <div ref={cardRef} tabIndex={-1} className="rise card no-scrollbar" style={{ width: '100%', maxWidth: 460, maxHeight: '92%', overflowY: 'auto', padding: '34px 30px 26px', outline: 'none', boxShadow: 'var(--shadow-lift)' }}>
-        <div style={{ width: 58, height: 58, borderRadius: 18, margin: '0 auto 18px', display: 'grid', placeItems: 'center', background: 'var(--sage-soft)', color: 'var(--sage-deep)' }}>
-          <Icon name="heart" size={28} />
+    <div className="fade-in" role="dialog" aria-modal="true" aria-labelledby="sp-title" aria-describedby="sp-subtitle"
+      onClick={onClose}
+      style={{ position: 'absolute', inset: 0, zIndex: overSafetyPage ? 95 : 60, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, background: 'color-mix(in oklab, var(--bg) 68%, transparent)', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}>
+      <div ref={cardRef} tabIndex={-1} onClick={(event) => event.stopPropagation()} className="rise card no-scrollbar" style={{ width: '100%', maxWidth: 520, maxHeight: '92%', margin: '0 auto', overflowY: 'auto', padding: '26px 24px 22px', outline: 'none', boxShadow: 'var(--shadow-lift)', borderColor: 'color-mix(in oklab, var(--sage) 24%, var(--line))' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 13, marginBottom: 14 }}>
+          <span style={{ width: 42, height: 42, borderRadius: 13, flexShrink: 0, display: 'grid', placeItems: 'center', background: 'var(--sage-soft)', color: 'var(--sage-deep)' }}>
+            <Icon name="heart" size={21} />
+          </span>
+          <div style={{ minWidth: 0 }}>
+            <h2 id="sp-title" className="serif" style={{ fontSize: 22, margin: '0 0 3px', color: 'var(--ink)' }}>Choose what helps right now</h2>
+            <p id="sp-subtitle" style={{ fontSize: 13.5, color: 'var(--ink-soft)', margin: 0 }}>You can pick one small next step.</p>
+          </div>
+          <button onClick={onClose} aria-label="Close support options" style={{ width: 34, height: 34, marginLeft: 'auto', flexShrink: 0, display: 'grid', placeItems: 'center', borderRadius: '50%', color: 'var(--ink-faint)', background: 'var(--surface-2)', border: '1px solid var(--line)' }}>
+            <Icon name="x" size={17} />
+          </button>
         </div>
-        <h2 id="sp-title" className="serif" style={{ fontSize: 26, textAlign: 'center', margin: '0 0 10px', color: 'var(--ink)' }}>Let’s pause here for a moment.</h2>
-        <p style={{ fontSize: 14.5, lineHeight: 1.6, textAlign: 'center', color: 'var(--ink-soft)', margin: '0 0 6px' }}>
-          What you’re feeling matters. We’ve gently stepped out of the conversation{targetName ? <> with <strong style={{ color: 'var(--ink)' }}>{targetName}</strong></> : null} so we can look after you first.
+        <p style={{ fontSize: 12.5, lineHeight: 1.55, color: 'var(--ink-faint)', margin: '0 0 15px' }}>
+          The conversation{targetName ? <> with <strong style={{ color: 'var(--ink-soft)' }}>{targetName}</strong></> : null} is paused while you choose. If you’re in immediate danger, contact someone you trust or your local emergency services.
         </p>
-        <p style={{ fontSize: 12.5, lineHeight: 1.6, textAlign: 'center', color: 'var(--ink-faint)', margin: '0 0 20px' }}>
-          SoulMate is a companion, not a crisis or emergency service. If you’re in immediate danger, please contact someone you trust or your local emergency number.
-        </p>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 9 }}>
           {options.map((opt) => (
-            <button key={opt.action} onClick={() => onChoose(opt.action)}
-              style={{ display: 'flex', alignItems: 'center', gap: 13, textAlign: 'left', padding: '13px 15px', borderRadius: 'var(--r-md)', background: 'var(--surface-2)', border: '1px solid var(--line)', transition: 'all .18s var(--ease)' }}
+            <button key={opt.action} onClick={() => onChoose(opt.action)} aria-label={`${opt.label}: ${opt.sub}`}
+              style={{ display: 'flex', alignItems: 'center', gap: 12, minHeight: 62, textAlign: 'left', padding: '11px 13px', borderRadius: 'var(--r-md)', background: 'var(--surface-2)', border: '1px solid var(--line)', transition: 'all .18s var(--ease)' }}
               onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'color-mix(in oklab, var(--sage) 40%, transparent)'; e.currentTarget.style.background = 'var(--sage-tint)'; }}
               onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--line)'; e.currentTarget.style.background = 'var(--surface-2)'; }}>
-              <span style={{ width: 38, height: 38, borderRadius: 11, flexShrink: 0, display: 'grid', placeItems: 'center', background: 'var(--surface)', border: '1px solid var(--line)', color: 'var(--sage-deep)' }}>
-                <Icon name={OPTION_ICON[opt.action] || 'heart'} size={19} />
+              <span style={{ width: 36, height: 36, borderRadius: 11, flexShrink: 0, display: 'grid', placeItems: 'center', background: 'var(--surface)', border: '1px solid var(--line)', color: 'var(--sage-deep)' }}>
+                <Icon name={OPTION_ICON[opt.action] || 'heart'} size={18} />
               </span>
               <span style={{ flex: 1 }}>
                 <span style={{ display: 'block', fontSize: 14.5, fontWeight: 600, color: 'var(--ink)' }}>{opt.label}</span>
@@ -83,7 +103,7 @@ export function SafetySupportPanel({ targetName, options, onChoose, onRequestRes
             </button>
           ))}
         </div>
-        <button onClick={onRequestResume} style={{ display: 'block', margin: '18px auto 0', fontSize: 12.5, fontWeight: 600, color: 'var(--ink-faint)', padding: '8px 14px', borderRadius: 'var(--r-pill)', background: 'none', border: 'none' }}>
+        <button onClick={onRequestResume} style={{ display: 'block', margin: '14px auto 0', fontSize: 12.5, fontWeight: 600, color: 'var(--ink-faint)', padding: '8px 14px', borderRadius: 'var(--r-pill)', background: 'none', border: 'none' }}>
           I’m okay — continue the conversation
         </button>
       </div>
@@ -96,7 +116,7 @@ export function ConfirmResume({ targetName, onConfirm, onCancel }: { targetName:
   useEffect(() => { ref.current?.focus(); }, []);
   return (
     <div className="fade-in" role="dialog" aria-modal="true" aria-labelledby="cr-title"
-      style={{ position: 'absolute', inset: 0, zIndex: 70, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, background: 'color-mix(in oklab, var(--ink) 28%, transparent)', backdropFilter: 'blur(3px)', WebkitBackdropFilter: 'blur(3px)' }}>
+      style={{ position: 'absolute', inset: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, background: 'color-mix(in oklab, var(--ink) 28%, transparent)', backdropFilter: 'blur(3px)', WebkitBackdropFilter: 'blur(3px)' }}>
       <div ref={ref} tabIndex={-1} className="scale-in card" style={{ width: '100%', maxWidth: 380, padding: 26, outline: 'none', boxShadow: 'var(--shadow-lift)' }}>
         <h3 className="serif" id="cr-title" style={{ fontSize: 21, margin: '0 0 8px', color: 'var(--ink)' }}>Ready to return?</h3>
         <p style={{ fontSize: 13.5, lineHeight: 1.6, color: 'var(--ink-soft)', margin: '0 0 20px' }}>

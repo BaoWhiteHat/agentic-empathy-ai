@@ -164,12 +164,13 @@ Naming the file/function as control crosses each boundary:
 3. **Stop / crisis** — on `stop_roleplay` the backend emits `crisis_mode
    {lockout_seconds:15, show_breathing:true}` **and** `elevated_mode {active:true,
    until_timestamp, reason:"crisis_detected"}` (30-min window,
-   `ELEVATED_MODE_DURATION_SECONDS=1800`). The frontend opens the crisis card +
-   `BreathingModal` and sets `elevated`.
-4. **Re-entry** — after breathing, the frontend sends `show_reentry_options`; the
-   backend replies `re_entry_choice {prompt, buttons[]}`; the frontend opens its
-   `SafetySupportPanel`. Resume → `resume_roleplay`; end → `end_session` → backend
-   `safety_summary {session_duration, crisis_count}`.
+   `ELEVATED_MODE_DURATION_SECONDS=1800`). The frontend immediately renders and
+   preserves the crisis card, waits for the following crisis-safe `message` frame,
+   then opens the app-level `SafetyScreen` and overlays `SafetySupportPanel` there;
+   breathing is one optional panel action.
+4. **Re-entry** — the panel can also be opened by backend
+   `re_entry_choice {prompt, buttons[]}`. Resume → `resume_roleplay`; end →
+   `end_session` → backend `safety_summary {session_duration, crisis_count}`.
 
 ### Known protocol divergences (frontend ↔ backend ↔ code)
 
@@ -188,8 +189,8 @@ each item is the gap between what is on the wire and what each side actually use
 - **D3 — `re_entry_choice` payload.** The backend sends `{prompt, buttons[]}`
   (`buttons` = `play_sounds`, `try_grounding`, `resume_roleplay`,
   `switch_to_support`, `end_session`). The frontend handler **ignores `prompt` and
-  `buttons`** and instead opens its own `SafetySupportPanel` rendering the local
-  `SUPPORT_OPTIONS` (`try_grounding`, `try_breathing`, `play_sounds`,
+  `buttons`** and instead hands off to the app-level `SafetyScreen`, which opens
+  `SafetySupportPanel` with local `SUPPORT_OPTIONS` (`try_grounding`, `try_breathing`, `play_sounds`,
   `open_safety`, `end_session`) plus a separate "I'm okay — continue" → `resume_roleplay`
   link. The option set the user sees is frontend-defined, not backend-driven.
 - **D4 — `status` content range.** The chat socket (`/ws/chat`) only ever emits
@@ -601,8 +602,8 @@ RISK_TYPE_MAP  = {stop:self_harm_or_suicide, safe:high_distress, normal:normal_s
 RISK_LEVEL_MAP = {stop:critical, safe:medium, normal:low}
 ```
 
-- `crisis_response()` — scripted crisis text including Vietnam `1900 599 920`
-  and US `988` lines.
+- `crisis_response()` — scripted crisis text including `Vietnam: 096 306 1414`
+  and `US: 988 (Suicide & Crisis Lifeline)` lines.
 - `safe_instruction()` — a `[SAFETY NOTE: ...]` prefix prepended to user input in
   `safe_roleplay`.
 

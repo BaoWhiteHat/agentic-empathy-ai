@@ -72,9 +72,9 @@ export interface SupportOption {
 }
 
 export const SUPPORT_OPTIONS: SupportOption[] = [
-  { action: 'try_grounding', label: 'Try grounding', sub: 'A short 5-4-3-2-1 exercise' },
-  { action: 'try_breathing', label: 'Try breathing', sub: 'Settle your body, one breath at a time' },
-  { action: 'play_sounds', label: 'Open calming sounds', sub: 'Rain, ocean or forest' },
+  { action: 'try_grounding', label: 'Grounding', sub: 'A short 5-4-3-2-1 exercise' },
+  { action: 'try_breathing', label: 'Breathing', sub: 'Settle your body, one breath at a time' },
+  { action: 'play_sounds', label: 'Calming sounds', sub: 'Rain, ocean or forest' },
   { action: 'open_safety', label: 'Support resources', sub: 'People you can reach right now' },
-  { action: 'end_session', label: 'End this session for now', sub: 'You can always come back' },
+  { action: 'end_session', label: 'End session', sub: 'You can always come back' },
 ];

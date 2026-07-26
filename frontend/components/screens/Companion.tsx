@@ -1,22 +1,23 @@
 'use client';
 // components/screens/Companion.tsx — tabbed Chat / Physical / Empty Chair.
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Icon } from '../ui/Icon';
 import { Button, IconBadge, BreathingOrb } from '../ui/primitives';
 import { useChat } from '../../hooks/useChat';
-import { fromBackendDecision, SUPPORT_OPTIONS, LEVELS, type Assessment, type SupportOption } from '../../lib/safetyRouter';
-import { SafetyStatusChip, SafetyBanner, SafetySupportPanel, ConfirmResume, SupportFooter } from '../safety/SafetyBits';
-import { GroundingExercise, BreathingModal, CalmingSounds, SafetyPage } from '../safety/Modals';
+import { fromBackendDecision, LEVELS, type Assessment } from '../../lib/safetyRouter';
+import { SafetyStatusChip, SafetyBanner, SupportFooter } from '../safety/SafetyBits';
 import { EmotionBadge } from '../EmotionBadge';
 import { useTweaks } from '../../context/TweaksContext';
+import type { CrisisSupportSession } from './Safety';
 
 interface CompanionProps {
   name: string;
   initialTab?: 'chat' | 'voice' | 'empty';
   onExit?: () => void;
+  onOpenSafety?: (crisisSupport?: CrisisSupportSession) => void;
 }
 
-export function CompanionScreen({ name, initialTab = 'chat' }: CompanionProps) {
+export function CompanionScreen({ name, initialTab = 'chat', onOpenSafety }: CompanionProps) {
   const { tweaks } = useTweaks();
   const [tab, setTab] = useState<'chat' | 'voice' | 'empty'>(initialTab);
   const tabs = [
@@ -25,9 +26,9 @@ export function CompanionScreen({ name, initialTab = 'chat' }: CompanionProps) {
     { id: 'empty' as const, label: 'Empty Chair', icon: 'chair' },
   ];
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ padding: '18px 32px 0', borderBottom: '1px solid var(--line)', background: 'var(--surface)' }}>
-        <div style={{ display: 'flex', gap: 6 }}>
+    <div className="companion-screen" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <div className="companion-tabs" style={{ padding: '18px 32px 0', borderBottom: '1px solid var(--line)', background: 'var(--surface)' }}>
+        <div className="companion-tab-list" style={{ display: 'flex', gap: 6 }}>
           {tabs.map((tb) => {
             const on = tb.id === tab;
             return (
@@ -42,7 +43,7 @@ export function CompanionScreen({ name, initialTab = 'chat' }: CompanionProps) {
       <div style={{ flex: 1, minHeight: 0 }}>
         {tab === 'chat' && <ChatView key="chat" name={name} chatStyle={tweaks.chatStyle} />}
         {tab === 'voice' && <PhysicalCompanionView key="voice" />}
-        {tab === 'empty' && <EmptyChairView key="empty" />}
+        {tab === 'empty' && <EmptyChairView key="empty" onOpenSafety={onOpenSafety} />}
       </div>
     </div>
   );
@@ -53,8 +54,8 @@ export function CompanionScreen({ name, initialTab = 'chat' }: CompanionProps) {
    ============================================================ */
 function Composer({ value, onChange, onSend, placeholder, tone, disabled }: { value: string; onChange: (v: string) => void; onSend: () => void; placeholder: string; tone: string; disabled?: boolean }) {
   return (
-    <div style={{ padding: '16px 32px 24px' }}>
-      <div style={{ maxWidth: 720, margin: '0 auto', display: 'flex', gap: 10, alignItems: 'flex-end', padding: 8, background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: 'var(--r-xl)', boxShadow: 'var(--shadow-card)', opacity: disabled ? 0.5 : 1, pointerEvents: disabled ? 'none' : 'auto' }}>
+    <div className="companion-composer" style={{ padding: '16px 32px 24px' }}>
+      <div className="companion-composer-box" style={{ maxWidth: 720, margin: '0 auto', display: 'flex', gap: 10, alignItems: 'flex-end', padding: 8, background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: 'var(--r-xl)', boxShadow: 'var(--shadow-card)', opacity: disabled ? 0.5 : 1, pointerEvents: disabled ? 'none' : 'auto' }}>
         <textarea value={value} onChange={(e) => { onChange(e.target.value); e.target.style.height = 'auto'; e.target.style.height = Math.min(e.target.scrollHeight, 140) + 'px'; }}
           onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); onSend(); } }} rows={1} placeholder={placeholder}
           style={{ flex: 1, border: 'none', background: 'transparent', outline: 'none', resize: 'none', fontSize: 'calc(var(--text-base) * 0.94)', lineHeight: 1.5, color: 'var(--ink)', padding: '8px 12px', fontFamily: 'var(--font-body)', maxHeight: 140 }} />
@@ -69,7 +70,7 @@ function Composer({ value, onChange, onSend, placeholder, tone, disabled }: { va
 function TypingDots() {
   return (
     <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-      <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--sage-soft)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Icon name="heart" size={16} fill="var(--sage-deep)" stroke={0} /></div>
+      <div className="chat-avatar" style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--sage-soft)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Icon name="heart" size={16} fill="var(--sage-deep)" stroke={0} /></div>
       <div style={{ display: 'flex', gap: 5, padding: '14px 18px', background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: '20px 20px 20px 4px' }}>
         {[0, 1, 2].map((i) => <div key={i} style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--ink-faint)', animation: 'shimmer-dot 1.2s ease-in-out infinite', animationDelay: `${i * 0.18}s` }} />)}
       </div>
@@ -82,11 +83,16 @@ function TypingDots() {
    ============================================================ */
 function ChatView({ name, chatStyle = 'bubbles' }: { name: string; chatStyle?: string }) {
   const { messages, sendMessage, status, emotion } = useChat('messaging');
+  const { prefersReducedMotion } = useTweaks();
   const [input, setInput] = useState('');
   const endRef = useRef<HTMLDivElement>(null);
   const busy = status !== 'idle';
+  const scrollToEnd = useCallback((behavior: ScrollBehavior = prefersReducedMotion ? 'auto' : 'smooth') => {
+    endRef.current?.scrollIntoView({ behavior, block: 'end' });
+  }, [prefersReducedMotion]);
+  const handleReveal = useCallback(() => scrollToEnd('auto'), [scrollToEnd]);
 
-  useEffect(() => { endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' }); }, [messages, status]);
+  useEffect(() => { scrollToEnd(); }, [messages, status, scrollToEnd]);
 
   const onSend = () => {
     if (!input.trim() || busy) return;
@@ -95,21 +101,21 @@ function ChatView({ name, chatStyle = 'bubbles' }: { name: string; chatStyle?: s
   };
 
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-      <div style={{ padding: '12px 32px', borderBottom: '1px solid var(--line)', background: 'var(--surface)', display: 'flex', alignItems: 'center' }}>
+    <div className="companion-chat" style={{ height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+      <div className="companion-emotion-bar" style={{ padding: '12px 32px', borderBottom: '1px solid var(--line)', background: 'var(--surface)', display: 'flex', alignItems: 'center' }}>
         <span className="label" style={{ fontSize: 10, color: 'var(--ink-faint)' }}>How you seem right now</span>
         <span style={{ marginLeft: 'auto' }}><EmotionBadge emotion={emotion} /></span>
       </div>
-      <div className="no-scrollbar" style={{ flex: 1, overflowY: 'auto', padding: '32px 0' }}>
-        <div style={{ maxWidth: 720, margin: '0 auto', padding: '0 32px', display: 'flex', flexDirection: 'column', gap: chatStyle === 'minimal' ? 28 : 20 }}>
+      <div className="companion-message-stream no-scrollbar" style={{ flex: 1, overflowY: 'auto', padding: '32px 0' }}>
+        <div className="companion-message-column" style={{ maxWidth: 720, margin: '0 auto', padding: '0 32px', display: 'flex', flexDirection: 'column', gap: chatStyle === 'minimal' ? 28 : 20 }}>
           {messages.length === 0 && !busy && (
-            <div className="fade-up" style={{ textAlign: 'center', color: 'var(--ink-faint)', padding: '40px 0' }}>
-              <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}><BreathingOrb size={84} tone="var(--sage)"><Icon name="heart" size={24} fill="var(--sage)" stroke={0} /></BreathingOrb></div>
+            <div className="companion-empty-state fade-up" style={{ textAlign: 'center', color: 'var(--ink-faint)', padding: '40px 0' }}>
+              <div className="companion-empty-visual" style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}><BreathingOrb size={84} tone="var(--sage)"><Icon name="heart" size={24} fill="var(--sage)" stroke={0} /></BreathingOrb></div>
               <p style={{ fontFamily: 'var(--font-display)', fontSize: 19, color: 'var(--ink)', margin: 0 }}>{`Hi ${name}. I'm here, and there's no rush.`}</p>
               <p style={{ fontSize: 14, marginTop: 6 }}>What's present for you right now?</p>
             </div>
           )}
-          {messages.map((m, i) => <ChatMessage key={i} role={m.role} content={m.content} style={chatStyle} />)}
+          {messages.map((m, i) => <ChatMessage key={i} role={m.role} content={m.content} style={chatStyle} animate={m.role === 'ai' && !!m.stream && !prefersReducedMotion} onReveal={handleReveal} />)}
           {busy && <TypingDots />}
           <div ref={endRef} />
         </div>
@@ -119,125 +125,204 @@ function ChatView({ name, chatStyle = 'bubbles' }: { name: string; chatStyle?: s
   );
 }
 
-function ChatMessage({ role, content, style }: { role: 'user' | 'ai'; content: string; style: string }) {
+function useTypewriterText(content: string, enabled: boolean, onReveal?: () => void) {
+  const [visible, setVisible] = useState(enabled ? '' : content);
+
+  useEffect(() => {
+    if (!enabled) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- sync display text when animation is disabled
+      setVisible(content);
+      return;
+    }
+    if (!content) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- clear display text for an empty incoming message
+      setVisible('');
+      return;
+    }
+
+    let index = 0;
+    const chunkSize = content.length > 700 ? 5 : content.length > 260 ? 3 : 2;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- restart the typewriter reveal for a fresh AI message
+    setVisible('');
+    const timer = setInterval(() => {
+      index = Math.min(content.length, index + chunkSize);
+      setVisible(content.slice(0, index));
+      onReveal?.();
+      if (index >= content.length) clearInterval(timer);
+    }, 18);
+
+    return () => clearInterval(timer);
+  }, [content, enabled, onReveal]);
+
+  return visible;
+}
+
+function ChatMessage({ role, content, style, animate = false, onReveal }: { role: 'user' | 'ai'; content: string; style: string; animate?: boolean; onReveal?: () => void }) {
   const isUser = role === 'user';
+  const visibleContent = useTypewriterText(content, animate && !isUser, onReveal);
   if (style === 'minimal' && !isUser) {
     return (
       <div className="fade-up" style={{ paddingLeft: 4 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-          <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'var(--sage-soft)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Icon name="heart" size={13} fill="var(--sage-deep)" stroke={0} /></div>
+          <div className="chat-avatar" style={{ width: 24, height: 24, borderRadius: '50%', background: 'var(--sage-soft)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Icon name="heart" size={13} fill="var(--sage-deep)" stroke={0} /></div>
           <span className="label" style={{ fontSize: 10 }}>SoulMate</span>
         </div>
-        <p style={{ fontFamily: 'var(--font-display)', fontSize: 'calc(var(--text-base) * 1.19)', lineHeight: 1.55, color: 'var(--ink)', margin: 0, maxWidth: 600 }}>{content}</p>
+        <p style={{ fontFamily: 'var(--font-display)', fontSize: 'calc(var(--text-base) * 1.19)', lineHeight: 1.55, color: 'var(--ink)', margin: 0, maxWidth: 600 }}>{visibleContent}</p>
       </div>
     );
   }
   if (style === 'minimal' && isUser) {
     return (
       <div className="fade-up" style={{ textAlign: 'right' }}>
-        <p style={{ fontSize: 'calc(var(--text-base) * 0.97)', lineHeight: 1.55, color: 'var(--ink-soft)', margin: 0, display: 'inline-block', maxWidth: 520, textAlign: 'left', borderLeft: '2px solid var(--clay)', paddingLeft: 14 }}>{content}</p>
+        <p style={{ fontSize: 'calc(var(--text-base) * 0.97)', lineHeight: 1.55, color: 'var(--ink-soft)', margin: 0, display: 'inline-block', maxWidth: 520, textAlign: 'left', borderLeft: '2px solid var(--clay)', paddingLeft: 14 }}>{visibleContent}</p>
       </div>
     );
   }
   return (
     <div className="fade-up" style={{ display: 'flex', gap: 12, alignItems: 'flex-end', justifyContent: isUser ? 'flex-end' : 'flex-start' }}>
-      {!isUser && <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--sage-soft)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><Icon name="heart" size={16} fill="var(--sage-deep)" stroke={0} /></div>}
-      <div style={{ maxWidth: '74%' }}>
-        <div style={{ padding: '13px 18px', fontSize: 'calc(var(--text-base) * 0.94)', lineHeight: 1.6, background: isUser ? 'var(--sage)' : 'var(--surface)', color: isUser ? '#fff' : 'var(--ink)', border: isUser ? 'none' : '1px solid var(--line)', borderRadius: isUser ? '20px 20px 4px 20px' : '20px 20px 20px 4px', boxShadow: 'var(--shadow-soft)' }}>{content}</div>
+      {!isUser && <div className="chat-avatar" style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--sage-soft)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><Icon name="heart" size={16} fill="var(--sage-deep)" stroke={0} /></div>}
+      <div className="chat-message-content" style={{ maxWidth: '74%' }}>
+        <div className="chat-bubble" style={{ padding: '13px 18px', fontSize: 'calc(var(--text-base) * 0.94)', lineHeight: 1.6, background: isUser ? 'var(--sage)' : 'var(--surface)', color: isUser ? '#fff' : 'var(--ink)', border: isUser ? 'none' : '1px solid var(--line)', borderRadius: isUser ? '20px 20px 4px 20px' : '20px 20px 20px 4px', boxShadow: 'var(--shadow-soft)' }}>{visibleContent}</div>
       </div>
     </div>
   );
 }
 
 /* ============================================================
-   PHYSICAL COMPANION VIEW — static guide page
+   PHYSICAL COMPANION VIEW — hardware overview
    ============================================================ */
 function PhysicalCompanionView() {
+  const hardware = ['ESP32', 'SH1106 OLED', 'MAX98357A speaker', 'Laptop mic'];
+  const steps = [
+    { icon: 'mic', title: 'Speak naturally', desc: 'User speaks through the laptop microphone.' },
+    { icon: 'sparkle', title: 'SoulMate responds', desc: 'The backend runs the SoulMate emotion, memory, safety, and dialogue pipeline.' },
+    { icon: 'volume', title: 'Hardware mirrors it', desc: 'The ESP32 shows emotion on the OLED and plays the response through the speaker.' },
+  ];
+  const commands = ['cd backend', 'uv run python voice_companion.py'];
+  const controls = [
+    { key: 'SPACE', title: 'Push to talk', desc: 'Hold to record, release to send.' },
+    { key: 'Q', title: 'Quit', desc: 'Stops the local companion session.' },
+  ];
+
   return (
-    <div className="no-scrollbar" style={{ height: '100%', overflowY: 'auto' }}>
-      <div style={{ maxWidth: 680, margin: '0 auto', padding: '48px 40px 64px', fontFamily: 'var(--font-body)' }}>
-
-        {/* Header */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--sage)" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <rect x="4" y="4" width="16" height="16" rx="2"/>
-            <rect x="9" y="9" width="6" height="6"/>
-            <path d="M15 2v2M9 2v2M15 20v2M9 20v2M2 15h2M2 9h2M20 15h2M20 9h2"/>
-          </svg>
-          <h1 style={{ fontSize: 22, fontWeight: 500, margin: 0, color: 'var(--ink)' }}>Physical companion</h1>
-        </div>
-        <p style={{ fontSize: 14, color: 'var(--ink-soft)', margin: '0 0 36px', lineHeight: 1.65 }}>
-          Run SoulMate on real hardware — laptop mic, ESP32 speaker, and an OLED screen that shows live emotions.
-        </p>
-
-        {/* Hardware */}
-        <p className="label" style={{ marginBottom: 12 }}>Hardware</p>
-        <div className="card" style={{ marginBottom: 32 }}>
-          {([
-            { label: 'Board + audio + display', value: 'ESP32 · MAX98357A · SH1106 OLED' },
-            { label: 'Serial port',             value: 'COM5'                             },
-            { label: 'Baud rate',               value: '921600'                           },
-            { label: 'Microphone',              value: 'Laptop mic (default)'             },
-          ] as const).map((row, i) => (
-            <div key={row.label} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '9px 0', borderBottom: i < 3 ? '1px solid var(--line)' : 'none' }}>
-              <span style={{ fontSize: 14, color: 'var(--ink-soft)' }}>{row.label}</span>
-              <span style={{ fontFamily: 'monospace', fontSize: 12.5, color: 'var(--ink)', background: 'var(--surface-2)', padding: '2px 9px', borderRadius: 'var(--r-sm)' }}>{row.value}</span>
+    <div className="physical-companion no-scrollbar" style={{ height: '100%', overflowY: 'auto' }}>
+      <div className="physical-companion-content" style={{ maxWidth: 1180, margin: '0 auto', padding: '40px 32px 56px', fontFamily: 'var(--font-body)' }}>
+        <header style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 20, marginBottom: 24, flexWrap: 'wrap' }}>
+          <div style={{ maxWidth: 680 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', marginBottom: 12 }}>
+              <span className="label">Hardware companion</span>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7, padding: '6px 11px', borderRadius: 'var(--r-pill)', background: 'var(--sage-tint)', color: 'var(--sage-deep)', border: '1px solid color-mix(in oklab, var(--sage) 24%, transparent)', fontSize: 12, fontWeight: 700 }}>
+                <Icon name="shieldCheck" size={14} /> Standalone hardware mode
+              </span>
             </div>
-          ))}
-        </div>
+            <h1 className="serif" style={{ fontSize: 42, lineHeight: 1.05, margin: '0 0 12px', color: 'var(--ink)' }}>Physical companion</h1>
+            <p style={{ fontSize: 16, color: 'var(--ink-soft)', margin: 0, lineHeight: 1.65 }}>
+              A standalone hardware companion that mirrors SoulMate through voice, OLED emotion display, and speaker output.
+            </p>
+          </div>
+        </header>
 
-        {/* Steps */}
-        <p className="label" style={{ marginBottom: 14 }}>How to start</p>
-        {([
-          { n: 1, title: 'Navigate to the backend folder',  sub: 'Open a terminal at the project root',                                                                           cmd: 'cd backend'                        },
-          { n: 2, title: 'Run the companion script',        sub: 'The script connects to ESP32 on COM5 and starts the AI pipeline automatically',                                  cmd: 'uv run python voice_companion.py'  },
-          { n: 3, title: 'Wait for the ready signal',       sub: '"SoulMate" will appear on the OLED screen and the terminal will confirm the ESP32 connection. You\'re good to go.', cmd: null                              },
-        ] as const).map((step) => (
-          <div key={step.n} className="card" style={{ marginBottom: 16 }}>
-            <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
-              <div style={{ width: 26, height: 26, borderRadius: '50%', background: 'var(--sage-tint)', color: 'var(--sage-deep)', fontSize: 13, fontWeight: 500, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 1 }}>
-                {step.n}
+        <section className="physical-primary-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 330px), 1fr))', gap: 18, alignItems: 'stretch', marginBottom: 18 }}>
+          <div className="physical-device-card card" style={{ padding: 28, minHeight: 430, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 24, boxShadow: 'var(--shadow-card)', background: 'linear-gradient(135deg, var(--surface), var(--surface-2))' }}>
+            <div>
+              <p className="label" style={{ margin: '0 0 10px' }}>Hardware prototype</p>
+              <h2 className="serif" style={{ fontSize: 26, margin: 0, color: 'var(--ink)' }}>Voice, emotion, and presence in a small device.</h2>
+            </div>
+
+            <div style={{ display: 'grid', placeItems: 'center', minHeight: 235 }}>
+              <div aria-hidden="true" style={{ width: 'min(100%, 350px)', aspectRatio: '1.18 / 1', borderRadius: 38, padding: 20, background: 'var(--surface-2)', border: '1px solid var(--line)', boxShadow: 'inset 0 1px 0 color-mix(in oklab, var(--surface) 84%, transparent), var(--shadow-soft)', position: 'relative' }}>
+                <div style={{ height: '100%', borderRadius: 28, background: 'var(--bg)', border: '1px solid var(--line-strong)', display: 'grid', placeItems: 'center', position: 'relative', overflow: 'hidden' }}>
+                  <div style={{ position: 'absolute', top: 15, left: 18, right: 18, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--sage)' }} />
+                    <span style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: 0, color: 'var(--ink-faint)' }}>SOULMATE</span>
+                    <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--clay)' }} />
+                  </div>
+                  <div style={{ width: 138, height: 86, borderRadius: 24, background: 'var(--surface)', border: '1px solid var(--line)', display: 'grid', placeItems: 'center', color: 'var(--sage-deep)', boxShadow: 'var(--shadow-soft)' }}>
+                    <Icon name="heart" size={34} fill="currentColor" stroke={0} />
+                  </div>
+                  <div style={{ position: 'absolute', bottom: 18, display: 'flex', gap: 7 }}>
+                    {[0, 1, 2, 3, 4].map((i) => (
+                      <span key={i} style={{ width: 9, height: 24 + i * 4, borderRadius: 999, background: i === 2 ? 'var(--sage)' : 'color-mix(in oklab, var(--sage) 34%, var(--surface))' }} />
+                    ))}
+                  </div>
+                </div>
               </div>
-              <div style={{ flex: 1 }}>
-                <p style={{ fontSize: 14, fontWeight: 500, margin: '0 0 4px', color: 'var(--ink)' }}>{step.title}</p>
-                <p style={{ fontSize: 13, color: 'var(--ink-soft)', margin: 0, lineHeight: 1.55 }}>{step.sub}</p>
-                {step.cmd && (
-                  <code style={{ display: 'block', fontFamily: 'monospace', fontSize: 13, background: 'var(--surface-2)', border: '1px solid var(--line)', borderRadius: 'var(--r-md)', padding: '10px 14px', marginTop: 10, color: 'var(--ink)', userSelect: 'all' }}>
-                    {step.cmd}
-                  </code>
-                )}
-              </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: 9, flexWrap: 'wrap' }}>
+              {hardware.map((item) => (
+                <span key={item} style={{ padding: '7px 11px', borderRadius: 'var(--r-pill)', background: 'var(--surface)', color: 'var(--ink-soft)', border: '1px solid var(--line)', fontSize: 12.5, fontWeight: 700 }}>
+                  {item}
+                </span>
+              ))}
             </div>
           </div>
-        ))}
 
-        {/* Controls */}
-        <p className="label" style={{ marginBottom: 14, marginTop: 32 }}>Controls</p>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 28 }}>
-          {([
-            { key: 'SPACE',  label: 'SPACE', title: 'Push to talk', desc: 'Press to start recording, release to send' },
-            { key: 'Q',  label: 'Q',     title: 'Quit',         desc: 'Closes the companion and frees COM5'       },
-          ] as const).map((k) => (
-            <div key={k.label} style={{ background: 'var(--surface-2)', borderRadius: 'var(--r-md)', padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 14 }}>
-              <div style={{ fontFamily: 'monospace', fontSize: k.label === 'SPACE' ? 10 : 18, fontWeight: 500, width: 44, height: 44, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--surface)', border: '1px solid var(--line-strong)', borderRadius: 'var(--r-md)', color: 'var(--ink)', flexShrink: 0 }}>
-                {k.key}
-              </div>
-              <div>
-                <p style={{ fontSize: 14, fontWeight: 500, margin: '0 0 2px', color: 'var(--ink)' }}>{k.title}</p>
-                <p style={{ fontSize: 12, color: 'var(--ink-soft)', margin: 0 }}>{k.desc}</p>
-              </div>
+          <div className="physical-how-card card" style={{ padding: 26, boxShadow: 'var(--shadow-soft)', display: 'flex', flexDirection: 'column', gap: 20 }}>
+            <div>
+              <p className="label" style={{ margin: '0 0 10px' }}>How it works</p>
+              <h2 className="serif" style={{ fontSize: 25, margin: 0, color: 'var(--ink)' }}>Runs from the backend terminal, then speaks through the device.</h2>
             </div>
-          ))}
-        </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+              {steps.map((step, i) => (
+                <div key={step.title} style={{ display: 'flex', gap: 14, alignItems: 'flex-start', padding: '15px 0', borderTop: i === 0 ? 'none' : '1px solid var(--line)' }}>
+                  <div style={{ width: 42, height: 42, borderRadius: 'var(--r-sm)', flexShrink: 0, display: 'grid', placeItems: 'center', background: 'var(--sage-tint)', color: 'var(--sage-deep)', border: '1px solid color-mix(in oklab, var(--sage) 20%, transparent)' }}>
+                    <Icon name={step.icon} size={19} />
+                  </div>
+                  <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                      <span style={{ fontSize: 12, fontWeight: 800, color: 'var(--ink-faint)' }}>{i + 1}</span>
+                      <h3 style={{ margin: 0, fontSize: 15, color: 'var(--ink)', fontWeight: 700 }}>{step.title}</h3>
+                    </div>
+                    <p style={{ margin: 0, fontSize: 13.5, color: 'var(--ink-soft)', lineHeight: 1.55 }}>{step.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <p style={{ margin: 'auto 0 0', fontSize: 12.5, color: 'var(--ink-faint)', lineHeight: 1.6 }}>
+              The browser does not directly control the ESP32. Start the hardware companion from a backend terminal.
+            </p>
+          </div>
+        </section>
 
-        {/* Footer note */}
-        <p style={{ fontSize: 12, color: 'var(--ink-faint)', lineHeight: 1.65, margin: 0 }}>
-          No ESP32? The script falls back to laptop speakers via pygame. Set{' '}
-          <code style={{ fontFamily: 'monospace', fontSize: 12 }}>COMPANION_USER_ID</code>{' '}
-          in your <code style={{ fontFamily: 'monospace', fontSize: 12 }}>.env</code>{' '}
-          to change the user name (default:{' '}
-          <code style={{ fontFamily: 'monospace', fontSize: 12 }}>Ghostman</code>).
-        </p>
+        <section className="physical-secondary-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 18, marginBottom: 18 }}>
+          <div className="physical-info-card card" style={{ padding: 22, boxShadow: 'var(--shadow-soft)' }}>
+            <p className="label" style={{ margin: '0 0 12px' }}>Run locally</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {commands.map((cmd) => (
+                <code key={cmd} style={{ display: 'block', fontFamily: 'monospace', fontSize: 13, background: 'var(--surface-2)', border: '1px solid var(--line)', borderRadius: 'var(--r-md)', padding: '11px 13px', color: 'var(--ink)', userSelect: 'all', overflowX: 'auto' }}>
+                  {cmd}
+                </code>
+              ))}
+            </div>
+          </div>
+
+          <div className="physical-info-card card" style={{ padding: 22, boxShadow: 'var(--shadow-soft)' }}>
+            <p className="label" style={{ margin: '0 0 12px' }}>Controls</p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: 12 }}>
+              {controls.map((control) => (
+                <div key={control.key} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: 12, borderRadius: 'var(--r-md)', background: 'var(--surface-2)', border: '1px solid var(--line)' }}>
+                  <kbd style={{ minWidth: 54, height: 38, padding: '0 10px', borderRadius: 'var(--r-sm)', background: 'var(--surface)', border: '1px solid var(--line-strong)', color: 'var(--ink)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'monospace', fontSize: control.key === 'SPACE' ? 11 : 18, fontWeight: 700 }}>
+                    {control.key}
+                  </kbd>
+                  <div>
+                    <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--ink)', marginBottom: 2 }}>{control.title}</div>
+                    <div style={{ fontSize: 12.5, color: 'var(--ink-soft)', lineHeight: 1.4 }}>{control.desc}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <details className="card" style={{ padding: '15px 18px', background: 'var(--surface-2)', borderColor: 'var(--line)', boxShadow: 'none' }}>
+          <summary style={{ cursor: 'pointer', color: 'var(--ink-soft)', fontSize: 13, fontWeight: 700 }}>Developer setup details</summary>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: 10, marginTop: 14, color: 'var(--ink-faint)', fontSize: 12.5, lineHeight: 1.5 }}>
+            <span>Default serial port: <code style={{ color: 'var(--ink)', fontFamily: 'monospace' }}>COM5</code></span>
+            <span>Baud rate: <code style={{ color: 'var(--ink)', fontFamily: 'monospace' }}>921600</code></span>
+            <span>User override: <code style={{ color: 'var(--ink)', fontFamily: 'monospace' }}>COMPANION_USER_ID</code></span>
+          </div>
+        </details>
       </div>
     </div>
   );
@@ -246,33 +331,34 @@ function PhysicalCompanionView() {
 /* ============================================================
    EMPTY CHAIR VIEW
    ============================================================ */
-function EmptyChairView() {
-  const { messages, sendMessage, socket, emotion } = useChat('empty-chair');
+function EmptyChairView({ onOpenSafety }: { onOpenSafety?: (crisisSupport?: CrisisSupportSession) => void }) {
+  const { messages, sendMessage, socket, emotion, resetSession } = useChat('empty-chair');
   const [started, setStarted] = useState(false);
   const [form, setForm] = useState({ who: '', rel: '', words: '' });
   const [input, setInput] = useState('');
   const [assessment, setAssessment] = useState<Assessment>({ ...LEVELS.normal });
   const [paused, setPaused] = useState(false);
   const [hadCrisis, setHadCrisis] = useState(false);
-  const [panelOpen, setPanelOpen] = useState(false);
-  const [confirmResume, setConfirmResume] = useState(false);
-  const [overlay, setOverlay] = useState<'grounding' | 'breathing' | 'safety' | null>(null);
-  const [soundsOpen, setSoundsOpen] = useState(false);
   const [ended, setEnded] = useState(false);
   const [elevated, setElevated] = useState(false);
   const [sysNotif, setSysNotif] = useState<string | null>(null);
   const [stopped, setStopped] = useState(false);
   const [showSafeBanner, setShowSafeBanner] = useState(false);
   const [ambience, setAmbience] = useState<string | null>(null);
+  const [safetyHandoffPending, setSafetyHandoffPending] = useState(false);
+  const [crisisAiBaseline, setCrisisAiBaseline] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
   const notifTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const ambienceRef = useRef<HTMLAudioElement | null>(null);
+  const crisisSafetyOpenedRef = useRef(false);
 
-  const inputLocked = paused || panelOpen;
+  const inputLocked = paused;
   const visibleMessages = messages.filter((m) => !m.content.startsWith('[SYSTEM_INIT]'));
+  const aiMessageCount = visibleMessages.filter((m) => m.role === 'ai').length;
   const lastAiIndex = visibleMessages.map((m) => m.role).lastIndexOf('ai');
-  const crisisText = lastAiIndex >= 0 ? visibleMessages[lastAiIndex].content : '';
-  const bubbleMessages = stopped && lastAiIndex >= 0
+  const hasCrisisResponse = stopped && aiMessageCount > crisisAiBaseline;
+  const crisisText = hasCrisisResponse && lastAiIndex >= 0 ? visibleMessages[lastAiIndex].content : '';
+  const bubbleMessages = hasCrisisResponse && lastAiIndex >= 0
     ? visibleMessages.filter((_, i) => i !== lastAiIndex)
     : visibleMessages;
 
@@ -282,7 +368,7 @@ function EmptyChairView() {
     { id: 'rain', label: 'Rain', icon: 'cloud-rain' },
   ];
 
-  useEffect(() => { scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' }); }, [visibleMessages.length, panelOpen]);
+  useEffect(() => { scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' }); }, [visibleMessages.length]);
   useEffect(() => () => { if (notifTimer.current) clearTimeout(notifTimer.current); }, []);
 
   useEffect(() => {
@@ -303,6 +389,41 @@ function EmptyChairView() {
     setAmbience(id);
   };
 
+  const endSession = useCallback(() => {
+    socket?.send(JSON.stringify({ action: 'end_session' }));
+    setSafetyHandoffPending(false);
+    setPaused(false);
+    setEnded(true);
+  }, [socket]);
+
+  const resumeSession = useCallback(() => {
+    setSafetyHandoffPending(false);
+    setPaused(false);
+    setAssessment({ ...LEVELS.extra });
+    crisisSafetyOpenedRef.current = false;
+    socket?.send(JSON.stringify({ action: 'resume_roleplay' }));
+  }, [socket]);
+
+  const openCrisisSafety = useCallback(() => {
+    if (!onOpenSafety || crisisSafetyOpenedRef.current) return;
+    crisisSafetyOpenedRef.current = true;
+    onOpenSafety({
+      targetName: form.who,
+      onEndSession: endSession,
+      onResumeSession: resumeSession,
+    });
+  }, [endSession, form.who, onOpenSafety, resumeSession]);
+
+  useEffect(() => {
+    if (!safetyHandoffPending) return;
+    const responseReady = aiMessageCount > crisisAiBaseline;
+    const timer = setTimeout(() => {
+      openCrisisSafety();
+      setSafetyHandoffPending(false);
+    }, responseReady ? 600 : 2500);
+    return () => clearTimeout(timer);
+  }, [aiMessageCount, crisisAiBaseline, openCrisisSafety, safetyHandoffPending]);
+
   useEffect(() => {
     if (!socket) return;
     const handler = (event: MessageEvent) => {
@@ -314,30 +435,48 @@ function EmptyChairView() {
           setElevated((prev) => prev || a.level === 'extra');
           setShowSafeBanner(data.action === 'safe_roleplay');
           if (data.action === 'stop_roleplay') {
-            setStopped(true); setPaused(true); setHadCrisis(true); setOverlay('safety');
+            setCrisisAiBaseline(aiMessageCount);
+            setStopped(true); setPaused(true); setHadCrisis(true); setSafetyHandoffPending(true);
           }
         } else if (data.type === 'crisis_mode') {
           setAssessment({ ...LEVELS.urgent });
-          setStopped(true); setPaused(true); setHadCrisis(true); setOverlay('safety');
+          setCrisisAiBaseline(aiMessageCount);
+          setStopped(true); setPaused(true); setHadCrisis(true); setSafetyHandoffPending(true);
         } else if (data.type === 'elevated_mode' && data.active) {
           setElevated(true);
         } else if (data.type === 're_entry_choice') {
-          setPaused(true); setPanelOpen(true);
+          setPaused(true); openCrisisSafety();
         } else if (data.type === 'system_message') {
           if (notifTimer.current) clearTimeout(notifTimer.current);
           setSysNotif(data.text);
           notifTimer.current = setTimeout(() => setSysNotif(null), 5000);
         } else if (data.type === 'safety_summary') {
-          setPaused(false); setPanelOpen(false); setElevated(false);
+          setPaused(false); setElevated(false);
         }
       } catch { /* ignore */ }
     };
     socket.addEventListener('message', handler);
     return () => socket.removeEventListener('message', handler);
-  }, [socket]);
+  }, [aiMessageCount, openCrisisSafety, socket]);
 
   const begin = () => {
     if (!form.who.trim() || !form.rel.trim()) return;
+    resetSession();
+    if (notifTimer.current) clearTimeout(notifTimer.current);
+    setInput('');
+    setAssessment({ ...LEVELS.normal });
+    setPaused(false);
+    setHadCrisis(false);
+    setEnded(false);
+    setElevated(false);
+    setSysNotif(null);
+    setStopped(false);
+    setShowSafeBanner(false);
+    setSafetyHandoffPending(false);
+    setCrisisAiBaseline(0);
+    crisisSafetyOpenedRef.current = false;
+    ambienceRef.current?.pause();
+    setAmbience(null);
     setStarted(true);
     const payload = `[SYSTEM_INIT] TARGET: ${form.who} | RELATIONSHIP: ${form.rel} | UNSPOKEN_NEED: ${form.words || 'to be heard'} | MESSAGE: I'm ready to begin the empty chair session.`;
     sendMessage(payload);
@@ -349,36 +488,11 @@ function EmptyChairView() {
     setInput('');
   };
 
-  const onBreathingComplete = () => {
-    setOverlay(null);
-    if (hadCrisis && paused && !panelOpen) {
-      socket?.send(JSON.stringify({ action: 'show_reentry_options' }));
-    }
-  };
-
-  const chooseOption = (action: SupportOption['action']) => {
-    if (action === 'try_grounding') return setOverlay('grounding');
-    if (action === 'try_breathing') return setOverlay('breathing');
-    if (action === 'play_sounds') return setSoundsOpen(true);
-    if (action === 'open_safety') return setOverlay('safety');
-    if (action === 'end_session') {
-      socket?.send(JSON.stringify({ action: 'end_session' }));
-      setPanelOpen(false); setPaused(false); setOverlay(null); setSoundsOpen(false);
-      setEnded(true);
-    }
-  };
-
-  const resumeConfirmed = () => {
-    setConfirmResume(false); setPanelOpen(false); setPaused(false);
-    setAssessment({ ...LEVELS.extra });
-    socket?.send(JSON.stringify({ action: 'resume_roleplay' }));
-  };
-
   const restart = () => {
     setStarted(false); setEnded(false); setForm({ who: '', rel: '', words: '' });
     setAssessment({ ...LEVELS.normal }); setPaused(false); setHadCrisis(false);
-    setPanelOpen(false); setSoundsOpen(false); setOverlay(null); setElevated(false);
-    setStopped(false); setShowSafeBanner(false);
+    setElevated(false); setStopped(false); setShowSafeBanner(false); setSysNotif(null);
+    setInput(''); setSafetyHandoffPending(false); setCrisisAiBaseline(0); crisisSafetyOpenedRef.current = false;
     ambienceRef.current?.pause(); setAmbience(null);
   };
 
@@ -398,8 +512,8 @@ function EmptyChairView() {
   if (!started) {
     const ready = form.who.trim() && form.rel.trim();
     return (
-      <div className="no-scrollbar" style={{ height: '100%', overflowY: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 32 }}>
-        <div className="card fade-up" style={{ width: '100%', maxWidth: 520, padding: '36px 36px', textAlign: 'center', borderTop: '3px solid var(--sage)' }}>
+      <div className="empty-chair-setup no-scrollbar" style={{ height: '100%', overflowY: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 32 }}>
+        <div className="empty-chair-setup-card card fade-up" style={{ width: '100%', maxWidth: 520, padding: '36px 36px', textAlign: 'center', borderTop: '3px solid var(--sage)' }}>
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}><IconBadge name="chair" tone="sage" size={54} iconSize={26} /></div>
           <h2 className="serif" style={{ fontSize: 25, margin: '0 0 8px' }}>A quiet reflection space</h2>
           <p style={{ fontSize: 14, color: 'var(--ink-soft)', lineHeight: 1.55, marginBottom: 26 }}>The empty chair is a gentle way to say what's gone unsaid. Share a little context, and we'll begin softly — at your pace.</p>
@@ -415,18 +529,18 @@ function EmptyChairView() {
   }
 
   return (
-    <div style={{ position: 'relative', height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
-      <div style={{ padding: '10px 32px', background: 'var(--sage-tint)', borderBottom: '1px solid var(--sage-soft)', display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+    <div className="empty-chair-view" style={{ position: 'relative', height: '100%', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+      <div className="empty-chair-status-bar" style={{ padding: '10px 32px', background: 'var(--sage-tint)', borderBottom: '1px solid var(--sage-soft)', display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10, fontSize: 12.5, color: 'var(--sage-deep)', fontWeight: 600 }}>
           <Icon name="shieldCheck" size={15} />{`A gentle reflection with ${form.who}. You can pause anytime.`}
         </span>
-        <span style={{ marginLeft: 'auto', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+        <span className="empty-chair-status-chips" style={{ marginLeft: 'auto', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
           <EmotionBadge emotion={emotion} />
           <SafetyStatusChip assessment={assessment} />
         </span>
       </div>
 
-      <div style={{ padding: '8px 32px', borderBottom: '1px solid var(--line)', background: 'var(--surface)', display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+      <div className="empty-chair-ambience" style={{ padding: '8px 32px', borderBottom: '1px solid var(--line)', background: 'var(--surface)', display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
         <span className="label" style={{ fontSize: 10, color: 'var(--ink-faint)' }}>Ambience</span>
         {AMBIENCE_TRACKS.map((tr) => {
           const on = ambience === tr.id;
@@ -444,10 +558,10 @@ function EmptyChairView() {
           SoulMate is here with you 💚
         </div>
       )}
-      {elevated && !paused && !stopped && <SafetyBanner onOpenSafety={() => setOverlay('safety')} />}
+      {elevated && !paused && !stopped && <SafetyBanner onOpenSafety={() => onOpenSafety?.()} />}
 
       <div ref={scrollRef} className="no-scrollbar" style={{ flex: 1, overflowY: 'auto', padding: '28px 0' }}>
-        <div style={{ maxWidth: 720, margin: '0 auto', padding: '0 32px', display: 'flex', flexDirection: 'column', gap: 18 }}>
+        <div className="empty-chair-message-column" style={{ maxWidth: 720, margin: '0 auto', padding: '0 32px', display: 'flex', flexDirection: 'column', gap: 18 }}>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <span style={{ fontSize: 12.5, fontWeight: 500, color: 'var(--sage-deep)', background: 'var(--sage-tint)', border: '1px solid color-mix(in oklab, var(--sage) 22%, transparent)', padding: '7px 16px', borderRadius: 'var(--r-pill)', textAlign: 'center', maxWidth: 460 }}>
               <Icon name="sparkles" size={13} style={{ display: 'inline', verticalAlign: '-2px', marginRight: 6 }} /> Your safe space is open. Share what you've held back from {form.who}.
@@ -462,16 +576,16 @@ function EmptyChairView() {
         </div>
       </div>
 
-      {hadCrisis && !paused && <SupportFooter onOpenSafety={() => setOverlay('safety')} />}
+      {hadCrisis && !paused && <SupportFooter onOpenSafety={() => onOpenSafety?.()} />}
 
       {stopped ? (
-        <div style={{ padding: '16px 32px 24px' }}>
+        <div className="empty-chair-paused" style={{ padding: '16px 32px 24px' }}>
           <div className="card" style={{ maxWidth: 720, margin: '0 auto', padding: '18px 20px', borderTop: '3px solid var(--care)', background: 'var(--care-tint)', display: 'flex', gap: 14, alignItems: 'flex-start' }}>
             <div style={{ width: 34, height: 34, borderRadius: '50%', flexShrink: 0, display: 'grid', placeItems: 'center', background: 'var(--care-soft)', color: 'var(--care)' }}><Icon name="shieldHeart" size={18} /></div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontWeight: 700, fontSize: 14, color: 'var(--care)', marginBottom: 4 }}>This reflection is paused for your safety</div>
               {crisisText && <p style={{ fontSize: 14, lineHeight: 1.6, color: 'var(--ink)', margin: '0 0 12px', whiteSpace: 'pre-wrap' }}>{crisisText}</p>}
-              <Button variant="primary" size="sm" icon="heart-handshake" onClick={() => setOverlay('safety')}>Support resources</Button>
+              <Button variant="primary" size="sm" icon="heart-handshake" onClick={() => onOpenSafety?.()}>Support resources</Button>
             </div>
           </div>
         </div>
@@ -479,12 +593,6 @@ function EmptyChairView() {
         <Composer value={input} onChange={setInput} onSend={send} placeholder={inputLocked ? 'Take your time — choose an option above.' : `Speak to ${form.who}…`} tone="var(--sage)" disabled={inputLocked} />
       )}
 
-      {panelOpen && <SafetySupportPanel targetName={form.who} options={SUPPORT_OPTIONS} onChoose={chooseOption} onRequestResume={() => setConfirmResume(true)} />}
-      {confirmResume && <ConfirmResume targetName={form.who} onConfirm={resumeConfirmed} onCancel={() => setConfirmResume(false)} />}
-      {overlay === 'grounding' && <GroundingExercise onComplete={() => setOverlay(null)} onSkip={() => setOverlay(null)} />}
-      {overlay === 'breathing' && <BreathingModal onComplete={onBreathingComplete} />}
-      {overlay === 'safety' && <SafetyPage onBack={() => setOverlay(null)} onTryGrounding={() => setOverlay('grounding')} onTryBreathing={() => setOverlay('breathing')} />}
-      {soundsOpen && <CalmingSounds onClose={() => setSoundsOpen(false)} />}
     </div>
   );
 }
@@ -493,10 +601,10 @@ function ECBubble({ role, content, crisis, speaker }: { role: 'user' | 'ai'; con
   const isUser = role === 'user';
   return (
     <div className="fade-up" style={{ display: 'flex', gap: 12, alignItems: 'flex-end', justifyContent: isUser ? 'flex-end' : 'flex-start' }}>
-      {!isUser && <div style={{ width: 32, height: 32, borderRadius: '50%', background: crisis ? 'var(--care-soft)' : 'var(--sage-soft)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><Icon name={crisis ? 'shieldHeart' : 'chair'} size={16} style={{ color: crisis ? 'var(--care)' : 'var(--sage-deep)' }} /></div>}
-      <div style={{ maxWidth: '74%' }}>
+      {!isUser && <div className="chat-avatar" style={{ width: 32, height: 32, borderRadius: '50%', background: crisis ? 'var(--care-soft)' : 'var(--sage-soft)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><Icon name={crisis ? 'shieldHeart' : 'chair'} size={16} style={{ color: crisis ? 'var(--care)' : 'var(--sage-deep)' }} /></div>}
+      <div className="chat-message-content" style={{ maxWidth: '74%' }}>
         {!isUser && speaker && <div className="label" style={{ fontSize: 10, marginBottom: 5, color: crisis ? 'var(--care)' : 'var(--sage-deep)' }}>{`${speaker}:`}</div>}
-        <div style={{ padding: '13px 18px', fontSize: 'calc(var(--text-base) * 0.94)', lineHeight: 1.6, background: isUser ? 'var(--sage)' : crisis ? 'var(--care-tint)' : 'var(--surface)', color: isUser ? '#fff' : 'var(--ink)', border: isUser ? 'none' : `1px solid ${crisis ? 'var(--care-soft)' : 'var(--line)'}`, borderRadius: isUser ? '20px 20px 4px 20px' : '20px 20px 20px 4px', boxShadow: 'var(--shadow-soft)' }}>{content}</div>
+        <div className="chat-bubble" style={{ padding: '13px 18px', fontSize: 'calc(var(--text-base) * 0.94)', lineHeight: 1.6, background: isUser ? 'var(--sage)' : crisis ? 'var(--care-tint)' : 'var(--surface)', color: isUser ? '#fff' : 'var(--ink)', border: isUser ? 'none' : `1px solid ${crisis ? 'var(--care-soft)' : 'var(--line)'}`, borderRadius: isUser ? '20px 20px 4px 20px' : '20px 20px 20px 4px', boxShadow: 'var(--shadow-soft)' }}>{content}</div>
       </div>
     </div>
   );

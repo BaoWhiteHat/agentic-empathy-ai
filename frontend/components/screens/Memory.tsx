@@ -27,7 +27,7 @@ export function MemoryScreen() {
 
   return (
     <ScreenScroll max={820}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16, marginBottom: 16, flexWrap: 'wrap' }}>
+      <div className="memory-heading" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 16, marginBottom: 16, flexWrap: 'wrap' }}>
         <div>
           <p className="label" style={{ marginBottom: 6 }}>What SoulMate remembers</p>
           <h1 className="serif" style={{ fontSize: 32, margin: 0, lineHeight: 1.12 }}>Your memory, in your hands</h1>
@@ -43,12 +43,12 @@ export function MemoryScreen() {
             <span style={{ fontWeight: 600, fontSize: 15 }}>{g.label}</span>
             <span style={{ fontSize: 12.5, color: 'var(--ink-faint)' }}>{`· ${mem[g.key].length}`}</span>
           </div>
-          <div className="card" style={{ padding: '4px 20px', boxShadow: 'var(--shadow-soft)' }}>
+          <div className="memory-card card" style={{ padding: '4px 20px', boxShadow: 'var(--shadow-soft)' }}>
             {mem[g.key].length === 0
               ? <div style={{ padding: '20px 0', textAlign: 'center', fontSize: 13.5, color: 'var(--ink-faint)' }}>Nothing here — SoulMate will only remember what you allow.</div>
               : mem[g.key].map((item, i) => (
-                <div key={item.id} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '15px 0', borderBottom: i === mem[g.key].length - 1 ? 'none' : '1px solid var(--line)', opacity: item.on ? 1 : 0.5 }}>
-                  <div style={{ flex: 1 }}>
+                <div className="memory-item" key={item.id} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '15px 0', borderBottom: i === mem[g.key].length - 1 ? 'none' : '1px solid var(--line)', opacity: item.on ? 1 : 0.5 }}>
+                  <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontWeight: 600, fontSize: 14.5 }}>{item.t}</div>
                     <div style={{ fontSize: 13, color: 'var(--ink-soft)' }}>{item.d}</div>
                   </div>

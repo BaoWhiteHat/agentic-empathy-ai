@@ -248,8 +248,8 @@ class EmptyChairHybridSafety:
             "Right now, the most important thing is that you're not alone with these feelings.\n\n"
             "Please reach out to someone you trust, a family member, or an emergency "
             "support service where you live if you feel at risk of harming yourself.\n\n"
-            "🆘 Vietnam: 1900 599 920 (Heart 2 Heart)\n"
-            "🆘 US: 988 (Suicide & Crisis Lifeline)\n\n"
+            "Vietnam: 096 306 1414\n"
+            "US: 988 (Suicide & Crisis Lifeline)\n\n"
             "I'm still here when you're ready to talk."
         )
 

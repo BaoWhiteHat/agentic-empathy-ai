@@ -1,95 +1,144 @@
 'use client';
 // components/screens/Insight.tsx — OCEAN personality insight (wired to backend ocean)
-import React, { useState } from 'react';
-import { Button, Skeleton } from '../ui/primitives';
+import React from 'react';
+import { Skeleton } from '../ui/primitives';
 import { ScreenScroll } from '../ui/ScreenScroll';
 import { OCEAN, OceanRadar, type OceanData } from '../ui/Ocean';
-import { useTweaks } from '../../context/TweaksContext';
+import { Icon } from '../ui/Icon';
 
-const TRAIT_COPY: Record<string, { plain: string; soft: string }> = {
-  openness: { plain: 'You’re curious and open to new ways of seeing things.', soft: 'open & curious' },
-  conscientiousness: { plain: 'You like a sense of order, and you follow through on what matters to you.', soft: 'thoughtful & steady' },
-  extraversion: { plain: 'You recharge more in quiet, and warm up once you feel safe.', soft: 'gently reserved' },
-  agreeableness: { plain: 'You’re warm and considerate, often putting others first.', soft: 'warm & caring' },
-  neuroticism: { plain: 'You feel things deeply — a sensitivity that’s also a kind of depth.', soft: 'deeply feeling' },
+const TRAIT_COPY: Record<keyof OceanData, { plain: string; icon: string }> = {
+  openness: { plain: 'A glimpse of how you welcome new ideas and possibilities.', icon: 'sparkle' },
+  conscientiousness: { plain: 'A sense of how much structure helps you feel steady.', icon: 'check' },
+  extraversion: { plain: 'How connection and quiet may each help you recharge.', icon: 'chat' },
+  agreeableness: { plain: 'How naturally warmth and cooperation show up for you.', icon: 'heart' },
+  neuroticism: { plain: 'A gentle sense of how strongly moments and feelings may land.', icon: 'waves' },
 };
 
-// Per-trait colour treatment for the trait cards + chart-card legend. (--gold-tint
-// isn't defined in globals.css, so openness uses --gold-soft, the existing gold tint.)
-const TRAIT_COLORS: Record<string, { bar: string; badgeBg: string; badgeText: string; border: string }> = {
-  openness:          { bar: 'var(--gold)',         badgeBg: 'var(--gold-soft)',      badgeText: 'var(--gold)',          border: 'color-mix(in oklab, var(--gold) 28%, transparent)'     },
-  conscientiousness: { bar: 'var(--sage)',         badgeBg: 'var(--sage-tint)',      badgeText: 'var(--sage-deep)',     border: 'color-mix(in oklab, var(--sage) 28%, transparent)'     },
-  agreeableness:     { bar: 'var(--clay)',         badgeBg: 'var(--clay-tint)',      badgeText: 'var(--clay-deep)',     border: 'color-mix(in oklab, var(--clay) 28%, transparent)'     },
-  extraversion:      { bar: 'var(--lavender)',     badgeBg: 'var(--lavender-tint)',  badgeText: 'var(--lavender-deep)', border: 'color-mix(in oklab, var(--lavender) 28%, transparent)' },
-  neuroticism:       { bar: 'oklch(55% 0.08 235)', badgeBg: 'oklch(97% 0.018 235)',  badgeText: 'oklch(38% 0.09 235)',  border: 'oklch(84% 0.045 235)'                                 },
+const TRAIT_COLORS: Record<keyof OceanData, string> = {
+  openness: 'var(--gold)',
+  conscientiousness: 'var(--sage)',
+  extraversion: 'var(--lavender)',
+  agreeableness: 'var(--clay)',
+  neuroticism: 'var(--mood-low)',
 };
+
+const SUPPORT_SHIFTS = [
+  { icon: 'chat', label: 'Tone', text: 'warmer or more direct' },
+  { icon: 'waves', label: 'Pacing', text: 'room to pause or move gently' },
+  { icon: 'heart', label: 'Reassurance', text: 'more grounding when it helps' },
+  { icon: 'compass', label: 'Structure', text: 'clearer next steps when wanted' },
+];
 
 export function InsightScreen({ ocean, narrative = '', loaded = true, error = null }: { ocean: OceanData; narrative?: string; loaded?: boolean; error?: string | null }) {
-  const { tweaks } = useTweaks();
-  const [why, setWhy] = useState(false);
-  const sorted = [...OCEAN].sort((a, b) => (ocean[b.key] ?? 0) - (ocean[a.key] ?? 0));
+  const narrativeText = narrative.trim();
   // Text alternative for the chart (WCAG — non-text content needs a text equivalent).
   const oceanAria = `OCEAN profile: ${OCEAN.map((o) => `${o.label} ${Math.round((ocean[o.key] ?? 0.5) * 100)}%`).join(', ')}`;
   return (
-    <ScreenScroll max={900}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 20, marginBottom: 26, flexWrap: 'wrap' }}>
-        <div>
-          <p className="label" style={{ marginBottom: 6 }}>How I’m getting to know you</p>
-          <h1 className="serif" style={{ fontSize: 34, margin: 0 }}>Your reflection, in five colours</h1>
-          <p style={{ fontSize: 'calc(var(--text-base) * 0.94)', color: 'var(--ink-soft)', marginTop: 8, maxWidth: 540, lineHeight: 1.55 }}>This is SoulMate’s gentle, evolving sense of you — never a label or a score to fix. It only shapes how warmly and how I respond.</p>
-        </div>
-        <Button variant="soft" size="sm" icon="info" onClick={() => setWhy((v) => !v)}>Why am I seeing this?</Button>
-      </div>
-
-      {why && (
-        <div className="fade-up" style={{ background: 'var(--surface-2)', border: '1px solid var(--line)', borderRadius: 'var(--r-md)', padding: '16px 20px', marginBottom: 22, fontSize: 'calc(var(--text-base) * 0.875)', color: 'var(--ink)', lineHeight: 1.6 }}>
-          SoulMate quietly notices patterns in how you write — word choice, pace, what you return to — and nudges these five dials over time.{' '}
-          {tweaks.explainDetail === 'plain+how' && <span style={{ color: 'var(--ink-faint)' }}>Technically: a lightweight OCEAN inference runs on your messages; values are smoothed across sessions and never shared.{' '}</span>}
-          You can ask me to ease off anytime, and it never changes whether you’re welcome here.
-        </div>
-      )}
-
-      <div className="card" style={{ padding: '20px 24px', marginBottom: 20 }}>
-        <p className="label" style={{ marginBottom: 10 }}>How I’m getting to know you</p>
-        {!loaded && !error ? (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
-            <Skeleton height={13} /><Skeleton height={13} /><Skeleton height={13} width="72%" />
+    <ScreenScroll max={1180}>
+      <div className="insights-screen">
+        <header className="insights-heading">
+          <div>
+            <p className="label" style={{ marginBottom: 7 }}>A little more understanding</p>
+            <h1 className="serif">Your personal reflection</h1>
+            <p>Small patterns can help SoulMate meet you with more care. Nothing here defines you, and everything can keep changing.</p>
           </div>
-        ) : error || !narrative.trim() ? (
-          <p style={{ fontSize: 'calc(var(--text-base) * 0.9)', color: 'var(--ink-faint)', lineHeight: 1.6, margin: 0 }}>Not enough conversations yet.</p>
-        ) : (
-          <p style={{ fontSize: 'calc(var(--text-base) * 0.94)', color: 'var(--ink)', lineHeight: 1.65, margin: 0 }}>{narrative}</p>
-        )}
-      </div>
+        </header>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '320px 1fr', gap: 20, alignItems: 'start' }}>
-        <div className="card" style={{ padding: 28, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <div role="img" aria-label={oceanAria} style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-            <OceanRadar data={ocean} size={240} />
-          </div>
-          <p style={{ fontSize: 12.5, color: 'var(--ink-faint)', marginTop: 18, textAlign: 'center' }}>Updated gently as we talk</p>
-        </div>
-        <div style={{ height: '100%', display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {sorted.map((o) => {
-            const tc = TRAIT_COLORS[o.key];
-            const pct = Math.round((ocean[o.key] ?? 0.5) * 100);
-            return (
-              <div key={o.key} className="card" style={{ flex: 1, padding: '16px 18px', display: 'flex', gap: 14, alignItems: 'center', boxShadow: 'var(--shadow-soft)', borderLeft: `2.5px solid ${tc.bar}` }}>
-                <div style={{ width: 38, height: 38, borderRadius: '50%', background: tc.badgeBg, border: `1.5px solid ${tc.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-display)', fontSize: 17, color: tc.badgeText, flexShrink: 0 }}>{o.short}</div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                    <span style={{ fontWeight: 600, fontSize: 'calc(var(--text-base) * 0.9)' }}>{o.label}</span>
-                    <span style={{ fontSize: 12, color: tc.badgeText, fontWeight: 600 }}>{pct}%</span>
-                  </div>
-                  <div style={{ height: 4, borderRadius: 99, background: 'var(--surface-2)', overflow: 'hidden', margin: '8px 0 6px' }}>
-                    <div style={{ width: `${pct}%`, height: '100%', background: tc.bar, borderRadius: 99 }} />
-                  </div>
-                  <div style={{ fontSize: 'calc(var(--text-base) * 0.8125)', color: 'var(--ink-soft)', lineHeight: 1.4, marginTop: 2 }}>{TRAIT_COPY[o.key].plain}</div>
-                </div>
+        <section className="insights-hero" aria-labelledby="reflection-label">
+          <div className="insights-hero-copy">
+            <div className="insights-hero-meta">
+              <p id="reflection-label" className="label">What I’m noticing</p>
+              <div className="insights-private-badge"><Icon name="lock" size={13} /> Private · Updates gradually</div>
+            </div>
+            {!loaded && !error ? (
+              <div className="insights-hero-loading" aria-label="Your reflection is loading">
+                <Skeleton height={20} width="48%" /><Skeleton height={12} /><Skeleton height={12} width="72%" />
               </div>
-            );
-          })}
+            ) : error ? (
+              <div className="insights-hero-content">
+                <h2 className="serif">This reflection is taking a quiet pause</h2>
+                <p>I can’t refresh it right now. When SoulMate reconnects, your reflection will return here.</p>
+              </div>
+            ) : !narrativeText ? (
+              <div className="insights-hero-content">
+                <h2 className="serif">Your reflection is still forming</h2>
+                <p>As we share a few more conversations, a gentle summary will take shape here. There is nothing you need to do or prove.</p>
+              </div>
+            ) : (
+              <div className="insights-hero-content">
+                <h2 className="serif">A gentle sense of what feels like you</h2>
+                <p className="insights-narrative">{narrativeText}</p>
+              </div>
+            )}
+            <div className="insights-disclaimer"><Icon name="leaf" size={16} /> These are evolving clues, not labels, diagnoses, or fixed scores.</div>
+          </div>
+        </section>
+
+      <div className="insights-profile-grid">
+        <aside className="insights-radar-card card" aria-labelledby="overview-heading">
+          <div>
+            <p className="label">Your OCEAN profile</p>
+            <h2 id="overview-heading" className="serif">Five signals at a glance</h2>
+          </div>
+          <div role="img" aria-label={oceanAria} className="insights-radar">
+            <OceanRadar data={ocean} size={244} />
+          </div>
+          <p>Updated gradually as we talk—not a personality test or a fixed result.</p>
+        </aside>
+
+        <section className="insights-traits" aria-labelledby="traits-heading">
+          <div className="insights-section-heading">
+            <div>
+              <p className="label">Understanding your signals</p>
+              <h2 id="traits-heading" className="serif">Your profile, held lightly</h2>
+            </div>
+            <p>Percentages show subtle patterns, never grades.</p>
+          </div>
+          <div className="insights-trait-grid">
+            {OCEAN.map((o) => {
+              const accent = TRAIT_COLORS[o.key];
+              const copy = TRAIT_COPY[o.key];
+              const pct = Math.round((ocean[o.key] ?? 0.5) * 100);
+              return (
+                <article key={o.key} className="insights-trait-card" style={{ '--trait-accent': accent } as React.CSSProperties}>
+                  <div className="insights-trait-top">
+                    <span className="insights-trait-icon"><Icon name={copy.icon} size={19} /></span>
+                    <h3>{o.label}</h3>
+                    <span className="insights-trait-percent">{pct}%</span>
+                  </div>
+                  <p>{copy.plain}</p>
+                  <div
+                    className="insights-trait-progress"
+                    role="progressbar"
+                    aria-label={`${o.label} reflection`}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-valuenow={pct}
+                  >
+                    <span style={{ width: `${pct}%` }} />
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+      </div>
+
+      <section className="insights-support-card card" aria-labelledby="support-heading">
+        <div className="insights-support-copy">
+          <p className="label">How this shapes support</p>
+          <h2 id="support-heading" className="serif">Care that can meet you where you are</h2>
+          <p className="insights-support-intro">These signals may gently guide SoulMate’s tone and pacing. You are always in charge of what feels useful.</p>
         </div>
+        <div className="insights-support-list">
+          {SUPPORT_SHIFTS.map((item) => (
+            <div key={item.label} className="insights-support-item">
+              <span><Icon name={item.icon} size={17} /></span>
+              <div><strong>{item.label}</strong><small>{item.text}</small></div>
+            </div>
+          ))}
+        </div>
+      </section>
       </div>
     </ScreenScroll>
   );

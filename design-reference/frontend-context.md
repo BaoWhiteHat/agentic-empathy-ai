@@ -1159,9 +1159,9 @@ const script = [
 **Types/Interfaces:**
 ```ts
 const lines = [
-  { region: 'Vietnam',       name: 'Heart 2 Heart (Ngày Mai)',        num: '1900 599 920',    hours: 'Daily · 13:00–20:30' },
+  { region: 'Vietnam',       name: 'Vietnam: 096 306 1414',           num: '',                hours: 'Public support number' },
   { region: 'Vietnam',       name: 'Crisis text & chat support',      num: 'text via app',    hours: 'Always on'           },
-  { region: 'United States', name: '988 Suicide & Crisis Lifeline',   num: '988',             hours: '24/7'                },
+  { region: 'US',            name: 'US: 988 (Suicide & Crisis Lifeline)', num: '',            hours: '24/7'                },
   { region: 'International', name: 'Befrienders Worldwide',           num: 'befrienders.org', hours: 'Find a local line'   },
 ];
 
@@ -1214,8 +1214,8 @@ const SOUND_TRACKS = [
 ];
 
 const SAFETY_RESOURCES = [
-  { country: 'Vietnam',     service: 'Heart 2 Heart — đường dây nóng tâm lý', phone: '1900 599 920', primary: true  },
-  { country: 'US · Canada', service: 'Suicide & Crisis Lifeline (call or text)', phone: '988',        primary: true  },
+  { country: 'Vietnam: 096 306 1414', service: 'Public support number',       phone: '096 306 1414', primary: true  },
+  { country: 'US: 988 (Suicide & Crisis Lifeline)', service: 'Call or text',   phone: '988',         primary: true  },
   { country: 'UK · Ireland',service: 'Samaritans',                              phone: '116 123'                    },
   { country: 'Australia',   service: 'Lifeline',                                phone: '13 11 14'                   },
 ];

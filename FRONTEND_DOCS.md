@@ -117,8 +117,8 @@ actually uses.
 - **D3 — `re_entry_choice` payload.** The backend sends `{prompt, buttons[]}`
   (`buttons` = `play_sounds`, `try_grounding`, `resume_roleplay`,
   `switch_to_support`, `end_session`). The frontend handler (`Companion.tsx`)
-  **ignores `prompt` and `buttons`** and instead opens its own `SafetySupportPanel`
-  rendering the local `SUPPORT_OPTIONS` (`try_grounding`, `try_breathing`,
+  **ignores `prompt` and `buttons`** and instead hands off to `SafetyScreen`, which
+  opens `SafetySupportPanel` with local `SUPPORT_OPTIONS` (`try_grounding`, `try_breathing`,
   `play_sounds`, `open_safety`, `end_session`) plus a separate "I'm okay —
   continue" → `resume_roleplay` link. The option set the user sees is
   frontend-defined, not backend-driven.
@@ -263,9 +263,7 @@ Self-hosted via `@font-face`:
 | `.scale-in` | Entrance: `so-scale-in` animation (scale .97 → 1) |
 | `.rise` | Entrance: `so-rise` animation (translateY 22px → 0) |
 | `.reduce-motion` | Collapses all durations to 0.001ms (mirrors `prefers-reduced-motion`) |
-| `.focus-mode .sidebar-label` | Hidden in focus mode |
-| `.focus-mode .emotion-badge` | Faded to 30% opacity in focus mode |
-| `.focus-mode .status-chip` | Hidden in focus mode |
+| `.focus-mode` | Activates the low-distraction presentation: compact icon sidebar, flat card elevation, smaller mood markers, tighter journal/Insights/chat spacing, and quieter decorative badges while preserving core controls and safety UI |
 | `.so-range` | 4px height for `<input type="range">` |
 
 **Animations Defined**
@@ -311,6 +309,7 @@ The root application shell. Exported as both named and default export.
 | `screen` | `ScreenId` | Currently active screen (`'today'` default) |
 | `todayMood` | `string \| null` | The mood id selected during the current session's check-in |
 | `moodOpen` | `boolean` | Whether the MoodCheckIn modal overlay is open |
+| `safetyOverlay` | `{id, crisisSupport?} \| null` | App-level Safety screen handoff that preserves the mounted EmptyChair session underneath |
 
 **Type exported**
 
@@ -330,12 +329,14 @@ export type ScreenId = 'today' | 'companion' | 'reflections' | 'insights' | 'set
 2. If `!userId`: renders `<OnboardingShell style="guided" />`.
 3. Otherwise: renders `Sidebar` + `<main>` with the active screen.
 
+During an EmptyChair crisis, `onOpenSafety` mounts the real `SafetyScreen` as an app-level overlay above the still-mounted Companion screen. The hidden Companion tree retains its crisis card, paused/stopped state, and live socket callbacks. Closing the support popup leaves this Safety screen visible; the Safety Back button removes the app-level overlay.
+
 **`renderScreen()` switch**
 
 | `screen` value | Component rendered | Props passed |
 |---------------|-------------------|--------------|
 | `'today'` | `TodayScreen` | `name`, `todayMood`, `ocean`, `narrative`, `oceanLoaded`, `oceanError`, `onNavigate`, `onCheckIn` |
-| `'companion'` | `CompanionScreen` | `name`, `onExit` |
+| `'companion'` | `CompanionScreen` | `name`, `onExit`, `onOpenSafety` |
 | `'reflections'` | `ReflectionsScreen` | none |
 | `'insights'` | `InsightScreen` | `ocean`, `narrative`, `loaded`, `error` |
 | `'settings'` | `SettingsScreen` | `name`, `onConsentReview`, `onOpenSafety`, `onLogout` |
@@ -357,7 +358,7 @@ Rendered as a sibling of the app-shell `<div>` inside the component's returned F
 
 **Focus mode**
 
-When `tweaks.focusMode` is true, the app shell div gets class `'focus-mode'`, which CSS rules use to hide sidebar labels, emotion badges, and status chips.
+When `tweaks.focusMode` is true, the app shell div gets class `'focus-mode'`. CSS then creates a low-distraction presentation without changing screen data or behavior: the sidebar collapses to an accessible icon rail, its mini OCEAN preview is hidden, card elevation and decorative backgrounds are flattened, Today and Mood Journal markers become smaller, Insights and Settings spacing tightens, and chat chrome/avatars become quieter. Navigation, mood words/dates, journal controls, OCEAN data, chat input, and EmptyChair safety UI remain visible and operable. Today also forces its calm single-column layout while focus mode is active.
 
 ---
 
@@ -420,7 +421,8 @@ Three-tab view: **Chat** (text conversation), **Physical** (a static setup guide
 |------|------|---------|-------------|
 | `name` | `string` | — | User's display name |
 | `initialTab` | `'chat' \| 'voice' \| 'empty'` | `'chat'` | Which tab is active on mount |
-| `onExit` | `() => void` | optional | Declared in `CompanionProps` and passed by `SoulMateApp`, but **not currently consumed** — `CompanionScreen` destructures only `name`/`initialTab` |
+| `onExit` | `() => void` | optional | Declared in `CompanionProps` and passed by `SoulMateApp`, but not currently consumed |
+| `onOpenSafety` | `(crisisSupport?: CrisisSupportSession) => void` | optional | Opens the app-level Safety screen; a crisis payload also opens its five-option panel |
 
 **Key state (CompanionScreen)**
 
@@ -459,10 +461,6 @@ A **static instructional guide** — it does **not** call `useChat`, open any so
 | `assessment` | `Assessment` | Current safety level (from safetyRouter) |
 | `paused` | `boolean` | Input is locked |
 | `hadCrisis` | `boolean` | At least one crisis event occurred |
-| `panelOpen` | `boolean` | SafetySupportPanel is visible |
-| `confirmResume` | `boolean` | ConfirmResume dialog is visible |
-| `overlay` | `'grounding' \| 'breathing' \| 'safety' \| null` | Active full-screen overlay |
-| `soundsOpen` | `boolean` | CalmingSounds card is visible |
 | `ended` | `boolean` | Session ended (shows end card) |
 | `elevated` | `boolean` | 30-min elevated support mode is active |
 | `sysNotif` | `string \| null` | Auto-dismissed system notification text |
@@ -472,7 +470,8 @@ A **static instructional guide** — it does **not** call `useChat`, open any so
 
 - Ambient audio: loops at 0.3 volume, tracks: `forest`, `ocean`, `rain` from `/audio/{id}.mp3`.
 - Safety events handled: `safety_decision`, `crisis_mode`, `elevated_mode`, `re_entry_choice`, `system_message`, `safety_summary`.
-- `stop_roleplay` shows the crisis card (care-tinted with support button) and suppresses the last AI message from the bubble list (it appears in the crisis card instead).
+- Starting from the setup form calls `useChat.resetSession()`, clearing only the persisted/in-memory `empty-chair` history plus the current EmptyChair emotion/status/audio buffer, then resets all local crisis/session UI state before sending the new `[SYSTEM_INIT]` message. Messaging, voice, profile, memory, OCEAN, and reflections are untouched.
+- `stop_roleplay` immediately sets stopped/paused/had-crisis state and renders the crisis card. EmptyChair records the current AI-message count, waits for the next AI `message` frame so only the new crisis-safe response moves into the card, then uses a short handoff delay before opening the app-level `SafetyScreen` and its five-option panel. A fallback opens Safety if the response frame is delayed. Breathing is an optional panel action.
 
 ---
 
@@ -570,7 +569,7 @@ Header with total item count and "Clear everything" button (no handler implement
 
 **Purpose**
 
-Displays the user's OCEAN personality profile as a radar chart plus sorted trait cards, with an optional narrative and a "Why am I seeing this?" expandable explanation.
+Displays the user's OCEAN personality profile as a radar chart and five trait insight cards, with compact, always-visible non-clinical context and an optional backend narrative.
 
 **Props**
 
@@ -581,25 +580,19 @@ Displays the user's OCEAN personality profile as a radar chart plus sorted trait
 | `loaded` | `boolean` | `true` | Whether ocean data has been fetched |
 | `error` | `string \| null` | `null` | Error from ocean fetch |
 
-**Key state**
-
-| Variable | Type | Purpose |
-|----------|------|---------|
-| `why` | `boolean` | Whether the "Why am I seeing this?" panel is expanded |
-
 **Rendered structure**
 
-`ScreenScroll` wrapper (max 900px). Header with title and "Why am I seeing this?" toggle button. Conditional expanded explanation (shows technical detail when `tweaks.explainDetail === 'plain+how'`). Narrative card (with `Skeleton` loading state). Two-column layout (`grid-template-columns: 320px 1fr`): left = a 320px card holding `OceanRadar` rendered at `size={240}` (with WCAG text alternative via `aria-label`), right = 5 trait cards sorted by score descending. Each trait card has a color-coded left border, icon badge, bar, and copy text.
+`ScreenScroll` wrapper (max 1180px). A compact header and reflection banner provide always-visible context, including loading/error/empty narrative states and a reminder that the signals are not labels, diagnoses, or fixed scores. The primary responsive grid places `OceanRadar` at `size={244}` (with a WCAG text alternative via `aria-label`) beside five trait cards in stable OCEAN order. Each trait card has an icon, supportive copy, a subtle percentage, and an ARIA-labelled progress indicator. A compact "How this shapes support" card follows the profile.
 
 **Per-trait colors (`TRAIT_COLORS`)**
 
-| Trait | Bar color | Badge background |
-|-------|-----------|-----------------|
-| openness | `--gold` | `--gold-soft` |
-| conscientiousness | `--sage` | `--sage-tint` |
-| agreeableness | `--clay` | `--clay-tint` |
-| extraversion | `--lavender` | `--lavender-tint` |
-| neuroticism | `oklch(55% 0.08 235)` (blue) | `oklch(97% 0.018 235)` |
+| Trait | Accent |
+|-------|--------|
+| openness | `--gold` |
+| conscientiousness | `--sage` |
+| agreeableness | `--clay` |
+| extraversion | `--lavender` |
+| neuroticism | `--mood-low` |
 
 ---
 
@@ -614,6 +607,7 @@ Standalone crisis-support resource page accessible from the sidebar's settings o
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 | `onBack` | `() => void` | optional | Called when the "Back" button is clicked |
+| `crisisSupport` | `CrisisSupportSession` | optional | Opens the five-option popup and supplies EmptyChair end/resume callbacks |
 
 **Data sources**
 
@@ -621,15 +615,15 @@ No API calls. All content is hardcoded.
 
 **Crisis lines (hardcoded)**
 
-| Region | Service | Number |
-|--------|---------|--------|
-| Vietnam | Heart 2 Heart | 1900 599 920 |
-| United States | 988 Suicide & Crisis Lifeline | 988 |
-| International | Befrienders Worldwide | befrienders.org |
+| Displayed text | Dial value |
+|----------------|------------|
+| Vietnam: 096 306 1414 | 096 306 1414 |
+| US: 988 (Suicide & Crisis Lifeline) | 988 |
+| International: Befrienders Worldwide | befrienders.org |
 
 **Rendered structure**
 
-Scrollable container (max 760px). Header with `IconBadge` (care tone) and title. Red emergency notice card. Crisis lines grid. Section "Settle your body" with 3 grounding option buttons (breathing, 5-4-3-2-1, calming sounds — rendered as visual buttons with no action handlers in this screen).
+Scrollable container (max 760px). Header with `IconBadge` (care tone) and title. Red emergency notice card. Crisis lines grid. Section "Settle your body" with 3 grounding option buttons (breathing, 5-4-3-2-1, calming sounds — rendered as visual buttons with no action handlers in the base screen). When `crisisSupport` is present, the screen owns `SafetySupportPanel`, optional grounding/breathing/sounds overlays, and `ConfirmResume`. Dismissing the popup leaves the phone/resource cards visible and does not call EmptyChair or the backend.
 
 ---
 
@@ -637,7 +631,7 @@ Scrollable container (max 760px). Header with `IconBadge` (care tone) and title.
 
 **Purpose**
 
-Accessible personalisation screen. All changes are written to `TweaksContext` (and thereby to localStorage). WCAG 2.2 AA-minded with `fieldset`/`legend` grouping, roving arrow-key navigation, `aria-pressed`/`aria-checked`, ≥44px targets, polite live region, and a live type preview.
+Accessible personalisation screen organized into four medium preference cards with a consistent vertical reading flow. All changes are written to `TweaksContext` (and thereby to localStorage). WCAG 2.2 AA-minded with `fieldset`/`legend` grouping, roving arrow-key navigation, `aria-pressed`/`aria-checked`, ≥44px targets, a polite live region, and a live type preview.
 
 **Props**
 
@@ -656,12 +650,10 @@ Accessible personalisation screen. All changes are written to `TweaksContext` (a
 
 **Sections**
 
-1. **Display**: Text size (S/M/L/XL), Font (sans/dyslexic/serif), Line spacing (compact/normal/relaxed), Letter spacing (default/wide). Live preview div using CSS variables.
-2. **Motion & colour**: Reduce animations toggle, Dark mode toggle, Colour mode (calm/vibrant/high-contrast), Accent colour (6 presets + custom `<input type="color">`). Contrast warning shown when accent fails WCAG AA 4.5:1 against current background.
-3. **Focus & clarity**: Focus mode toggle, Explanation detail (plain/plain+how), Dashboard variant (calm/bento).
-4. **Layout**: Chat style (bubbles/minimal), Voice screen (idle/live-transcript).
-5. **Support**: Link to Safety screen.
-6. **Account**: Sign out button.
+1. **Reading**: Text size (S/M/L/XL), Font (sans/dyslexic/serif), Line spacing (compact/normal/relaxed), Letter spacing (default/wide), and a live type preview.
+2. **Theme**: Dark mode, Colour mode (calm/vibrant/high-contrast), and Accent colour (6 presets + custom `<input type="color">`). A subtle inline warning appears when the accent fails WCAG AA 4.5:1 against the current background.
+3. **Focus & interaction**: Reduce animations, Focus mode, Dashboard style (calm/bento), and Chat style (bubbles/minimal).
+4. **Support & account**: Support resources link, Reset to defaults, and Sign out.
 
 **Accent color presets**
 
@@ -692,16 +684,15 @@ First-run onboarding flow to collect the user's name. The captured name becomes 
 
 **OnboardingGuided**
 
-A 7-step paged flow with a progress indicator:
+A 6-step paged flow with a progress indicator. The progress indicator, card, and bottom navigation share a centered responsive column capped at `560px`; the card padding reduces on small screens and reason options switch from a two-column grid to one column at `430px`.
 
 | Step | Content |
 |------|---------|
 | `welcome` | Breathing orb, tagline, Begin button |
 | `about` | What SoulMate is and isn't (3 icon rows) |
-| `consent` | Memory and personality toggles (required / optional) |
+| `consent` | Explanation of how conversation text supports replies, continuity, memory, personality signals, and safety-aware responses |
 | `name` | Text input: "What should I call you?" |
 | `reasons` | Multi-select pill buttons from `REASONS` array |
-| `rhythm` | 3-option radio for presence level (gentle/minimal/present) |
 | `ready` | Confirmation with the user's name |
 
 **State (OnboardingGuided)**
@@ -711,8 +702,6 @@ A 7-step paged flow with a progress indicator:
 | `step` | `number` | Current step index |
 | `name` | `string` | User's entered name |
 | `reasons` | `string[]` | Selected reasons |
-| `consent` | `{memory, personality, anonymised}` | Consent toggles |
-| `rhythm` | `string` | Selected presence level |
 
 **OnboardingConversational**
 
@@ -795,7 +784,7 @@ Pill-shaped badge showing the latest detected emotion. Color-codes via `EMOTION_
 | disgust | `#827717` | olive |
 | confusion | `#78909c` | grey-purple |
 
-Has class `emotion-badge` (used by `.focus-mode` CSS rule to fade to 30%).
+Has class `emotion-badge` (used by `.focus-mode` CSS rule to reduce it to 42% opacity).
 
 **Used by**: `ChatView` and `EmptyChairView` inside `Companion.tsx`
 
@@ -833,7 +822,7 @@ Has class `status-chip` (hidden by `.focus-mode` CSS rule).
 
 **File**: `frontend/components/safety/Modals.tsx`
 
-Exports four components used by `EmptyChairView` and `SafetyPage` inside `Companion.tsx`.
+Exports the grounding, breathing, calming-sounds, and legacy `SafetyPage` overlays. The first three are used by the app-level `SafetyScreen` crisis flow.
 
 #### `GroundingExercise`
 
@@ -868,7 +857,7 @@ Floating card (bottom-right, position absolute). Three tracks: Rain, Ocean, Fore
 | `onTryGrounding` | `() => void` | Launches grounding exercise |
 | `onTryBreathing` | `() => void` | Launches breathing exercise |
 
-Full-screen safety resource page listing crisis hotlines. Hardcoded lines: Vietnam Heart 2 Heart (1900 599 920, primary), US/Canada 988 (primary), UK Samaritans (116 123), Australia Lifeline (13 11 14). External link to IASP crisis centres. Bottom section with Grounding and Breathing shortcut buttons. Auto-focuses on mount.
+Full-screen safety resource page listing crisis hotlines. Hardcoded lines: Vietnam: 096 306 1414 (primary), US: 988 (Suicide & Crisis Lifeline, primary), UK Samaritans (116 123), Australia Lifeline (13 11 14). External link to IASP crisis centres. Bottom section with Grounding and Breathing shortcut buttons. Auto-focuses on mount.
 
 ---
 
@@ -876,7 +865,7 @@ Full-screen safety resource page listing crisis hotlines. Hardcoded lines: Vietn
 
 **File**: `frontend/components/safety/SafetyBits.tsx`
 
-Exports 5 components and 1 utility function used by `EmptyChairView`.
+Exports 5 components and 1 utility function. Status/banner/footer components are used by `EmptyChairView`; the panel and resume confirmation are hosted by `SafetyScreen`.
 
 #### `toneVars(tone: SafetyTone)` (utility)
 
@@ -906,8 +895,10 @@ Clay-tinted top banner with leaf icon and "Support resources" button. Shown duri
 | `options` | `SupportOption[]` | List of support options to render |
 | `onChoose` | `(action: SupportOption['action']) => void` | Called when user selects an option |
 | `onRequestResume` | `() => void` | Called when user clicks "I'm okay — continue" |
+| `onClose` | `() => void` | Dismisses only the panel, preserving the Safety page and crisis state |
+| `overSafetyPage` | `boolean` (optional) | Raises the modal above the Safety resource page |
 
-Centered modal overlay (blur + card). Heart icon at top. Scroll-safe card with support options as styled buttons. "I'm okay — continue" text link at bottom.
+Compact, focusable modal titled "Choose what helps right now" with five icon buttons. During a hard stop it appears above the existing Safety resource page; backend-triggered re-entry uses the same centered overlay presentation. Backdrop click, Escape, and the close button dismiss only the panel and restore focus. Clicks inside the card do not dismiss it. "I'm okay — continue" remains at the bottom.
 
 #### `ConfirmResume`
 
@@ -1155,6 +1146,7 @@ export const useChat = (modeOverride?: ChatMode) => { ... }
 | `status` | `string` | Backend pipeline status from `status` frames |
 | `socket` | `WebSocket \| null` | The live WebSocket instance |
 | `unlockAudio` | `() => void` | Creates/resumes `AudioContext` (call on user gesture) |
+| `resetSession` | `() => void` | Clears only the current hook mode's UI history and resets its emotion/status/audio buffer |
 
 **Mode determination**
 
@@ -1182,6 +1174,7 @@ If `modeOverride` is given, it is used directly. Otherwise, the current pathname
 
 - Creates a single `AudioContext` lazily on first `unlockAudio()` call.
 - `audioChunksRef` is a ref (not state), so collecting audio chunks never triggers re-renders.
+- Persists `messaging` and `empty-chair` histories together under the current user's versioned localStorage key. `resetSession()` replaces only the active mode array, so clearing EmptyChair does not affect normal Chat.
 
 ---
 
@@ -1318,8 +1311,7 @@ Accessible personalisation settings that control visual and interaction behavior
 | `reduceMotion` | `boolean` | `false` | Toggles `.reduce-motion` class; sets `--transition-speed` to 0ms |
 | `colorMode` | `'vibrant' \| 'calm' \| 'high-contrast'` | `'calm'` | Sets `data-color-mode` attribute |
 | `accent` | `string` (hex) | `'#4A9B7F'` | Sets `--accent` and `--sage` simultaneously |
-| `focusMode` | `boolean` | `false` | Adds `'focus-mode'` class to app shell div |
-| `explainDetail` | `'plain' \| 'plain+how'` | `'plain'` | Controls tech detail in Insight screen explanations |
+| `focusMode` | `boolean` | `false` | Adds `'focus-mode'` to the app shell for the low-distraction visual treatment; Today also uses it to force the calm layout |
 | `dashboard` | `'calm' \| 'bento'` | `'calm'` | Controls Today screen layout |
 | `chatStyle` | `'bubbles' \| 'minimal'` | `'bubbles'` | Controls ChatView message rendering |
 | `voiceScreen` | `'idle' \| 'live-transcript'` | `'idle'` | Still settable in Settings, but **no longer consumed** by any screen (the VoiceView it controlled was removed) |
@@ -1530,7 +1522,7 @@ Additional messages sent directly via `socket.send()` in `EmptyChairView`:
 |--------|---------|-----------|
 | `resume_roleplay` | `{ action: 'resume_roleplay' }` | User confirms resume in `ConfirmResume` |
 | `end_session` | `{ action: 'end_session' }` | User chooses "End session" from support panel |
-| `show_reentry_options` | `{ action: 'show_reentry_options' }` | Breathing exercise completes after a crisis |
+| `show_reentry_options` | `{ action: 'show_reentry_options' }` | Legacy fallback when breathing completes after a crisis without an open panel |
 
 ### WebSocket Messages — Server → Client (handled by `useChat` and `EmptyChairView`)
 

@@ -7,9 +7,7 @@ export type {
   LineSpacing,
   LetterSpacing,
   ColorMode,
-  ExplainDetail,
   DashboardVariant,
   ChatStyle,
-  VoiceScreen,
   OceanInsight,
 } from '../context/TweaksContext';

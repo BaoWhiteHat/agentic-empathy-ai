@@ -12,10 +12,16 @@ const DEFAULT_OCEAN: OceanData = {
   neuroticism: 0.5,
 };
 
+const normalizeNarrative = (value: unknown) => {
+  if (typeof value !== 'string') return '';
+  const trimmed = value.trim();
+  return trimmed && trimmed.toLowerCase() !== 'no narrative yet.' ? trimmed : '';
+};
+
 export interface OceanProfile {
   /** OCEAN scores (0–1), mapped to the radar's O/C/E/A/N axes. */
   ocean: OceanData;
-  /** Narrative from reflect_on_history(); empty string until ~10 turns of history. */
+  /** Narrative from reflect_on_history(); empty string until enough history exists. */
   narrative: string;
   /** False until the first successful fetch — drive the loading skeleton off this. */
   loaded: boolean;
@@ -53,7 +59,7 @@ export function useOcean(userId: string): OceanProfile {
           agreeableness: data.agreeableness ?? 0.5,
           neuroticism: data.neuroticism ?? 0.5,
         });
-        setNarrative(typeof data.narrative === 'string' ? data.narrative : '');
+        setNarrative(normalizeNarrative(data.narrative));
         setError(null);
         setLoaded(true);
       } catch (err) {

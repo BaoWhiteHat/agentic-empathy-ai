@@ -3,7 +3,7 @@
 // The captured name becomes the userId for the backend session.
 import React, { useEffect, useRef, useState } from 'react';
 import { Icon } from '../ui/Icon';
-import { Button, IconBadge, Pill, Toggle, BreathingOrb } from '../ui/primitives';
+import { Button, IconBadge, BreathingOrb } from '../ui/primitives';
 
 const REASONS = ['Daily reflection', 'Stress & overwhelm', 'Feeling lonely', 'Sleep & rest', 'Understanding myself', 'Just curious'];
 
@@ -18,9 +18,7 @@ function OnboardingGuided({ onComplete }: { onComplete: (name: string) => void }
   const [step, setStep] = useState(0);
   const [name, setName] = useState('');
   const [reasons, setReasons] = useState<string[]>([]);
-  const [consent, setConsent] = useState({ memory: true, personality: true, anonymised: false });
-  const [rhythm, setRhythm] = useState('gentle');
-  const steps = ['welcome', 'about', 'consent', 'name', 'reasons', 'rhythm', 'ready'];
+  const steps = ['welcome', 'about', 'consent', 'name', 'reasons', 'ready'];
   const total = steps.length;
   const cur = steps[step];
   const next = () => setStep((s) => Math.min(s + 1, total - 1));
@@ -28,30 +26,36 @@ function OnboardingGuided({ onComplete }: { onComplete: (name: string) => void }
   const toggleReason = (r: string) => setReasons((p) => p.includes(r) ? p.filter((x) => x !== r) : [...p, r]);
 
   return (
-    <div style={{ minHeight: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 24px', background: 'radial-gradient(120% 90% at 50% -10%, var(--bg-tint), var(--bg))' }}>
-      <div style={{ width: '100%', maxWidth: 560 }}>
+    <div className="onboarding-shell" style={{ background: 'radial-gradient(120% 90% at 50% -10%, var(--bg-tint), var(--bg))' }}>
+      <div className="onboarding-column">
         {step > 0 && (
-          <div style={{ display: 'flex', gap: 6, justifyContent: 'center', marginBottom: 28 }}>
+          <div
+            className="onboarding-progress"
+            role="progressbar"
+            aria-label="Onboarding progress"
+            aria-valuemin={1}
+            aria-valuemax={total - 1}
+            aria-valuenow={step}
+          >
             {steps.slice(1).map((_, i) => (
               <div key={i} style={{ height: 4, width: i + 1 <= step ? 26 : 14, borderRadius: 99, background: i + 1 <= step ? 'var(--sage)' : 'var(--line-strong)', transition: 'all .4s var(--ease)' }} />
             ))}
           </div>
         )}
-        <div key={cur} className="fade-up card" style={{ padding: '44px 40px', borderRadius: 'var(--r-xl)' }}>
+        <div key={cur} className="onboarding-card fade-up card">
           {cur === 'welcome' && <StepWelcome onNext={next} />}
           {cur === 'about' && <StepAbout />}
-          {cur === 'consent' && <StepConsent consent={consent} setConsent={setConsent} />}
+          {cur === 'consent' && <StepConsent />}
           {cur === 'name' && <StepName name={name} setName={setName} />}
           {cur === 'reasons' && <StepReasons reasons={reasons} toggleReason={toggleReason} />}
-          {cur === 'rhythm' && <StepRhythm rhythm={rhythm} setRhythm={setRhythm} />}
           {cur === 'ready' && <StepReady name={name} />}
         </div>
         {cur !== 'welcome' && (
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 24 }}>
+          <div className="onboarding-nav">
             <Button variant="ghost" icon="arrowL" onClick={back}>Back</Button>
             {cur === 'ready'
               ? <Button variant="primary" size="lg" iconRight="arrowR" onClick={() => onComplete(name.trim() || 'friend')}>Enter SoulMate</Button>
-              : <Button variant="primary" iconRight="arrowR" onClick={next} disabled={cur === 'name' && !name.trim()}>{cur === 'consent' ? 'I agree' : 'Continue'}</Button>}
+              : <Button variant="primary" iconRight="arrowR" onClick={next} disabled={cur === 'name' && !name.trim()}>{cur === 'consent' ? 'I understand and continue' : 'Continue'}</Button>}
           </div>
         )}
       </div>
@@ -98,32 +102,28 @@ function StepAbout() {
   );
 }
 
-function ConsentRow({ icon, title, desc, on, onChange, required }: { icon: string; title: string; desc: string; on: boolean; onChange: (v: boolean) => void; required?: boolean }) {
-  return (
-    <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start', padding: '16px 0', borderBottom: '1px solid var(--line)' }}>
-      <IconBadge name={icon} tone="sage" size={38} iconSize={18} />
-      <div style={{ flex: 1 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 }}>
-          <span style={{ fontWeight: 600, fontSize: 14.5 }}>{title}</span>
-          {required && <Pill tone="neutral" style={{ fontSize: 10, padding: '2px 8px' }}>Needed</Pill>}
-        </div>
-        <div style={{ fontSize: 13.5, color: 'var(--ink-soft)', lineHeight: 1.5 }}>{desc}</div>
-      </div>
-      <Toggle on={on} onChange={onChange} />
-    </div>
-  );
-}
-
-function StepConsent({ consent, setConsent }: { consent: { memory: boolean; personality: boolean; anonymised: boolean }; setConsent: (c: { memory: boolean; personality: boolean; anonymised: boolean }) => void }) {
+function StepConsent() {
   return (
     <div>
-      <p className="label" style={{ marginBottom: 10 }}>Your data, your choice</p>
-      <h2 className="serif" style={{ fontSize: 28, margin: '0 0 8px' }}>What may SoulMate remember?</h2>
-      <p style={{ fontSize: 14, color: 'var(--ink-soft)', lineHeight: 1.55, marginBottom: 8 }}>You can change any of this later, and clear everything at any time.</p>
-      <ConsentRow icon="archive" title="Remember our conversations" desc="So SoulMate can recall context like “your exams” instead of asking again." on={consent.memory} onChange={(v) => setConsent({ ...consent, memory: v })} required />
-      <ConsentRow icon="compass" title="Learn my personality over time" desc="A gentle reading of how you tend to express yourself, used only to soften how SoulMate replies." on={consent.personality} onChange={(v) => setConsent({ ...consent, personality: v })} />
-      <div style={{ marginTop: 16, fontSize: 12.5, color: 'var(--ink-faint)', display: 'flex', gap: 8, alignItems: 'center' }}>
-        <Icon name="lock" size={14} /> Stored privately on your account. Never sold, never shared.
+      <p className="label" style={{ marginBottom: 10 }}>YOUR DATA, YOUR CHOICE</p>
+      <h2 className="serif" style={{ fontSize: 28, margin: '0 0 12px' }}>How SoulMate uses your text</h2>
+      <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start', padding: '18px 0 20px', borderTop: '1px solid var(--line)', borderBottom: '1px solid var(--line)' }}>
+        <IconBadge name="compass" tone="sage" size={42} iconSize={19} />
+        <div style={{ flex: 1 }}>
+          <p style={{ fontSize: 14.5, color: 'var(--ink-soft)', lineHeight: 1.55, margin: 0 }}>SoulMate uses what you write to:</p>
+          <ul style={{ listStyle: 'none', padding: 0, margin: '12px 0 0', display: 'grid', gap: 9 }}>
+            {['generate supportive replies', 'maintain conversation continuity', 'update memory and personality signals when relevant'].map((item) => (
+              <li key={item} style={{ display: 'flex', gap: 10, alignItems: 'flex-start', fontSize: 14.5, color: 'var(--ink)', lineHeight: 1.45 }}>
+                <span aria-hidden="true" style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--sage)', flex: '0 0 auto', marginTop: 7 }} />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <div style={{ marginTop: 16, padding: '13px 15px', borderRadius: 'var(--r-md)', border: '1px solid var(--care-soft)', background: 'var(--care-tint)', fontSize: 12.8, color: 'var(--ink-soft)', display: 'flex', gap: 10, alignItems: 'flex-start', lineHeight: 1.5 }}>
+        <Icon name="shieldCheck" size={16} style={{ color: 'var(--care-deep)', flex: '0 0 auto', marginTop: 1 }} />
+        <span>When you continue, you understand that your conversation text may support memory, personalisation, and safety-aware responses.</span>
       </div>
     </div>
   );
@@ -145,43 +145,19 @@ function StepReasons({ reasons, toggleReason }: { reasons: string[]; toggleReaso
     <div>
       <h2 className="serif" style={{ fontSize: 28, margin: '4px 0 8px' }}>What brings you here lately?</h2>
       <p style={{ fontSize: 14.5, color: 'var(--ink-soft)', marginBottom: 24 }}>Pick anything that fits — or nothing at all. There are no wrong answers.</p>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+      <div className="onboarding-chip-grid">
         {REASONS.map((r) => {
           const on = reasons.includes(r);
           return (
-            <button key={r} onClick={() => toggleReason(r)} style={{ padding: '12px 18px', borderRadius: 99, fontSize: 14.5, fontWeight: 500, border: `1px solid ${on ? 'transparent' : 'var(--line-strong)'}`, background: on ? 'var(--sage)' : 'var(--surface)', color: on ? '#fff' : 'var(--ink)', transition: 'all .2s var(--ease)', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+            <button
+              key={r}
+              type="button"
+              className="onboarding-chip"
+              aria-pressed={on}
+              onClick={() => toggleReason(r)}
+              style={{ border: `1px solid ${on ? 'transparent' : 'var(--line-strong)'}`, background: on ? 'var(--sage)' : 'var(--surface)', color: on ? '#fff' : 'var(--ink)' }}
+            >
               {on && <Icon name="check" size={15} stroke={2.4} />}{r}
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-function StepRhythm({ rhythm, setRhythm }: { rhythm: string; setRhythm: (v: string) => void }) {
-  const opts = [
-    { id: 'gentle', t: 'A gentle presence', d: 'A calm space that greets you warmly when you arrive.', icon: 'leaf' },
-    { id: 'minimal', t: 'Only when I open the app', d: 'SoulMate waits quietly until you come to it.', icon: 'moon' },
-    { id: 'present', t: 'A little more present', d: 'A soft morning and evening check-in to return to.', icon: 'sun' },
-  ];
-  return (
-    <div>
-      <h2 className="serif" style={{ fontSize: 28, margin: '4px 0 6px' }}>How present should I be?</h2>
-      <p style={{ fontSize: 14, color: 'var(--ink-soft)', marginBottom: 22, lineHeight: 1.55 }}>SoulMate is here to support you — not to keep you here. It gently points back toward real life and real people.</p>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-        {opts.map((o) => {
-          const on = rhythm === o.id;
-          return (
-            <button key={o.id} onClick={() => setRhythm(o.id)} style={{ display: 'flex', gap: 14, alignItems: 'center', textAlign: 'left', padding: '16px 18px', borderRadius: 'var(--r-md)', border: `1.5px solid ${on ? 'var(--sage)' : 'var(--line)'}`, background: on ? 'var(--sage-tint)' : 'var(--surface)', transition: 'all .2s var(--ease)' }}>
-              <IconBadge name={o.icon} tone={on ? 'sage' : 'neutral'} size={40} />
-              <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 600, fontSize: 15, color: 'var(--ink)' }}>{o.t}</div>
-                <div style={{ fontSize: 13, color: 'var(--ink-soft)', lineHeight: 1.45, marginTop: 2 }}>{o.d}</div>
-              </div>
-              <div style={{ width: 20, height: 20, borderRadius: '50%', border: `2px solid ${on ? 'var(--sage)' : 'var(--line-strong)'}`, background: on ? 'var(--sage)' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                {on && <Icon name="check" size={12} stroke={3} style={{ color: '#fff' }} />}
-              </div>
             </button>
           );
         })}
@@ -207,7 +183,7 @@ function OnboardingConversational({ onComplete }: { onComplete: (name: string) =
   const script = [
     "Hi — I'm SoulMate. I'm really glad you're here.",
     "Before anything else: I'm a companion for everyday reflection, not a therapist or a medical service. If things ever get heavy, I'll help you reach real people who can support you.",
-    "Everything you share stays private to you, and you can clear it anytime. Is it okay if I remember our conversations so I don't keep asking the same things?",
+    "SoulMate uses what you write to generate supportive replies, maintain conversation continuity, and update memory or personality signals when relevant.",
     "Wonderful. What should I call you?",
     "It's lovely to meet you. Whenever you're ready, we can begin — gently, at your pace.",
   ];
@@ -218,7 +194,7 @@ function OnboardingConversational({ onComplete }: { onComplete: (name: string) =
   const atName = shown === 4;
   const done = shown >= script.length;
   return (
-    <div style={{ minHeight: '100%', display: 'flex', flexDirection: 'column', maxWidth: 620, margin: '0 auto', padding: '40px 24px' }}>
+    <div className="onboarding-conversational" style={{ minHeight: '100%', display: 'flex', flexDirection: 'column', maxWidth: 620, margin: '0 auto', padding: '40px 24px' }}>
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 18, justifyContent: 'flex-end' }}>
         {script.slice(0, shown).map((m, i) => (
           <div key={i} className="fade-up" style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
@@ -237,7 +213,7 @@ function OnboardingConversational({ onComplete }: { onComplete: (name: string) =
           ? <Button variant="primary" size="lg" iconRight="arrowR" onClick={() => onComplete(name.trim() || 'friend')}>Step in</Button>
           : atName
             ? <Button variant="primary" onClick={() => name.trim() && setShown(5)} disabled={!name.trim()}>Continue</Button>
-            : <Button variant="soft" onClick={() => setShown((s) => s + 1)}>{shown === 3 ? 'Yes, that’s okay' : 'Okay'}</Button>}
+            : <Button variant="soft" onClick={() => setShown((s) => s + 1)}>{shown === 3 ? 'I understand and continue' : 'Okay'}</Button>}
       </div>
     </div>
   );

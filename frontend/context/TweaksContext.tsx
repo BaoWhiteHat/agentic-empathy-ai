@@ -13,10 +13,8 @@ export type FontChoice = 'sans' | 'dyslexic' | 'serif';
 export type LineSpacing = 'compact' | 'normal' | 'relaxed';
 export type LetterSpacing = 'default' | 'wide';
 export type ColorMode = 'vibrant' | 'calm' | 'high-contrast';
-export type ExplainDetail = 'plain' | 'plain+how';
 export type DashboardVariant = 'calm' | 'bento';
 export type ChatStyle = 'bubbles' | 'minimal';
-export type VoiceScreen = 'idle' | 'live-transcript';
 export type OceanInsight = 'bars' | 'pentagon';
 
 export type TweaksState = {
@@ -33,12 +31,10 @@ export type TweaksState = {
 
   // --- COGNITIVE ---
   focusMode: boolean;
-  explainDetail: ExplainDetail;
   dashboard: DashboardVariant;
 
   // --- LAYOUT VARIANTS ---
   chatStyle: ChatStyle;
-  voiceScreen: VoiceScreen;
   oceanInsight: OceanInsight;
 
   // --- DARK MODE ---
@@ -54,10 +50,8 @@ export const TWEAKS_DEFAULTS: TweaksState = {
   colorMode: 'calm',      // calm is default — safer for anxiety/sensory users
   accent: '#4A9B7F',
   focusMode: false,
-  explainDetail: 'plain',
   dashboard: 'calm',
   chatStyle: 'bubbles',
-  voiceScreen: 'idle',
   oceanInsight: 'bars',
   darkMode: true,
 };
@@ -112,7 +106,10 @@ function readStored(): TweaksState {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return TWEAKS_DEFAULTS;
     // Merge so newly-added keys never break older saved blobs.
-    return { ...TWEAKS_DEFAULTS, ...JSON.parse(raw) };
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return TWEAKS_DEFAULTS;
+    const supportedEntries = Object.entries(parsed).filter(([key]) => key in TWEAKS_DEFAULTS);
+    return { ...TWEAKS_DEFAULTS, ...Object.fromEntries(supportedEntries) } as TweaksState;
   } catch {
     return TWEAKS_DEFAULTS;
   }

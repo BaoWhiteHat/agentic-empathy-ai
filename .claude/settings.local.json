@@ -80,7 +80,8 @@
       "Bash(awk '/^\\\\+---/{f=1} f{print} /OLED emotion eyes/{f=0}' FRONTEND_DOCS.md)",
       "Read(//tmp/**)",
       "Bash(awk '/\\\\*\\\\*D1 —/{f=1} f{print} /voice-monitor.*event\\\\.$|event`\\\\.$/{if\\(f\\)exit}' BACKEND_DOCS.md)",
-      "Bash(awk '/\\\\*\\\\*D1 —/{f=1} f{print} /event`\\\\.$/{if\\(f\\)exit}' FRONTEND_DOCS.md)"
+      "Bash(awk '/\\\\*\\\\*D1 —/{f=1} f{print} /event`\\\\.$/{if\\(f\\)exit}' FRONTEND_DOCS.md)",
+      "Bash(echo \"=== exit: $? ===\")"
     ]
   }
 }
