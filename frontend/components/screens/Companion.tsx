@@ -112,7 +112,7 @@ function ChatView({ name, chatStyle = 'bubbles' }: { name: string; chatStyle?: s
             <div className="companion-empty-state fade-up" style={{ textAlign: 'center', color: 'var(--ink-faint)', padding: '40px 0' }}>
               <div className="companion-empty-visual" style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}><BreathingOrb size={84} tone="var(--sage)"><Icon name="heart" size={24} fill="var(--sage)" stroke={0} /></BreathingOrb></div>
               <p style={{ fontFamily: 'var(--font-display)', fontSize: 19, color: 'var(--ink)', margin: 0 }}>{`Hi ${name}. I'm here, and there's no rush.`}</p>
-              <p style={{ fontSize: 14, marginTop: 6 }}>What's present for you right now?</p>
+              <p style={{ fontSize: 14, marginTop: 6 }}>What&apos;s present for you right now?</p>
             </div>
           )}
           {messages.map((m, i) => <ChatMessage key={i} role={m.role} content={m.content} style={chatStyle} animate={m.role === 'ai' && !!m.stream && !prefersReducedMotion} onReveal={handleReveal} />)}
@@ -135,14 +135,12 @@ function useTypewriterText(content: string, enabled: boolean, onReveal?: () => v
       return;
     }
     if (!content) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- clear display text for an empty incoming message
       setVisible('');
       return;
     }
 
     let index = 0;
     const chunkSize = content.length > 700 ? 5 : content.length > 260 ? 3 : 2;
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- restart the typewriter reveal for a fresh AI message
     setVisible('');
     const timer = setInterval(() => {
       index = Math.min(content.length, index + chunkSize);
@@ -502,7 +500,7 @@ function EmptyChairView({ onOpenSafety }: { onOpenSafety?: (crisisSupport?: Cris
         <div className="rise" style={{ textAlign: 'center', maxWidth: 380 }}>
           <div style={{ width: 60, height: 60, borderRadius: 18, margin: '0 auto 18px', display: 'grid', placeItems: 'center', background: 'var(--sage-soft)', color: 'var(--sage-deep)' }}><Icon name="leaf" size={28} /></div>
           <h2 className="serif" style={{ fontSize: 27, margin: '0 0 10px', color: 'var(--ink)' }}>Take good care of yourself.</h2>
-          <p style={{ fontSize: 14.5, lineHeight: 1.6, color: 'var(--ink-soft)', margin: '0 0 24px' }}>This space stays open. Come back whenever you're ready — there's no rush.</p>
+          <p style={{ fontSize: 14.5, lineHeight: 1.6, color: 'var(--ink-soft)', margin: '0 0 24px' }}>This space stays open. Come back whenever you&apos;re ready — there&apos;s no rush.</p>
           <Button variant="primary" onClick={restart}>Start a new session</Button>
         </div>
       </div>
@@ -516,7 +514,7 @@ function EmptyChairView({ onOpenSafety }: { onOpenSafety?: (crisisSupport?: Cris
         <div className="empty-chair-setup-card card fade-up" style={{ width: '100%', maxWidth: 520, padding: '36px 36px', textAlign: 'center', borderTop: '3px solid var(--sage)' }}>
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}><IconBadge name="chair" tone="sage" size={54} iconSize={26} /></div>
           <h2 className="serif" style={{ fontSize: 25, margin: '0 0 8px' }}>A quiet reflection space</h2>
-          <p style={{ fontSize: 14, color: 'var(--ink-soft)', lineHeight: 1.55, marginBottom: 26 }}>The empty chair is a gentle way to say what's gone unsaid. Share a little context, and we'll begin softly — at your pace.</p>
+          <p style={{ fontSize: 14, color: 'var(--ink-soft)', lineHeight: 1.55, marginBottom: 26 }}>The empty chair is a gentle way to say what&apos;s gone unsaid. Share a little context, and we&apos;ll begin softly — at your pace.</p>
           <div style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', gap: 18 }}>
             <FormField label="Who is sitting in the empty chair?" val={form.who} onChange={(v) => setForm({ ...form, who: v })} ph="A parent, a friend, my younger self…" />
             <FormField label="How would you describe your relationship?" val={form.rel} onChange={(v) => setForm({ ...form, rel: v })} ph="Loving but distant; complicated; lost…" area />
@@ -564,7 +562,7 @@ function EmptyChairView({ onOpenSafety }: { onOpenSafety?: (crisisSupport?: Cris
         <div className="empty-chair-message-column" style={{ maxWidth: 720, margin: '0 auto', padding: '0 32px', display: 'flex', flexDirection: 'column', gap: 18 }}>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <span style={{ fontSize: 12.5, fontWeight: 500, color: 'var(--sage-deep)', background: 'var(--sage-tint)', border: '1px solid color-mix(in oklab, var(--sage) 22%, transparent)', padding: '7px 16px', borderRadius: 'var(--r-pill)', textAlign: 'center', maxWidth: 460 }}>
-              <Icon name="sparkles" size={13} style={{ display: 'inline', verticalAlign: '-2px', marginRight: 6 }} /> Your safe space is open. Share what you've held back from {form.who}.
+              <Icon name="sparkles" size={13} style={{ display: 'inline', verticalAlign: '-2px', marginRight: 6 }} /> Your safe space is open. Share what you&apos;ve held back from {form.who}.
             </span>
           </div>
           {bubbleMessages.map((m, i) => <ECBubble key={i} role={m.role} content={m.content} speaker={form.who} crisis={assessment.level === 'urgent' && m.role === 'ai' && i === bubbleMessages.length - 1} />)}

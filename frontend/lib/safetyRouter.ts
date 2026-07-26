@@ -1,6 +1,6 @@
 // lib/safetyRouter.ts
 // Plain-language, non-clinical safety routing for EmptyChair.
-// Ported from design-reference/safety/safety-router.js (typed).
+// Typed helpers for Empty Chair UI safety state.
 //
 // NOTHING about the underlying classifier (model name, thresholds,
 // probabilities, internal labels) is ever surfaced to the UI — callers only

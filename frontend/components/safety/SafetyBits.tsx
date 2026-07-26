@@ -1,6 +1,6 @@
 'use client';
 // components/safety/SafetyBits.tsx — status chip, banner, support panel, confirm, footer
-// Ported from design-reference/safety/components.jsx.
+// Empty Chair safety UI primitives.
 import React, { useEffect, useRef } from 'react';
 import { Icon } from '../ui/Icon';
 import type { Assessment, SafetyTone, SupportOption } from '../../lib/safetyRouter';

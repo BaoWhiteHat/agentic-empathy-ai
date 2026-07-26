@@ -1,51 +1,84 @@
-# Model weights (too large for git)
-*.pth
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+!backend/.env.example
+!frontend/.env.example
 
-# Python-generated files
-__pycache__/
-*.py[cod]
-*$py.class
-build/
-dist/
-wheels/
-*.egg-info
-
-# Virtual environments
+# Python
 .venv/
 venv/
 env/
-
-# Security & API Keys (Cực kỳ quan trọng)
-.env
-
-# Databases & Vector DB
-chroma_db/
-*.db
-*.sqlite3
-
-# Testing & Logs
+__pycache__/
+*.py[cod]
+*.pyo
+*$py.class
 .pytest_cache/
-*.log
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+*.egg-info/
+build/
+dist/
+wheels/
 
-# Bỏ qua các file model AI nặng
-*.safetensors
-
-# Frontend (Next.js)
+# Node / Next.js
+node_modules/
 frontend/node_modules/
+.next/
 frontend/.next/
+out/
 frontend/out/
 frontend/build/
-frontend/.env*.local
-
-# Logs
+frontend/dist/
+frontend/coverage/
+frontend/tsconfig.tsbuildinfo
+frontend/next-env.d.ts
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-# Large local benchmark/data files
-backend/data/LongMemEval/longmemeval_s_cleaned.json
-backend/evaluate/benchmark/results/
+pnpm-debug.log*
 
-# Heavy media / runtime audio artifacts (do not commit)
-design-reference/safety/audio/
-*.mp3
-*.wav
+# IDE and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# AI-assistant workspace files
+.agents/
+.claude/
+.codex/
+AGENTS.md
+CLAUDE.md
+openfilecommand.md
+
+# Local databases, generated stores, and model weights
+backend/chroma_db/
+chroma_db/
+neo4j/data/
+neo4j/logs/
+*.db
+*.sqlite
+*.sqlite3
+*.pth
+*.safetensors
+backend/evaluate/benchmark/models/
+
+# Runtime audio and temporary files
+backend/temp_input.wav
+backend/temp_speech.mp3
+backend/agent/temp_input.wav
+backend/agent/temp_speech.mp3
+
+temp_input.wav
+temp_speech.mp3
+*.tmp
+*.log
+
+# Large local datasets that must be supplied separately
+backend/data/LongMemEval/longmemeval_s_cleaned.json

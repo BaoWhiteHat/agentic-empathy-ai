@@ -1,7 +1,7 @@
 'use client';
 // components/safety/Modals.tsx — grounding, breathing, calming sounds, safety page.
-// Ported from design-reference/safety/modals.jsx. Overlays render absolutely
-// inside the EmptyChair container (position: relative).
+// Safety overlays render absolutely inside the EmptyChair container
+// (position: relative).
 import React, { useEffect, useRef, useState } from 'react';
 import { Icon } from '../ui/Icon';
 

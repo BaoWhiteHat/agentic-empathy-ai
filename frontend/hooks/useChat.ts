@@ -137,7 +137,6 @@ export const useChat = (modeOverride?: ChatMode) => {
     const stored = readStoredHistories(userId);
     hydratedUserRef.current = userId;
     skipNextPersistRef.current = true;
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- hydrate visible chat history from localStorage after user context is known
     setChatHistories(stored);
   }, [userId]);
 
